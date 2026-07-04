@@ -353,6 +353,8 @@ canvas{width:100%; height:auto; display:block}
     <div class="field"><label>מפתח API למחירים חיים (Twelve Data — חינם)</label><div class="inp"><input id="s_key" placeholder="הדבק כאן את ה-API Key"></div></div>
     <div class="field"><label>גיל: <span class="rangeval" id="s_age_v">35</span></label><input id="s_age" type="range" min="18" max="75" value="35"></div>
     <div class="field"><label>שנים עד משיכה (טווח): <span class="rangeval" id="s_hz_v">20</span></label><input id="s_hz" type="range" min="0" max="45" value="20"></div>
+    <div class="field"><label>🔗 קוד סנכרון (הזן את אותו הקוד בכל מכשיר)</label><div class="inp"><input id="s_sync" placeholder="קוד סודי לחיבור המכשירים"><span class="u" id="s_syncgen" style="cursor:pointer;color:var(--brand2)">צור קוד</span></div></div>
+    <div class="note" style="margin:0 0 12px;font-size:12.5px">סטטוס סנכרון: <b id="syncStatus">—</b></div>
     <div class="btnrow">
       <button class="btn" id="saveSettings">שמור</button>
       <button class="btn sec" id="exportData">⬇ ייצוא נתונים</button>
@@ -408,11 +410,19 @@ const LS='shukhon_v1';
 const DEF={
   funds:[], holdings:[],
   watch:[{sym:'SPY',name:'S&P 500 (ETF)'},{sym:'QQQ',name:'נאסד״ק 100 (ETF)'},{sym:'URTH',name:'עולמי MSCI World'}],
-  journal:[], checks:{}, settings:{key:'',age:35,hz:20}, theme:'dark'
+  journal:[], checks:{}, settings:{key:'',syncCode:'',age:35,hz:20}, theme:'dark'
 };
 let S=load();
 function load(){try{const r=JSON.parse(localStorage.getItem(LS));return r?Object.assign(JSON.parse(JSON.stringify(DEF)),r):JSON.parse(JSON.stringify(DEF));}catch(e){return JSON.parse(JSON.stringify(DEF));}}
-function save(){localStorage.setItem(LS,JSON.stringify(S));}
+let applyingRemote=false;
+function save(){localStorage.setItem(LS,JSON.stringify(S));if(!applyingRemote&&window.__cloudPush)window.__cloudPush();}
+/* מופעל ע"י מנוע הסנכרון כשמגיע עדכון ממכשיר אחר */
+window.__applyCloud=function(obj){
+  if(!obj||typeof obj!=='object')return;
+  applyingRemote=true;
+  try{S=Object.assign(JSON.parse(JSON.stringify(DEF)),obj);localStorage.setItem(LS,JSON.stringify(S));applyTheme();renderAll();}
+  finally{applyingRemote=false;}
+};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const fmt=n=>isFinite(n)?'₪'+Math.round(n).toLocaleString('en-US'):'—';
 const cssv=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
@@ -688,12 +698,13 @@ function renderDash(){
 }
 
 /* ============ SETTINGS ============ */
-$('#settingsBtn').onclick=()=>{$('#s_key').value=S.settings.key||'';$('#s_age').value=S.settings.age;$('#s_age_v').textContent=S.settings.age;$('#s_hz').value=S.settings.hz;$('#s_hz_v').textContent=S.settings.hz;$('#settingsModal').classList.add('open');};
+$('#settingsBtn').onclick=()=>{$('#s_key').value=S.settings.key||'';$('#s_sync').value=S.settings.syncCode||'';$('#s_age').value=S.settings.age;$('#s_age_v').textContent=S.settings.age;$('#s_hz').value=S.settings.hz;$('#s_hz_v').textContent=S.settings.hz;$('#settingsModal').classList.add('open');};
+$('#s_syncgen').onclick=()=>{$('#s_sync').value=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).slice(0,24);};
 $('#closeSettings').onclick=()=>$('#settingsModal').classList.remove('open');
 $('#settingsModal').onclick=e=>{if(e.target.id==='settingsModal')$('#settingsModal').classList.remove('open');};
 $('#s_age').oninput=e=>$('#s_age_v').textContent=e.target.value;
 $('#s_hz').oninput=e=>$('#s_hz_v').textContent=e.target.value;
-$('#saveSettings').onclick=()=>{S.settings.key=$('#s_key').value.trim();S.settings.age=+$('#s_age').value;S.settings.hz=+$('#s_hz').value;save();$('#settingsModal').classList.remove('open');renderAll();};
+$('#saveSettings').onclick=()=>{S.settings.key=$('#s_key').value.trim();S.settings.syncCode=$('#s_sync').value.trim();S.settings.age=+$('#s_age').value;S.settings.hz=+$('#s_hz').value;save();$('#settingsModal').classList.remove('open');renderAll();if(window.__cloudReconnect)window.__cloudReconnect();};
 $('#exportData').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='shuk-hahon-backup.json';a.click();};
 $('#importBtn').onclick=()=>$('#importFile').click();
 $('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=Object.assign(JSON.parse(JSON.stringify(DEF)),JSON.parse(r.result));save();applyTheme();renderAll();alert('הנתונים יובאו בהצלחה.');$('#settingsModal').classList.remove('open');}catch(err){alert('קובץ לא תקין.');}};r.readAsText(f);};
@@ -731,6 +742,60 @@ function addScrollHints(){
 function renderAll(){renderFunds();renderWatch();renderHold();renderChecklist();renderJournal();calcCompound();calcFee();calcAlloc();calcReal();renderDash();renderOnboard();}
 renderAll();
 addScrollHints();
+</script>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getFirestore, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+/* ====== קונפיג Firebase — יוחלף בערכים האמיתיים ====== */
+const FB = {
+  apiKey: "AIzaSyCBi0_BUBGQ5vkyMqT_4QmUA84P1dQSNOs",
+  authDomain: "financial-tracking-84fc4.firebaseapp.com",
+  projectId: "financial-tracking-84fc4",
+  appId: "1:659863179746:web:804ea0dc03cb02819aa9bb"
+};
+/* ==================================================== */
+
+const LS='shukhon_v1';
+let db=null, unsub=null, ready=false, lastTs=0, gotFirst=false, timer=null;
+const st=(t,c)=>{const e=document.getElementById('syncStatus');if(e){e.textContent=t;if(c)e.style.color=c;}};
+const code=()=>{try{return (JSON.parse(localStorage.getItem(LS))||{}).settings?.syncCode||'';}catch(e){return '';}};
+const configured=()=>FB.projectId && !FB.projectId.startsWith('PASTE');
+
+async function connect(){
+  if(unsub){unsub();unsub=null;}
+  gotFirst=false;
+  if(!configured()){st('לא מוגדר (חסר Firebase)','#f59e0b');return;}
+  const c=code();
+  if(!c){st('הזן קוד סנכרון בהגדרות','#f59e0b');return;}
+  try{
+    if(!ready){const app=initializeApp(FB);await signInAnonymously(getAuth(app));db=getFirestore(app);ready=true;}
+    st('מתחבר…','#f59e0b');
+    unsub=onSnapshot(doc(db,'vaults',c),snap=>{
+      const first=!gotFirst; gotFirst=true;
+      st('מחובר ✓','#22c55e');
+      if(snap.exists()){
+        const d=snap.data();
+        if(d && typeof d.ts==='number' && d.ts>lastTs){
+          let local={}; try{local=JSON.parse(localStorage.getItem(LS)||'{}');}catch(e){}
+          if((local._ts||0) < d.ts){ lastTs=d.ts; if(window.__applyCloud)window.__applyCloud(d.data); st('התקבל עדכון ✓','#22c55e'); }
+        }
+      } else if(first){ push(); }  /* ענן ריק — נזרע מהמקומי */
+    }, ()=>st('שגיאת סנכרון','#ef4444'));
+  }catch(e){console.error(e); st('שגיאת חיבור','#ef4444');}
+}
+function push(){
+  if(!ready||!db)return;
+  const c=code(); if(!c)return;
+  let obj={}; try{obj=JSON.parse(localStorage.getItem(LS)||'{}');}catch(e){return;}
+  const ts=Date.now(); obj._ts=ts; localStorage.setItem(LS,JSON.stringify(obj)); lastTs=ts;
+  setDoc(doc(db,'vaults',c),{data:obj,ts}).then(()=>st('מסונכרן ✓','#22c55e')).catch(()=>st('שמירה נכשלה','#ef4444'));
+}
+window.__cloudPush=function(){ clearTimeout(timer); timer=setTimeout(push,800); };
+window.__cloudReconnect=connect;
+connect();
 </script>
 </body>
 </html>
