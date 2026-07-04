@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הכלי שלי לשוק ההון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1014; --bg2:#151a21; --card:#1a1f28; --card2:#212734; --card3:#272e3d;
+  --ink:#e9edf3; --ink2:#a8b1c1; --ink3:#727c8e;
+  --line:#2a323f; --brand:#3b82f6; --brand2:#60a5fa;
+  --good:#22c55e; --good-bg:rgba(34,197,94,.12);
+  --warn:#f59e0b; --warn-bg:rgba(245,158,11,.12);
+  --bad:#ef4444; --bad-bg:rgba(239,68,68,.12);
+  --rust:#e2650c;
+  --radius:14px; --shadow:0 6px 24px rgba(0,0,0,.4);
+}
+[data-theme="light"]{
+  --bg:#f4f6f9; --bg2:#eaeef3; --card:#ffffff; --card2:#f5f7fa; --card3:#eef2f7;
+  --ink:#121722; --ink2:#48526a; --ink3:#6d7688; --line:#e1e6ee;
+  --shadow:0 6px 24px rgba(20,30,60,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Heebo",system-ui,"Segoe UI",Arial,sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased}
+a{color:var(--brand2); text-decoration:none}
+button{font-family:inherit; cursor:pointer}
+input,select{font-family:inherit}
+
+.top{position:sticky; top:0; z-index:30; background:linear-gradient(180deg,var(--bg2),var(--bg)); border-bottom:1px solid var(--line); backdrop-filter:blur(8px)}
+.top .row{max-width:1180px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.brand{font-weight:900; font-size:19px; letter-spacing:-.4px}
+.brand span{color:var(--brand2)}
+.spacer{flex:1}
+.iconbtn{background:var(--card); border:1px solid var(--line); color:var(--ink2); border-radius:10px; padding:8px 12px; font-size:13px; font-weight:600}
+.iconbtn:hover{color:var(--ink); border-color:var(--brand)}
+.tabs{max-width:1180px; margin:0 auto; padding:0 14px; display:flex; gap:4px; overflow-x:auto}
+.tab{background:none; border:0; color:var(--ink3); padding:12px 16px; font-size:14.5px; font-weight:700; border-bottom:3px solid transparent; white-space:nowrap}
+.tab:hover{color:var(--ink2)}
+.tab.active{color:var(--ink); border-bottom-color:var(--brand)}
+
+main{max-width:1180px; margin:0 auto; padding:26px 20px 90px}
+.view{display:none; animation:fade .25s}
+.view.active{display:block}
+@keyframes fade{from{opacity:0; transform:translateY(6px)}to{opacity:1}}
+
+h2.vt{font-size:24px; font-weight:800; margin:0 0 4px; letter-spacing:-.5px}
+p.vs{color:var(--ink3); margin:0 0 22px; font-size:14.5px}
+h3{font-size:17px; font-weight:700; margin:28px 0 12px}
+
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin-bottom:8px}
+.kpi{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px}
+.kpi .l{color:var(--ink3); font-size:13px; font-weight:600; margin-bottom:6px}
+.kpi .v{font-size:28px; font-weight:900; letter-spacing:-1px; line-height:1}
+.kpi .s{font-size:12.5px; margin-top:6px; color:var(--ink3)}
+.kpi .v.g{color:var(--good)} .kpi .v.r{color:var(--bad)} .kpi .v.w{color:var(--warn)} .kpi .v.b{color:var(--brand2)}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px; margin-bottom:16px}
+.card h4{margin:0 0 4px; font-size:16px; font-weight:700}
+.card .desc{color:var(--ink3); font-size:13.5px; margin:0 0 14px}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+.tw{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius)}
+table{border-collapse:collapse; width:100%; font-size:14px; min-width:560px}
+th,td{padding:11px 12px; text-align:right; border-bottom:1px solid var(--line)}
+thead th{background:var(--card2); font-weight:700; font-size:12.5px; color:var(--ink2)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--card2)}
+td input,td select{width:100%; background:transparent; border:1px solid transparent; color:var(--ink); padding:6px 8px; border-radius:7px; font-size:14px; text-align:right}
+td input:hover,td select:hover{border-color:var(--line)}
+td input:focus,td select:focus{border-color:var(--brand); background:var(--card2); outline:none}
+select option{background:var(--card); color:var(--ink)}
+.del{background:var(--bad-bg); color:var(--bad); border:0; border-radius:7px; width:30px; height:30px; font-size:16px; font-weight:800}
+.flagcell{font-size:12px}
+.pill{font-size:11.5px; padding:3px 9px; border-radius:100px; font-weight:800; display:inline-block; margin:1px}
+.pill.g{background:var(--good-bg); color:var(--good)} .pill.w{background:var(--warn-bg); color:var(--warn)} .pill.r{background:var(--bad-bg); color:var(--bad)} .pill.n{background:var(--card3); color:var(--ink3)}
+
+.btn{background:var(--brand); color:#fff; border:0; border-radius:10px; padding:10px 16px; font-weight:700; font-size:14px}
+.btn:hover{filter:brightness(1.08)}
+.btn.sec{background:var(--card2); color:var(--ink2); border:1px solid var(--line)}
+.btn.sm{padding:7px 12px; font-size:13px}
+.btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+
+.field{margin-bottom:14px}
+.field label{display:block; font-size:13px; font-weight:600; color:var(--ink2); margin-bottom:6px}
+.field .inp{display:flex; align-items:center; background:var(--card2); border:1px solid var(--line); border-radius:10px; overflow:hidden}
+.field .inp input{flex:1; background:none; border:0; color:var(--ink); padding:11px 12px; font-size:16px; font-weight:600; outline:none; width:100%; text-align:right}
+.field .inp .u{padding:0 12px; color:var(--ink3); font-size:13px; font-weight:700; border-inline-start:1px solid var(--line)}
+input[type=range]{width:100%; accent-color:var(--brand)}
+.rangeval{font-weight:800; color:var(--brand2)}
+
+.result{background:linear-gradient(135deg,rgba(59,130,246,.12),transparent); border:1px solid rgba(59,130,246,.3); border-radius:var(--radius); padding:18px 20px; margin-top:8px}
+.result .big{font-size:34px; font-weight:900; letter-spacing:-1px; line-height:1.1}
+.result .lbl{color:var(--ink3); font-size:13px}
+.split{display:flex; height:14px; border-radius:100px; overflow:hidden; margin:12px 0 6px; background:var(--card3)}
+.split .a{background:var(--brand)} .split .b{background:var(--good)}
+.legend{display:flex; gap:16px; font-size:12.5px; color:var(--ink3); flex-wrap:wrap}
+.legend .dot{display:inline-block; width:10px; height:10px; border-radius:3px; margin-inline-start:5px; vertical-align:middle}
+
+canvas{width:100%; height:auto; display:block}
+
+.note{background:var(--card2); border-radius:12px; padding:13px 16px; font-size:13px; color:var(--ink2); margin:12px 0}
+.note.warn{background:var(--warn-bg); border:1px solid rgba(245,158,11,.3)}
+.note.info{background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.25)}
+
+.check{display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:10px}
+.check input{width:22px; height:22px; margin-top:2px; accent-color:var(--good); flex-shrink:0}
+.check .t{font-weight:700; font-size:15px}
+.check .d{color:var(--ink3); font-size:13px}
+.check.done .t{text-decoration:line-through; color:var(--ink3)}
+
+.journal-entry{background:var(--card); border:1px solid var(--line); border-inline-start:3px solid var(--brand); border-radius:12px; padding:14px 16px; margin-bottom:10px}
+.journal-entry .meta{font-size:12px; color:var(--ink3); margin-bottom:5px}
+.journal-entry .mood{font-size:11.5px; padding:2px 8px; border-radius:100px; font-weight:700; margin-inline-start:6px}
+
+.modal{position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:50; padding:20px}
+.modal.open{display:flex}
+.modal .box{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px; max-width:440px; width:100%; box-shadow:var(--shadow)}
+.modal h3{margin-top:0}
+
+.empty{text-align:center; padding:36px 20px; color:var(--ink3)}
+.empty .ico{font-size:40px; margin-bottom:8px}
+
+.disclaimer{color:var(--ink3); font-size:12px; text-align:center; margin-top:30px; line-height:1.7}
+
+/* Onboarding / help */
+.onboard{background:linear-gradient(135deg,rgba(59,130,246,.14),transparent); border:1px solid rgba(59,130,246,.35); border-radius:var(--radius); padding:20px; margin-bottom:16px}
+.onboard h3{margin:0 0 4px; font-size:18px}
+.onboard p{margin:0 0 14px; color:var(--ink2); font-size:14px}
+.help-step{display:flex; gap:12px; margin-bottom:14px}
+.help-step .num{flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--brand); color:#fff; display:grid; place-items:center; font-weight:800; font-size:13px}
+.help-step .txt{font-size:14px; color:var(--ink2)}
+.help-step .txt b{color:var(--ink)}
+.help kbd{background:var(--card3); border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-family:monospace; font-size:12.5px; color:var(--ink)}
+.modal .box.wide{max-width:560px; max-height:88vh; overflow-y:auto}
+
+@media(max-width:640px){
+  body{font-size:15px}
+  main{padding:18px 14px 80px}
+  .top .row{padding:10px 14px; gap:8px}
+  .brand{font-size:16px; width:100%}
+  .spacer{display:none}
+  .iconbtn{padding:7px 10px; font-size:12px; flex:1; text-align:center}
+  .tab{padding:11px 12px; font-size:13.5px}
+  h2.vt{font-size:20px}
+  .kpi{padding:15px 16px}
+  .kpi .v{font-size:24px}
+  .grid2{grid-template-columns:1fr}
+  th,td{padding:9px 9px; font-size:13px}
+  table{min-width:480px}
+  .result .big{font-size:28px}
+  .modal{padding:12px}
+  .modal .box{padding:18px}
+}
+.scrollhint{font-size:11.5px; color:var(--ink3); text-align:center; margin:6px 0 0; display:none}
+@media(max-width:640px){.scrollhint{display:block}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="row">
+    <div class="brand">הכלי שלי ל<span>שוק ההון</span></div>
+    <div class="spacer"></div>
+    <button class="iconbtn" id="helpBtn" style="border-color:var(--brand);color:var(--brand2)">❓ איך זה עובד</button>
+    <button class="iconbtn" id="themeBtn">🌓 תצוגה</button>
+    <button class="iconbtn" id="settingsBtn">⚙ הגדרות</button>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-v="dash">📊 דשבורד</button>
+    <button class="tab" data-v="funds">🏦 הקרנות שלי</button>
+    <button class="tab" data-v="market">📈 מדדים ותיק חי</button>
+    <button class="tab" data-v="calc">🧮 מחשבונים</button>
+    <button class="tab" data-v="journal">📓 יומן והחלטות</button>
+  </div>
+</div>
+
+<main>
+  <!-- DASHBOARD -->
+  <section class="view active" id="v-dash">
+    <h2 class="vt">תמונת מצב</h2>
+    <p class="vs">סיכום כל מה שהזנת — חיסכון כולל, כמה דמי ניהול עולים לך, ומה הכי דחוף לתקן.</p>
+    <div id="onboard"></div>
+    <div class="kpis" id="dashKpis"></div>
+    <div class="grid2">
+      <div class="card">
+        <h4>עלות דמי ניהול לאורך הזמן</h4>
+        <p class="desc">כמה תשלמו בדמי ניהול עד סוף טווח ההשקעה — וכמה הייתם חוסכים במסלול זול (בהשראת מנתח העמלות של Empower).</p>
+        <canvas id="feeChart" width="520" height="240"></canvas>
+      </div>
+      <div class="card">
+        <h4>🚩 מה כדאי לבדוק</h4>
+        <p class="desc">דגלים אדומים שזוהו אוטומטית מהנתונים שהזנת.</p>
+        <div id="dashFlags"></div>
+      </div>
+    </div>
+    <div class="note info">💡 כל הנתונים נשמרים <b>רק במכשיר שלך</b> (בזיכרון הדפדפן). שום דבר לא נשלח לשרת. גיבוי/העברה למכשיר אחר — דרך כפתור "ייצוא" בהגדרות.</div>
+  </section>
+
+  <!-- FUNDS -->
+  <section class="view" id="v-funds">
+    <h2 class="vt">הקרנות שלי</h2>
+    <p class="vs">רכזו כאן את קרן ההשתלמות, הפנסיה והגמל. הכלי מסמן אוטומטית דמי ניהול גבוהים ומסלול שמרני מדי לטווח שלכם, ומחשב כמה כל קרן עולה לכם בשנה.</p>
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>שם / גוף</th><th>סוג</th><th>מסלול</th><th>יתרה ₪</th><th>דמי ניהול %</th><th>תשואה שנתית %</th><th>עלות שנתית</th><th>סימונים</th><th></th>
+        </tr></thead>
+        <tbody id="fundsBody"></tbody>
+      </table>
+    </div>
+    <div class="btnrow">
+      <button class="btn" id="addFund">＋ הוסף קרן</button>
+      <button class="btn sec" id="seedFund">מלא דוגמה</button>
+    </div>
+    <div class="note">כלל אצבע לסימון: מסלול עוקב-מדד עם דמי ניהול מעל <b>0.7%</b>, או מסלול כללי/מנוהל מעל <b>1.0%</b> — שווה בדיקה/מיקוח. מסלול "סולידי/כללי" עם טווח מעל <b>10 שנים</b> — ייתכן שמרני מדי. (הטווח נקבע בהגדרות.)</div>
+  </section>
+
+  <!-- MARKET -->
+  <section class="view" id="v-market">
+    <h2 class="vt">מדדים ותיק חי</h2>
+    <p class="vs">מעקב אחרי מדדים/מניות במחירים חיים, והתיק הפרטי שלך עם תשואה כוללת (בהשראת Sharesight). דורש מפתח API חינמי חד-פעמי — ראו הגדרות.</p>
+
+    <h3>רשימת מעקב (Watchlist)</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>סימבול</th><th>שם</th><th>מחיר אחרון</th><th>שינוי יומי</th><th></th></tr></thead>
+        <tbody id="watchBody"></tbody>
+      </table>
+    </div>
+    <div class="btnrow">
+      <button class="btn sec sm" id="addWatch">＋ הוסף סימבול</button>
+      <button class="btn sm" id="refreshWatch">🔄 רענן מחירים</button>
+    </div>
+
+    <h3>התיק שלי</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>סימבול</th><th>יחידות</th><th>מחיר קנייה</th><th>מחיר נוכחי</th><th>שווי נוכחי</th><th>תשואה</th><th></th></tr></thead>
+        <tbody id="holdBody"></tbody>
+      </table>
+    </div>
+    <div class="btnrow">
+      <button class="btn sec sm" id="addHold">＋ הוסף אחזקה</button>
+      <button class="btn sm" id="refreshHold">🔄 רענן מחירים</button>
+    </div>
+    <div class="note warn" id="apiHint">כדי לקבל מחירים חיים: היכנסו ל-<a href="https://twelvedata.com/pricing" target="_blank" rel="noopener">twelvedata.com</a> (חינם), הירשמו, העתיקו את ה-API Key, והדביקו אותו ב⚙ הגדרות. בלי מפתח אפשר להזין מחיר נוכחי ידנית והתשואה תחושב לבד. סימבולים לדוגמה שעובדים בחינם: <b>SPY</b> (S&P 500), <b>QQQ</b> (נאסד״ק), <b>URTH</b> (עולמי MSCI World), <b>VOO</b>.</div>
+  </section>
+
+  <!-- CALCULATORS -->
+  <section class="view" id="v-calc">
+    <h2 class="vt">מחשבונים</h2>
+    <p class="vs">ארבעה כלים שהופכים את העקרונות מהחוברת למספרים על המצב שלך.</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>1 · ריבית דריבית</h4>
+        <p class="desc">כמה יצטבר מהפקדה קבועה לאורך זמן.</p>
+        <div class="field"><label>סכום התחלתי</label><div class="inp"><input id="c_init" type="number" value="50000"><span class="u">₪</span></div></div>
+        <div class="field"><label>הפקדה חודשית</label><div class="inp"><input id="c_month" type="number" value="1500"><span class="u">₪/חודש</span></div></div>
+        <div class="field"><label>מספר שנים: <span class="rangeval" id="c_years_v">30</span></label><input id="c_years" type="range" min="1" max="45" value="30"></div>
+        <div class="field"><label>תשואה שנתית ממוצעת: <span class="rangeval" id="c_rate_v">8%</span></label><input id="c_rate" type="range" min="1" max="14" step="0.5" value="8"></div>
+        <canvas id="compChart" width="520" height="200"></canvas>
+        <div class="result">
+          <div class="lbl">שווי צפוי בסוף התקופה</div>
+          <div class="big" id="c_final">—</div>
+          <div class="split"><div class="a" id="c_splitA"></div><div class="b" id="c_splitB"></div></div>
+          <div class="legend"><span><span class="dot" style="background:var(--brand)"></span>מהכיס: <b id="c_contrib">—</b></span><span><span class="dot" style="background:var(--good)"></span>רווח (ריבית דריבית): <b id="c_growth">—</b></span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4>2 · השוואת דמי ניהול</h4>
+        <p class="desc">כמה עולה ההפרש בין מסלול יקר לזול — הכסף שאתם משאירים על השולחן.</p>
+        <div class="field"><label>סכום התחלתי</label><div class="inp"><input id="f_init" type="number" value="200000"><span class="u">₪</span></div></div>
+        <div class="field"><label>הפקדה חודשית</label><div class="inp"><input id="f_month" type="number" value="1500"><span class="u">₪/חודש</span></div></div>
+        <div class="field"><label>שנים: <span class="rangeval" id="f_years_v">25</span></label><input id="f_years" type="range" min="1" max="45" value="25"></div>
+        <div class="field"><label>תשואה ברוטו (לפני דמי ניהול): <span class="rangeval" id="f_gross_v">8%</span></label><input id="f_gross" type="range" min="1" max="14" step="0.5" value="8"></div>
+        <div class="grid2" style="gap:10px">
+          <div class="field"><label>מסלול נוכחי — דמי ניהול</label><div class="inp"><input id="f_high" type="number" step="0.05" value="1.2"><span class="u">%</span></div></div>
+          <div class="field"><label>מסלול זול — דמי ניהול</label><div class="inp"><input id="f_low" type="number" step="0.05" value="0.5"><span class="u">%</span></div></div>
+        </div>
+        <div class="result">
+          <div class="lbl">כמה יותר יישאר בכיס במסלול הזול</div>
+          <div class="big g" id="f_diff">—</div>
+          <div class="lbl" id="f_detail" style="margin-top:8px"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4>3 · התאמת מסלול לטווח</h4>
+        <p class="desc">חשיפת מניות מומלצת לפי גיל וטווח — כלל אצבע, לא ייעוץ.</p>
+        <div class="field"><label>גיל נוכחי: <span class="rangeval" id="a_age_v">35</span></label><input id="a_age" type="range" min="18" max="70" value="35"></div>
+        <div class="field"><label>שנים עד שאצטרך את הכסף: <span class="rangeval" id="a_hz_v">20</span></label><input id="a_hz" type="range" min="0" max="40" value="20"></div>
+        <div class="result">
+          <div class="lbl">חשיפת מניות מומלצת (כלל אצבע)</div>
+          <div class="big b" id="a_eq">—</div>
+          <div class="lbl" id="a_txt" style="margin-top:8px"></div>
+        </div>
+        <div class="note">שתי גישות משולבות: כלל הגיל (110 פחות הגיל) והתאמה לטווח. ככל שהטווח ארוך — יותר מניות, כי יש זמן להתאושש מירידות.</div>
+      </div>
+
+      <div class="card">
+        <h4>4 · תשואה ריאלית (נטו אינפלציה)</h4>
+        <p class="desc">מה נשאר מהתשואה אחרי שהאינפלציה כרסמה בכוח הקנייה.</p>
+        <div class="field"><label>תשואה נומינלית: <span class="rangeval" id="r_nom_v">8%</span></label><input id="r_nom" type="range" min="0" max="15" step="0.5" value="8"></div>
+        <div class="field"><label>אינפלציה שנתית: <span class="rangeval" id="r_inf_v">3%</span></label><input id="r_inf" type="range" min="0" max="10" step="0.5" value="3"></div>
+        <div class="result">
+          <div class="lbl">תשואה ריאלית (מה שבאמת גדלת)</div>
+          <div class="big" id="r_real">—</div>
+          <div class="lbl" style="margin-top:8px">גם 3% אינפלציה מכפילים מחירים בערך כל 24 שנה. תשואה שלא מנצחת אינפלציה = הפסד שקט.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section class="view" id="v-journal">
+    <h2 class="vt">יומן החלטות ומשימות</h2>
+    <p class="vs">שני נשקים נגד הפסיכולוגיה שמפילה משקיעים: צ׳ק-ליסט הפעולות מהחוברת, ויומן שמכריח אותך לנמק כל החלטה לפני שאתה מבצע — כדי לתפוס החלטות רגשיות בזמן אמת.</p>
+
+    <h3>✅ תוכנית הפעולה — צ׳ק-ליסט</h3>
+    <div id="checklist"></div>
+
+    <h3>📓 יומן החלטות</h3>
+    <div class="card">
+      <div class="grid2" style="gap:12px">
+        <div class="field"><label>הפעולה ששקלת/ביצעת</label><div class="inp"><input id="j_action" placeholder="למשל: עברתי למסלול עוקב S&P 500"></div></div>
+        <div class="field"><label>מצב רגשי כרגע</label>
+          <div class="inp" style="padding:0"><select id="j_mood" style="width:100%;background:none;border:0;color:var(--ink);padding:11px 12px;font-size:15px">
+            <option value="שקול">🧊 שקול ורגוע</option>
+            <option value="נלהב">🤑 נלהב / FOMO</option>
+            <option value="מפוחד">😱 מפוחד / בהלה</option>
+            <option value="לחוץ">😰 לחוץ מהחדשות</option>
+          </select></div>
+        </div>
+      </div>
+      <div class="field"><label>הנימוק — למה זו החלטה נכונה? (אם אתה מתקשה לנמק בלי רגש — זה דגל)</label><div class="inp"><input id="j_reason" placeholder="הסיבה ההגיונית, לא התחושה"></div></div>
+      <button class="btn" id="addJournal">＋ הוסף רשומה</button>
+    </div>
+    <div id="journalList"></div>
+  </section>
+</main>
+
+<!-- Settings modal -->
+<div class="modal" id="settingsModal">
+  <div class="box">
+    <h3>⚙ הגדרות</h3>
+    <div class="field"><label>מפתח API למחירים חיים (Twelve Data — חינם)</label><div class="inp"><input id="s_key" placeholder="הדבק כאן את ה-API Key"></div></div>
+    <div class="field"><label>גיל: <span class="rangeval" id="s_age_v">35</span></label><input id="s_age" type="range" min="18" max="75" value="35"></div>
+    <div class="field"><label>שנים עד משיכה (טווח): <span class="rangeval" id="s_hz_v">20</span></label><input id="s_hz" type="range" min="0" max="45" value="20"></div>
+    <div class="btnrow">
+      <button class="btn" id="saveSettings">שמור</button>
+      <button class="btn sec" id="exportData">⬇ ייצוא נתונים</button>
+      <button class="btn sec" id="importBtn">⬆ ייבוא</button>
+      <input type="file" id="importFile" accept="application/json" style="display:none">
+    </div>
+    <div class="note" style="margin-bottom:0">ייצוא שומר קובץ גיבוי של כל הנתונים שלך. שמור אותו כדי להעביר למכשיר אחר.</div>
+    <button class="btn sec sm" id="closeSettings" style="margin-top:14px;width:100%">סגור</button>
+  </div>
+</div>
+
+<!-- Help modal -->
+<div class="modal help" id="helpModal">
+  <div class="box wide">
+    <h3>❓ איך עובדים עם הכלי</h3>
+
+    <div class="note info" style="margin-top:0"><b>הרעיון בקצרה:</b> זה מעקב אישי. את רוב הנתונים <b>אתה מזין</b> (מדוחות הפנסיה/הר הכסף), והכלי מנתח אותם בשבילך. רק לשונית אחת ("מדדים ותיק חי") מושכת מחירים מהאינטרנט.</div>
+
+    <h4 style="margin:18px 0 10px">3 צעדים להתחיל</h4>
+    <div class="help-step"><div class="num">1</div><div class="txt">בלשונית <b>🏦 הקרנות שלי</b> — הזן את קרן ההשתלמות/פנסיה/גמל שלך: יתרה, דמי ניהול ומסלול. את המספרים תמצא ב<b>הר הכסף</b> או באפליקציה/דוח של הגוף המנהל. אין לך עכשיו? לחץ "מלא דוגמה" כדי לראות איך זה נראה.</div></div>
+    <div class="help-step"><div class="num">2</div><div class="txt">חזור ל<b>📊 דשבורד</b> — תראה מיד כמה דמי ניהול עולים לך, כמה זה יסתכם לאורך הטווח, ואילו <b>דגלים אדומים</b> זוהו (מסלול שמרני מדי / דמי ניהול גבוהים).</div></div>
+    <div class="help-step"><div class="num">3</div><div class="txt">ב<b>🧮 מחשבונים</b> שחק עם ריבית דריבית והשוואת דמי ניהול על המספרים שלך, וב<b>📓 יומן</b> סמן את צעדי הפעולה.</div></div>
+
+    <h4 style="margin:22px 0 10px">מאיפה כל נתון מגיע?</h4>
+    <div class="tw" style="margin-bottom:8px"><table style="min-width:auto">
+      <tr><td style="font-weight:700">קרנות, יתרות, דמי ניהול</td><td>אתה מזין — מהר הכסף / דוח הגוף המנהל</td></tr>
+      <tr><td style="font-weight:700">מחשבונים ויומן</td><td>עובדים מיד, בלי שום חיבור</td></tr>
+      <tr><td style="font-weight:700">מחירי מדדים/מניות (חי)</td><td>API של Twelve Data — ראה למטה</td></tr>
+    </table></div>
+
+    <h4 style="margin:22px 0 10px">🔑 איך משיגים מפתח API (חינם, 3 דקות)</h4>
+    <div class="help">
+      <div class="help-step"><div class="num">1</div><div class="txt">היכנס ל‑<a href="https://twelvedata.com/register" target="_blank" rel="noopener">twelvedata.com/register</a> והירשם עם אימייל (או Google). <b>לא צריך כרטיס אשראי.</b></div></div>
+      <div class="help-step"><div class="num">2</div><div class="txt">אחרי ההתחברות, ב‑Dashboard לחץ על <kbd>API Keys</kbd> (או Profile → API Keys). שם מופיע מפתח — מחרוזת ארוכה של אותיות ומספרים, למשל <kbd>a1b2c3d4e5f6...7890</kbd> (כ‑32 תווים).</div></div>
+      <div class="help-step"><div class="num">3</div><div class="txt">העתק אותו, פתח כאן <b>⚙ הגדרות</b>, הדבק בשדה "מפתח API" ולחץ <b>שמור</b>.</div></div>
+      <div class="help-step"><div class="num">4</div><div class="txt">עבור ל<b>📈 מדדים ותיק חי</b> ולחץ <b>🔄 רענן מחירים</b>. סימבולים שעובדים בחינם: <kbd>SPY</kbd> (S&P 500), <kbd>QQQ</kbd> (נאסד״ק), <kbd>URTH</kbd> (עולמי).</div></div>
+    </div>
+    <div class="note">המסלול החינמי נותן 8 בקשות בדקה / 800 ביום — יותר ממספיק. <b>בלי מפתח</b> אפשר עדיין להזין "מחיר נוכחי" ידנית בטבלת התיק, והתשואה תחושב לבד.</div>
+
+    <div class="note warn">📱 <b>בנייד:</b> הכלי מותאם לטלפון. פתח את הקובץ שנשלח בטלגרם ← "פתח בדפדפן". הנתונים נשמרים בדפדפן של המכשיר — כדי להעביר בין מחשב לנייד, השתמש ב<b>ייצוא/ייבוא</b> שבהגדרות.</div>
+
+    <button class="btn" id="closeHelp" style="width:100%;margin-top:8px">הבנתי, בוא נתחיל</button>
+  </div>
+</div>
+
+<div class="disclaimer">
+  כלי עזר לחינוך פיננסי ולמעקב אישי בלבד. אינו ייעוץ השקעות/מס ואינו המלצה לפעולה. הנתונים נשמרים מקומית בדפדפן שלך. מחירים חיים מסופקים על ידי צד שלישי (Twelve Data) ועשויים להתעכב. ודא כל נתון מול המקור הרשמי.
+</div>
+
+<script>
+/* ============ STATE ============ */
+const LS='shukhon_v1';
+const DEF={
+  funds:[], holdings:[],
+  watch:[{sym:'SPY',name:'S&P 500 (ETF)'},{sym:'QQQ',name:'נאסד״ק 100 (ETF)'},{sym:'URTH',name:'עולמי MSCI World'}],
+  journal:[], checks:{}, settings:{key:'',age:35,hz:20}, theme:'dark'
+};
+let S=load();
+function load(){try{const r=JSON.parse(localStorage.getItem(LS));return r?Object.assign(JSON.parse(JSON.stringify(DEF)),r):JSON.parse(JSON.stringify(DEF));}catch(e){return JSON.parse(JSON.stringify(DEF));}}
+function save(){localStorage.setItem(LS,JSON.stringify(S));}
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>isFinite(n)?'₪'+Math.round(n).toLocaleString('en-US'):'—';
+const cssv=v=>getComputedStyle(document.body).getPropertyValue(v).trim();
+
+/* ============ THEME ============ */
+function applyTheme(){document.documentElement.setAttribute('data-theme',S.theme);document.body.setAttribute('data-theme',S.theme);}
+applyTheme();
+$('#themeBtn').onclick=()=>{S.theme=S.theme==='dark'?'light':'dark';applyTheme();save();renderAll();};
+
+/* ============ TABS ============ */
+$$('.tab').forEach(t=>t.onclick=()=>{
+  $$('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
+  $$('.view').forEach(v=>v.classList.remove('active'));
+  $('#v-'+t.dataset.v).classList.add('active');
+  if(t.dataset.v==='dash') renderDash();
+});
+
+/* ============ FUNDS ============ */
+const TRACKS=['עוקב מדד S&P 500','עוקב מדד עולמי','מנייתי','כללי','סולידי / אג״ח','אחר'];
+const FTYPES=['קרן השתלמות','קרן פנסיה','גמל להשקעה','תיק פרטי'];
+function fundFlags(f){
+  const out=[]; const hz=S.settings.hz;
+  const isIndex=(f.track||'').includes('מדד');
+  if(f.fee>0 && ((isIndex && f.fee>0.7)||(!isIndex && f.fee>1.0))) out.push(['r','דמי ניהול גבוהים']);
+  else if(f.fee>0 && f.fee<=0.6) out.push(['g','דמי ניהול טובים']);
+  if((f.track==='סולידי / אג״ח'||f.track==='כללי') && hz>10) out.push(['w','שמרני לטווח ארוך']);
+  if((f.track||'').includes('מדד')||f.track==='מנייתי'){ if(hz>0 && hz<4) out.push(['w','מנייתי לטווח קצר']);}
+  return out;
+}
+function renderFunds(){
+  const b=$('#fundsBody'); b.innerHTML='';
+  if(!S.funds.length){b.innerHTML='<tr><td colspan="9"><div class="empty"><div class="ico">🏦</div>עוד לא הוספת קרנות. לחץ "הוסף קרן" או "מלא דוגמה".</div></td></tr>';return;}
+  S.funds.forEach((f,i)=>{
+    const cost=(f.bal||0)*(f.fee||0)/100;
+    const flags=fundFlags(f).map(x=>`<span class="pill ${x[0]}">${x[1]}</span>`).join(' ')||'<span class="pill n">—</span>';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><input value="${(f.name||'').replace(/"/g,'&quot;')}" data-i="${i}" data-k="name" placeholder="שם הגוף"></td>
+      <td><select data-i="${i}" data-k="type">${FTYPES.map(t=>`<option ${f.type===t?'selected':''}>${t}</option>`).join('')}</select></td>
+      <td><select data-i="${i}" data-k="track">${TRACKS.map(t=>`<option ${f.track===t?'selected':''}>${t}</option>`).join('')}</select></td>
+      <td><input type="number" value="${f.bal||''}" data-i="${i}" data-k="bal"></td>
+      <td><input type="number" step="0.01" value="${f.fee||''}" data-i="${i}" data-k="fee"></td>
+      <td><input type="number" step="0.1" value="${f.ret||''}" data-i="${i}" data-k="ret"></td>
+      <td style="font-weight:700;color:var(--bad)">${cost?fmt(cost):'—'}</td>
+      <td class="flagcell">${flags}</td>
+      <td><button class="del" data-del="${i}">✕</button></td>`;
+    b.appendChild(tr);
+  });
+  b.querySelectorAll('input,select').forEach(el=>el.onchange=e=>{
+    const i=+e.target.dataset.i,k=e.target.dataset.k;
+    S.funds[i][k]=(k==='bal'||k==='fee'||k==='ret')?parseFloat(e.target.value)||0:e.target.value;
+    save();renderFunds();
+  });
+  b.querySelectorAll('[data-del]').forEach(el=>el.onclick=e=>{S.funds.splice(+e.target.dataset.del,1);save();renderFunds();});
+}
+$('#addFund').onclick=()=>{S.funds.push({name:'',type:'קרן השתלמות',track:'כללי',bal:0,fee:0,ret:0});save();renderFunds();};
+$('#seedFund').onclick=()=>{S.funds=[
+  {name:'השתלמות — בית השקעות א׳',type:'קרן השתלמות',track:'כללי',bal:120000,fee:0.85,ret:6.2},
+  {name:'פנסיה מקיפה',type:'קרן פנסיה',track:'כללי',bal:340000,fee:1.1,ret:5.8},
+  {name:'גמל להשקעה',type:'גמל להשקעה',track:'עוקב מדד S&P 500',bal:60000,fee:0.6,ret:9.1}
+];save();renderFunds();};
+
+/* ============ MARKET (live data) ============ */
+let quotes={};
+async function fetchQuotes(syms){
+  const key=(S.settings.key||'').trim();
+  if(!key){throw new Error('אין מפתח API. הזן מחיר ידנית או הוסף מפתח בהגדרות.');}
+  const url=`https://api.twelvedata.com/quote?symbol=${encodeURIComponent(syms.join(','))}&apikey=${key}`;
+  const r=await fetch(url); const d=await r.json();
+  if(d&&d.status==='error'){throw new Error(d.message||'שגיאה מהשרת (בדוק מפתח/מכסה)');}
+  const rows = syms.length>1 ? d : {[syms[0]]:d};
+  syms.forEach(s=>{
+    const q=rows[s]; if(q&&q.close){const pc=parseFloat(q.percent_change);quotes[s]={price:parseFloat(q.close),chg:isFinite(pc)?pc:null};}
+  });
+}
+function renderWatch(){
+  const b=$('#watchBody');b.innerHTML='';
+  if(!S.watch.length){b.innerHTML='<tr><td colspan="5"><div class="empty"><div class="ico">📈</div>הוסף מדד או מניה למעקב.</div></td></tr>';return;}
+  S.watch.forEach((w,i)=>{
+    const q=quotes[w.sym]; const chg=q?q.chg:null;
+    const chgHtml = chg==null?'<span class="pill n">—</span>':`<span class="pill ${chg>=0?'g':'r'}">${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}%</span>`;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><input value="${(w.sym||'').replace(/"/g,'&quot;')}" data-i="${i}" data-k="sym" style="font-weight:700;text-transform:uppercase"></td>
+      <td><input value="${(w.name||'').replace(/"/g,'&quot;')}" data-i="${i}" data-k="name" placeholder="תיאור"></td>
+      <td style="font-weight:700">${q?q.price.toFixed(2):'—'}</td>
+      <td>${chgHtml}</td>
+      <td><button class="del" data-del="${i}">✕</button></td>`;
+    b.appendChild(tr);
+  });
+  b.querySelectorAll('input').forEach(el=>el.onchange=e=>{const i=+e.target.dataset.i,k=e.target.dataset.k;S.watch[i][k]=k==='sym'?e.target.value.toUpperCase().trim():e.target.value;save();renderWatch();});
+  b.querySelectorAll('[data-del]').forEach(el=>el.onclick=e=>{S.watch.splice(+e.target.dataset.del,1);save();renderWatch();});
+}
+function renderHold(){
+  const b=$('#holdBody');b.innerHTML='';
+  if(!S.holdings.length){b.innerHTML='<tr><td colspan="7"><div class="empty"><div class="ico">💼</div>הוסף אחזקה כדי לעקוב אחרי תשואה.</div></td></tr>';return;}
+  S.holdings.forEach((h,i)=>{
+    const q=quotes[h.sym]; const cur=q?q.price:(h.cur||null);
+    const val=cur?cur*(h.units||0):null;
+    const cost=(h.buy||0)*(h.units||0);
+    const ret= (val!=null&&cost)?((val-cost)/cost*100):null;
+    const retHtml= ret==null?'—':`<span class="pill ${ret>=0?'g':'r'}">${ret>=0?'+':''}${ret.toFixed(1)}%</span>`;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><input value="${(h.sym||'').replace(/"/g,'&quot;')}" data-i="${i}" data-k="sym" style="font-weight:700;text-transform:uppercase"></td>
+      <td><input type="number" value="${h.units||''}" data-i="${i}" data-k="units"></td>
+      <td><input type="number" step="0.01" value="${h.buy||''}" data-i="${i}" data-k="buy"></td>
+      <td><input type="number" step="0.01" value="${h.cur||''}" data-i="${i}" data-k="cur" placeholder="${q?q.price.toFixed(2):'ידני'}"></td>
+      <td style="font-weight:700">${val!=null?val.toFixed(0):'—'}</td>
+      <td>${retHtml}</td>
+      <td><button class="del" data-del="${i}">✕</button></td>`;
+    b.appendChild(tr);
+  });
+  b.querySelectorAll('input').forEach(el=>el.onchange=e=>{const i=+e.target.dataset.i,k=e.target.dataset.k;S.holdings[i][k]=k==='sym'?e.target.value.toUpperCase().trim():(parseFloat(e.target.value)||0);save();renderHold();});
+  b.querySelectorAll('[data-del]').forEach(el=>el.onclick=e=>{S.holdings.splice(+e.target.dataset.del,1);save();renderHold();});
+}
+$('#addWatch').onclick=()=>{S.watch.push({sym:'',name:''});save();renderWatch();};
+$('#addHold').onclick=()=>{S.holdings.push({sym:'',units:0,buy:0,cur:0});save();renderHold();};
+async function doRefresh(which){
+  const syms=[...new Set((which==='w'?S.watch:S.holdings).map(x=>x.sym).filter(Boolean))];
+  if(!syms.length)return;
+  const btn=which==='w'?$('#refreshWatch'):$('#refreshHold'); const orig=btn.textContent; btn.textContent='טוען…';
+  try{await fetchQuotes(syms); which==='w'?renderWatch():renderHold(); renderDash();}
+  catch(err){alert(err.message);}
+  btn.textContent=orig;
+}
+$('#refreshWatch').onclick=()=>doRefresh('w');
+$('#refreshHold').onclick=()=>doRefresh('h');
+
+/* ============ CALCULATORS ============ */
+function compound(init,month,years,rate){
+  const r=rate/100/12; let bal=init; const pts=[bal];
+  for(let m=1;m<=years*12;m++){bal=bal*(1+r)+month; if(m%12===0)pts.push(bal);}
+  return {final:bal,contrib:init+month*years*12,pts};
+}
+function drawLine(cv,pts,color){
+  const ctx=cv.getContext('2d'),W=cv.width,H=cv.height,pad=6;
+  ctx.clearRect(0,0,W,H);
+  const max=Math.max(...pts),min=Math.min(...pts,0);
+  const x=i=>pad+i*(W-2*pad)/(pts.length-1);
+  const y=v=>H-pad-(v-min)/(max-min||1)*(H-2*pad);
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,color+'55');grad.addColorStop(1,color+'05');
+  ctx.beginPath();ctx.moveTo(x(0),y(pts[0]));
+  pts.forEach((p,i)=>ctx.lineTo(x(i),y(p)));
+  ctx.lineTo(x(pts.length-1),H-pad);ctx.lineTo(x(0),H-pad);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(x(0),y(pts[0]));pts.forEach((p,i)=>ctx.lineTo(x(i),y(p)));
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+}
+function calcCompound(){
+  const init=+$('#c_init').value||0,month=+$('#c_month').value||0,years=+$('#c_years').value,rate=+$('#c_rate').value;
+  $('#c_years_v').textContent=years;$('#c_rate_v').textContent=rate+'%';
+  const {final,contrib,pts}=compound(init,month,years,rate);
+  const growth=final-contrib;
+  $('#c_final').textContent=fmt(final);
+  $('#c_contrib').textContent=fmt(contrib);$('#c_growth').textContent=fmt(growth);
+  const pa=final>0?Math.max(0,Math.min(100,contrib/final*100)):0;
+  $('#c_splitA').style.width=pa+'%';$('#c_splitB').style.width=(100-pa)+'%';
+  drawLine($('#compChart'),pts,cssv('--brand2')||'#60a5fa');
+}
+function calcFee(){
+  const init=+$('#f_init').value||0,month=+$('#f_month').value||0,years=+$('#f_years').value,gross=+$('#f_gross').value,hi=+$('#f_high').value||0,lo=+$('#f_low').value||0;
+  $('#f_years_v').textContent=years;$('#f_gross_v').textContent=gross+'%';
+  const a=compound(init,month,years,gross-hi).final;
+  const b=compound(init,month,years,gross-lo).final;
+  const diff=b-a;
+  $('#f_diff').textContent=fmt(diff);
+  $('#f_detail').innerHTML=`מסלול נוכחי (${hi}%): <b>${fmt(a)}</b> · מסלול זול (${lo}%): <b>${fmt(b)}</b>. הפרש של ${(hi-lo).toFixed(2)}% בשנה = ${fmt(diff)} לאורך ${years} שנה.`;
+}
+function calcAlloc(){
+  const age=+$('#a_age').value,hz=+$('#a_hz').value;
+  $('#a_age_v').textContent=age;$('#a_hz_v').textContent=hz;
+  let byAge=Math.max(20,Math.min(100,110-age));
+  let byHz= hz>=15?100: hz>=7?80: hz>=3?55: hz>=1?30:15;
+  let eq=Math.round((byAge+byHz)/2/5)*5;
+  eq=Math.max(10,Math.min(100,eq));
+  $('#a_eq').textContent=eq+'% מניות';
+  let txt;
+  if(eq>=85)txt='טווח ארוך — אפשר חשיפה מנייתית מלאה (מנייתי/עוקב מדד). ירידות בדרך זה חלק מהמשחק.';
+  else if(eq>=55)txt='טווח בינוני — שילוב מניות ואג״ח (מסלול כללי/מנייתי מתון).';
+  else txt='טווח קצר / קרוב למשיכה — משקל גבוה לסולידי כדי לא להיפגע מירידה ברגע הלא נכון.';
+  $('#a_txt').innerHTML=`${eq}% מניות, ${100-eq}% סולידי. ${txt}`;
+}
+function calcReal(){
+  const nom=+$('#r_nom').value,inf=+$('#r_inf').value;
+  $('#r_nom_v').textContent=nom+'%';$('#r_inf_v').textContent=inf+'%';
+  const real=((1+nom/100)/(1+inf/100)-1)*100;
+  const el=$('#r_real');el.textContent=real.toFixed(1)+'%';
+  el.className='big '+(real>0?'g':'r');
+}
+['c_init','c_month','c_years','c_rate'].forEach(id=>$('#'+id).addEventListener('input',calcCompound));
+['f_init','f_month','f_years','f_gross','f_high','f_low'].forEach(id=>$('#'+id).addEventListener('input',calcFee));
+['a_age','a_hz'].forEach(id=>$('#'+id).addEventListener('input',calcAlloc));
+['r_nom','r_inf'].forEach(id=>$('#'+id).addEventListener('input',calcReal));
+
+/* ============ JOURNAL & CHECKLIST ============ */
+const STEPS=[
+  ['מפה את מה שכבר יש לך','הר הכסף / המסלקה הפנסיונית — אילו קרנות, איזה מסלול, כמה דמי ניהול.'],
+  ['בדוק את המסלול מול הטווח','טווח ארוך במסלול כללי/סולידי? דגל אדום — השווה מסלולים.'],
+  ['בדוק דמי ניהול והתמקח','מעל 0.7% בעוקב מדד / 1% בכללי — התקשר ובקש הפחתה.'],
+  ['עבור מסלול אם צריך','מעבר בתוך אותה קרן — אונליין, בחינם, ללא אירוע מס.'],
+  ['הפוך את ההשקעה לאוטומטית','הוראת קבע חודשית למדד רחב — אוטומציה מנצחת רגשות.'],
+  ['למד רבע שעה בשבוע — ואל תיגע','בדיקה אחת ל-6–12 חודשים בלבד. תן לזמן לעבוד.']
+];
+function renderChecklist(){
+  const c=$('#checklist');c.innerHTML='';
+  STEPS.forEach((s,i)=>{
+    const done=!!S.checks[i];
+    const d=document.createElement('label');d.className='check'+(done?' done':'');
+    d.innerHTML=`<input type="checkbox" ${done?'checked':''} data-c="${i}"><div><div class="t">${i+1}. ${s[0]}</div><div class="d">${s[1]}</div></div>`;
+    c.appendChild(d);
+  });
+  c.querySelectorAll('input').forEach(el=>el.onchange=e=>{S.checks[e.target.dataset.c]=e.target.checked;save();renderChecklist();});
+}
+function renderJournal(){
+  const l=$('#journalList');l.innerHTML='';
+  if(!S.journal.length){l.innerHTML='<div class="empty"><div class="ico">📓</div>אין רשומות עדיין. תעד כל החלטה — במיוחד כשאתה לחוץ.</div>';return;}
+  const moods={'שקול':['g','🧊 שקול'],'נלהב':['w','🤑 נלהב'],'מפוחד':['r','😱 מפוחד'],'לחוץ':['w','😰 לחוץ']};
+  S.journal.slice().reverse().forEach((j,ri)=>{
+    const idx=S.journal.length-1-ri;
+    const m=moods[j.mood]||['n',j.mood];
+    const el=document.createElement('div');el.className='journal-entry';
+    el.innerHTML=`<div class="meta">${j.date}<span class="pill ${m[0]} mood">${m[1]}</span></div>
+      <div style="font-weight:700">${(j.action||'').replace(/</g,'&lt;')}</div>
+      <div style="color:var(--ink2);font-size:14px;margin-top:3px">${(j.reason||'').replace(/</g,'&lt;')}</div>
+      <button class="del" data-j="${idx}" style="margin-top:8px">✕</button>`;
+    l.appendChild(el);
+  });
+  l.querySelectorAll('[data-j]').forEach(el=>el.onclick=e=>{S.journal.splice(+e.target.dataset.j,1);save();renderJournal();});
+}
+$('#addJournal').onclick=()=>{
+  const action=$('#j_action').value.trim();if(!action){$('#j_action').focus();return;}
+  S.journal.push({date:new Date().toLocaleDateString('he-IL'),action,reason:$('#j_reason').value.trim(),mood:$('#j_mood').value});
+  $('#j_action').value='';$('#j_reason').value='';save();renderJournal();
+};
+
+/* ============ DASHBOARD ============ */
+function drawFeeChart(){
+  const cv=$('#feeChart'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const bal=S.funds.reduce((a,f)=>a+(f.bal||0),0);
+  const wfee=bal?S.funds.reduce((a,f)=>a+(f.bal||0)*(f.fee||0),0)/bal:0;
+  const years=S.settings.hz||20;
+  const curP=[],cheapP=[];let cc=0,ch=0;
+  for(let y=0;y<=years;y++){cc+=bal*wfee/100;ch+=bal*0.5/100;curP.push(cc);cheapP.push(ch);}
+  const max=Math.max(...curP,1),pad=24;
+  const x=i=>pad+i*(W-2*pad)/(years||1),y=v=>H-pad-v/max*(H-2*pad);
+  ctx.strokeStyle=cssv('--line');ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
+  const line=(P,col)=>{ctx.beginPath();ctx.moveTo(x(0),y(P[0]));P.forEach((p,i)=>ctx.lineTo(x(i),y(p)));ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.stroke();};
+  line(cheapP,cssv('--good'));line(curP,cssv('--bad'));
+  ctx.fillStyle=cssv('--ink3');ctx.font='11px Heebo';ctx.textAlign='right';
+  ctx.fillText('מסלול נוכחי',W-pad,y(curP[curP.length-1])-6);
+  ctx.fillStyle=cssv('--good');ctx.fillText('מסלול זול 0.5%',W-pad,y(cheapP[cheapP.length-1])+14);
+}
+function renderDash(){
+  const bal=S.funds.reduce((a,f)=>a+(f.bal||0),0);
+  const holdVal=S.holdings.reduce((a,h)=>{const q=quotes[h.sym];const cur=q?q.price:(h.cur||0);return a+cur*(h.units||0);},0);
+  const total=bal+holdVal;
+  const wfee=bal?S.funds.reduce((a,f)=>a+(f.bal||0)*(f.fee||0),0)/bal:0;
+  const annualFee=bal*wfee/100;
+  const years=S.settings.hz||20;
+  const feeDragCur=bal*wfee/100*years, feeDragCheap=bal*0.5/100*years;
+  const flagsN=S.funds.reduce((a,f)=>a+fundFlags(f).filter(x=>x[0]==='r'||x[0]==='w').length,0);
+  $('#dashKpis').innerHTML=`
+    <div class="kpi"><div class="l">חיסכון כולל (קרנות + תיק)</div><div class="v b">${fmt(total)}</div><div class="s">${fmt(bal)} בקרנות · ${fmt(holdVal)} בתיק</div></div>
+    <div class="kpi"><div class="l">דמי ניהול משוקללים</div><div class="v ${wfee>1?'r':wfee>0.7?'w':'g'}">${wfee?wfee.toFixed(2)+'%':'—'}</div><div class="s">${fmt(annualFee)} בשנה</div></div>
+    <div class="kpi"><div class="l">עלות דמי ניהול ל-${years} שנה</div><div class="v r">${fmt(feeDragCur)}</div><div class="s">במסלול זול: ${fmt(feeDragCheap)}</div></div>
+    <div class="kpi"><div class="l">דגלים אדומים</div><div class="v ${flagsN?'w':'g'}">${flagsN}</div><div class="s">${flagsN?'יש מה לבדוק בלשונית הקרנות':'הכול נקי 👌'}</div></div>`;
+  const fl=$('#dashFlags');const items=[];
+  S.funds.forEach(f=>fundFlags(f).filter(x=>x[0]!=='g').forEach(x=>items.push(`<div class="check" style="margin-bottom:8px"><div><span class="pill ${x[0]}">${x[1]}</span> <b>${(f.name||'קרן').replace(/</g,'&lt;')}</b> <span style="color:var(--ink3);font-size:13px">(${f.track})</span></div></div>`)));
+  if(wfee>1) items.unshift(`<div class="check" style="margin-bottom:8px"><div><span class="pill r">כללי</span> דמי הניהול המשוקללים שלך (${wfee.toFixed(2)}%) גבוהים — יעד מומלץ מתחת ל-0.7%.</div></div>`);
+  fl.innerHTML=items.length?items.join(''):'<div class="empty"><div class="ico">✅</div>לא זוהו דגלים. מלא את לשונית "הקרנות שלי" כדי לקבל ניתוח.</div>';
+  drawFeeChart();
+  renderOnboard();
+}
+
+/* ============ SETTINGS ============ */
+$('#settingsBtn').onclick=()=>{$('#s_key').value=S.settings.key||'';$('#s_age').value=S.settings.age;$('#s_age_v').textContent=S.settings.age;$('#s_hz').value=S.settings.hz;$('#s_hz_v').textContent=S.settings.hz;$('#settingsModal').classList.add('open');};
+$('#closeSettings').onclick=()=>$('#settingsModal').classList.remove('open');
+$('#settingsModal').onclick=e=>{if(e.target.id==='settingsModal')$('#settingsModal').classList.remove('open');};
+$('#s_age').oninput=e=>$('#s_age_v').textContent=e.target.value;
+$('#s_hz').oninput=e=>$('#s_hz_v').textContent=e.target.value;
+$('#saveSettings').onclick=()=>{S.settings.key=$('#s_key').value.trim();S.settings.age=+$('#s_age').value;S.settings.hz=+$('#s_hz').value;save();$('#settingsModal').classList.remove('open');renderAll();};
+$('#exportData').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='shuk-hahon-backup.json';a.click();};
+$('#importBtn').onclick=()=>$('#importFile').click();
+$('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=Object.assign(JSON.parse(JSON.stringify(DEF)),JSON.parse(r.result));save();applyTheme();renderAll();alert('הנתונים יובאו בהצלחה.');$('#settingsModal').classList.remove('open');}catch(err){alert('קובץ לא תקין.');}};r.readAsText(f);};
+
+/* ============ HELP ============ */
+function openHelp(){$('#helpModal').classList.add('open');}
+function closeHelp(){$('#helpModal').classList.remove('open');}
+$('#helpBtn').onclick=openHelp;
+$('#closeHelp').onclick=closeHelp;
+$('#helpModal').onclick=e=>{if(e.target.id==='helpModal')closeHelp();};
+
+function renderOnboard(){
+  const o=$('#onboard');
+  if(S.funds.length){o.innerHTML='';return;}
+  o.innerHTML=`<div class="onboard">
+    <h3>👋 בוא נתחיל — הכלי עוד ריק</h3>
+    <p>זה מעקב אישי: אתה מזין את נתוני הקרנות שלך והכלי מנתח. שני קליקים כדי לראות איך זה עובד:</p>
+    <div class="btnrow" style="margin:0">
+      <button class="btn" id="obSeed">מלא דוגמה לניסיון</button>
+      <button class="btn sec" id="obHelp">❓ הדרכה מלאה</button>
+    </div></div>`;
+  $('#obSeed').onclick=()=>{$('#seedFund').click();$$('.tab').forEach(x=>x.classList.remove('active'));document.querySelector('[data-v="funds"]').classList.add('active');$$('.view').forEach(v=>v.classList.remove('active'));$('#v-funds').classList.add('active');};
+  $('#obHelp').onclick=openHelp;
+}
+
+function addScrollHints(){
+  $$('.tw').forEach(tw=>{
+    if(tw.nextElementSibling && tw.nextElementSibling.classList.contains('scrollhint'))return;
+    const h=document.createElement('p');h.className='scrollhint';h.textContent='↔ אפשר לגלול את הטבלה לצדדים';
+    tw.after(h);
+  });
+}
+
+/* ============ INIT ============ */
+function renderAll(){renderFunds();renderWatch();renderHold();renderChecklist();renderJournal();calcCompound();calcFee();calcAlloc();calcReal();renderDash();renderOnboard();}
+renderAll();
+addScrollHints();
+</script>
+</body>
+</html>
