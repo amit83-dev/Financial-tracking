@@ -223,6 +223,18 @@ canvas{width:100%; height:auto; display:block}
     </div>
 
     <div class="card" style="margin-bottom:16px">
+      <h4>🧾 ניצול תקרות והטבות מס</h4>
+      <p class="desc">מיקוח על דמי ניהול הוא מהלך חד-פעמי. תקרה שלא נוצלה היא דליפה שחוזרת כל שנה — ואי אפשר להשלים אותה רטרואקטיבית.</p>
+      <div id="dashCaps"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h4>🔭 לאן זה מגיע — תחזית לסוף הטווח</h4>
+      <p class="desc">השווי הצפוי בסוף הטווח שהגדרת, ומה הוא היה אילו תיקנת את דמי הניהול ואת החשיפה המנייתית.</p>
+      <div id="dashProj"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
       <h4>📊 חשיפה מנייתית — בפועל מול מותאם לך</h4>
       <p class="desc">כמה מהכסף שלך באמת חשוף למניות, לעומת מה שמתאים לגיל ולטווח שהגדרת.</p>
       <div id="dashEquity"></div>
@@ -399,6 +411,7 @@ canvas{width:100%; height:auto; display:block}
     <div class="field"><label>מפתח API למחירים חיים (Twelve Data — חינם)</label><div class="inp"><input id="s_key" placeholder="הדבק כאן את ה-API Key"></div></div>
     <div class="field"><label>גיל: <span class="rangeval" id="s_age_v">35</span></label><input id="s_age" type="range" min="18" max="75" value="35"></div>
     <div class="field"><label>שנים עד משיכה (טווח): <span class="rangeval" id="s_hz_v">20</span></label><input id="s_hz" type="range" min="0" max="45" value="20"></div>
+    <div class="field"><label>מעמד תעסוקתי (קובע את תקרת ההשתלמות)</label><div class="inp"><select id="s_status"><option value="שכיר">שכיר</option><option value="עצמאי">עצמאי</option><option value="שכיר+עצמאי">שכיר וגם עצמאי</option></select></div></div>
     <div class="field"><label>🔗 קוד סנכרון (הזן את אותו הקוד בכל מכשיר)</label><div class="inp"><input id="s_sync" placeholder="קוד סודי לחיבור המכשירים"><span class="u" id="s_syncgen" style="cursor:pointer;color:var(--brand2)">צור קוד</span></div></div>
     <div class="note" style="margin:0 0 12px;font-size:12.5px">סטטוס סנכרון: <b id="syncStatus">—</b></div>
     <div class="btnrow">
@@ -456,7 +469,7 @@ const LS='shukhon_v1';
 const DEF={
   funds:[], holdings:[],
   watch:[{sym:'SPY',name:'S&P 500 (ETF)'},{sym:'QQQ',name:'נאסד״ק 100 (ETF)'},{sym:'URTH',name:'עולמי MSCI World'}],
-  journal:[], checks:{}, settings:{key:'',syncCode:'',age:35,hz:20}, theme:'dark'
+  journal:[], checks:{}, settings:{key:'',syncCode:'',age:35,hz:20,status:'שכיר',marg:31}, theme:'dark'
 };
 let S=load();
 function load(){try{const r=JSON.parse(localStorage.getItem(LS));return r?Object.assign(JSON.parse(JSON.stringify(DEF)),r):JSON.parse(JSON.stringify(DEF));}catch(e){return JSON.parse(JSON.stringify(DEF));}}
@@ -524,6 +537,25 @@ function savingRows(){
     const vTgt=compound(f.bal||0,(f.dep||0)*(1-tDep/100),years,gross-tAcc).final;
     return {f,tAcc,tDep,annSave:Math.max(0,annNow-annTgt),cumSave:Math.max(0,vTgt-vNow)};
   }).filter(r=>r.cumSave>100).sort((a,b)=>b.cumSave-a.cumSave);
+}
+
+/* ====== תקרות הפקדה — ערכי 2026 ======
+   מאומת מול חוזר "עדכון תקרות וסכומים 2026" של כלל ביטוח ומול פרסומי גמל-נט.
+   לעדכן בתחילת כל שנה — הסכומים צמודים למדד.                                   */
+const CAPS2026={
+  year:2026,
+  hishtSalaryCeil:15712,      /* משכורת חודשית מרבית לקרן השתלמות לשכיר      */
+  hishtRateTotal:10,          /* 7.5% מעסיק + 2.5% עובד                       */
+  hishtSelfExempt:20566,      /* תקרת הפקדה מוטבת לעצמאי (פטור ממס רווח הון) */
+  hishtSelfDeduct:13203,      /* ניכוי מרבי לעצמאי — 4.5% מ-293,397 ₪         */
+  gemelInvest:83641           /* תקרה שנתית לגמל להשקעה, לכל הקופות יחד       */
+};
+function hishtCeiling(){
+  const st=S.settings.status||'שכיר';
+  const salaried=CAPS2026.hishtSalaryCeil*CAPS2026.hishtRateTotal/100*12;   /* 18,854 ₪ */
+  if(st==='עצמאי') return {cap:CAPS2026.hishtSelfExempt,label:'תקרה מוטבת לעצמאי'};
+  if(st==='שכיר+עצמאי') return {cap:CAPS2026.hishtSelfExempt,label:'תקרה מוטבת (שכיר+עצמאי)'};
+  return {cap:salaried,label:'תקרה מוטבת לשכיר'};
 }
 
 /* ====== חשיפה מנייתית בפועל ====== */
@@ -852,6 +884,8 @@ function renderDash(){
   fl.innerHTML=items.length?items.join(''):'<div class="empty"><div class="ico">✅</div>לא זוהו דגלים. מלא את לשונית "הקרנות שלי" כדי לקבל ניתוח.</div>';
   renderLiquidity(bal);
   renderSavings();
+  renderCaps();
+  renderProjection(bal);
   renderEquity(bal);
   drawFeeChart();
   renderOnboard();
@@ -906,6 +940,81 @@ function renderSavings(){
     <div class="note" style="margin-top:12px">היעדים הם תעריפים שגופים מוסדיים מסכימים להם בפועל מול לקוח שמבקש: <b>פנסיה</b> 0.25% מצבירה ו-1.5% מהפקדה, <b>השתלמות/גמל</b> 0.5% מצבירה. החישוב מניח תשואה של ${(weightedRet()>0?weightedRet():6).toFixed(1)}% בשנה. <b>הדרך למקח:</b> טלפון לשירות הלקוחות, לבקש הצעה משופרת, ולציין שאתה שוקל לעבור גוף — המעבר עצמו חינם ולא גורר אירוע מס.</div>`;
 }
 
+/* ---- 🧾 ניצול תקרות ---- */
+function renderCaps(){
+  const el=$('#dashCaps'); if(!el)return;
+  const items=[];
+  const bar=(used,cap,color)=>`<div style="height:10px;border-radius:6px;background:var(--card2);overflow:hidden;margin:8px 0 6px"><div style="width:${Math.min(100,used/cap*100)}%;height:100%;background:${color}"></div></div>`;
+  const block=(title,used,cap,capLabel,msg,tone)=>{
+    const c=tone==='over'?'var(--bad)':tone==='under'?'var(--warn)':'var(--good)';
+    return `<div style="padding:14px 0;border-bottom:1px solid var(--line)">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><b>${title}</b>
+      <span style="color:var(--ink3);font-size:13px">${capLabel}: ${fmt(cap)} לשנה</span></div>
+      ${bar(used,cap,c)}
+      <div style="display:flex;justify-content:space-between;font-size:13px"><span>מפקיד ${fmt(used)}</span><b style="color:${c}">${Math.round(used/cap*100)}%</b></div>
+      <div style="margin-top:8px;font-size:13.5px">${msg}</div></div>`;
+  };
+
+  /* קרן השתלמות */
+  const hisht=S.funds.filter(f=>f.type==='קרן השתלמות');
+  if(hisht.length){
+    const used=hisht.reduce((a,f)=>a+(f.dep||0)*12,0);
+    const {cap,label}=hishtCeiling();
+    const gap=cap-used;
+    let msg,tone;
+    if(used===0){msg='לא הזנת הפקדה חודשית לקרן ההשתלמות — מלא אותה בלשונית "הקרנות שלי" כדי לראות את ניצול התקרה.';tone='under';}
+    else if(gap>500){tone='under';msg=`נשאר לך מקום של <b>${fmt(gap)}</b> בשנה. כל שקל שתפקיד עד התקרה — <b>הרווחים עליו פטורים ממס רווח הון</b> (25% ריאלי), וזו ההטבה הכי נדיבה שיש בחיסכון הישראלי.`;}
+    else if(gap<-500){tone='over';msg=`אתה מפקיד <b>${fmt(-gap)}</b> מעל התקרה. הרווחים על החלק העודף <b>חייבים במס רווח הון</b> ולא פטורים — רוב האנשים לא מודעים לזה. שווה לבדוק אם עדיף להעביר את העודף לאפיק אחר.`;}
+    else {tone='ok';msg='אתה מנצל את התקרה כמעט במלואה. זה בדיוק המצב הרצוי.';}
+    items.push(block('קרן השתלמות',used,cap,label,msg,tone));
+    if((S.settings.status||'')!=='שכיר'){
+      items.push(`<div class="note" style="margin:12px 0 0">כעצמאי מגיע לך גם <b>ניכוי ממס</b> על ההפקדה — עד ${fmt(CAPS2026.hishtSelfDeduct)} בשנה (4.5% מהכנסה קובעת של עד ₪293,397). בשיעור מס שולי של 31% זה שווה כ-${fmt(CAPS2026.hishtSelfDeduct*0.31)} בשנה. החישוב המדויק תלוי בהכנסה שלך — הוא נמצא בקובץ "מחשבון מס" שלך.</div>`);
+    }
+  }
+  /* גמל להשקעה */
+  const gemel=S.funds.filter(f=>f.type==='גמל להשקעה');
+  if(gemel.length){
+    const used=gemel.reduce((a,f)=>a+(f.dep||0)*12,0);
+    const cap=CAPS2026.gemelInvest, gap=cap-used;
+    let msg,tone;
+    if(gap<-500){tone='over';msg=`חריגה של <b>${fmt(-gap)}</b>. התקרה חלה על <b>כל</b> קופות הגמל להשקעה על שמך יחד, גם בגופים שונים — הפקדה מעבר לה תידחה או תוחזר.`;}
+    else {tone=used/cap>0.8?'ok':'under';msg=`נשאר מקום של <b>${fmt(gap)}</b> בשנה. הטבת המס כאן שונה: אין פטור על ההפקדה, אבל אם תמשוך כקצבה אחרי גיל 60 — <b>הרווחים פטורים ממס לחלוטין</b>.`;}
+    items.push(block('גמל להשקעה',used,cap,'תקרה שנתית לאדם',msg,tone));
+  }
+  if(!items.length){el.innerHTML='<div class="empty"><div class="ico">🧾</div>הוסף קרן השתלמות או גמל להשקעה, ומלא הפקדה חודשית, כדי לראות את ניצול התקרות.</div>';return;}
+  el.innerHTML=items.join('')+
+    `<div class="note info" style="margin-top:14px"><b>קרן פנסיה לא מופיעה כאן בכוונה.</b> הטבת המס עליה (סעיפים 45א ו-47) תלויה בכלל ההכנסה שלך, במעמד התעסוקתי ובהפקדות אחרות — זה חישוב מס מלא ולא כרטיס בדשבורד. לזה יש לך את קובץ "מחשבון מס".
+    <br>הערכים לעיל נכונים לשנת ${CAPS2026.year} וצמודים למדד — יש לעדכן אותם בתחילת כל שנה.</div>`;
+}
+
+/* ---- 🔭 תחזית לסוף הטווח ---- */
+function renderProjection(bal){
+  const el=$('#dashProj'); if(!el)return;
+  if(!bal){el.innerHTML='<div class="empty"><div class="ico">🔭</div>מלא קופות כדי לראות תחזית.</div>';return;}
+  const years=S.settings.hz||20;
+  const net=weightedRet()>0?weightedRet():6;
+  const dep=S.funds.reduce((a,f)=>a+(f.dep||0),0);
+  const wfee=bal?S.funds.reduce((a,f)=>a+(f.bal||0)*(f.fee||0),0)/bal:0;
+  const gross=net+wfee;
+  const base=compound(bal,dep,years,gross-wfee).final;
+  /* תרחיש משופר: דמי ניהול יעד + חשיפה מנייתית מותאמת */
+  const tgtFee=S.funds.reduce((a,f)=>{const b=BENCH[f.type]||{acc:0.5};return a+(f.bal||0)*Math.min(f.fee||0,b.acc);},0)/(bal||1);
+  const actualEq=S.funds.reduce((a,f)=>a+(f.bal||0)*(EQMAP[f.track]!==undefined?EQMAP[f.track]:50),0)/bal;
+  const recEq=recEquity(S.settings.age,S.settings.hz);
+  const eqBoost=Math.max(0,(recEq-actualEq)/100*3);   /* פער מנייתי → ~3% פער תשואה בין מניות לאג״ח */
+  const better=compound(bal,dep,years,gross-tgtFee+eqBoost).final;
+  const contrib=bal+dep*12*years;
+  const growth=base-contrib;
+  const diff=better-base;
+  el.innerHTML=`
+    <div class="kpis" style="margin-bottom:14px">
+      <div class="kpi"><div class="l">שווי צפוי בעוד ${years} שנה</div><div class="v b">${fmt(base)}</div><div class="s">לפי המצב הנוכחי — ${net.toFixed(1)}% תשואה, ${wfee.toFixed(2)}% דמי ניהול</div></div>
+      <div class="kpi"><div class="l">מזה רווחי השקעה</div><div class="v g">${fmt(growth)}</div><div class="s">${fmt(contrib)} הפקדות שלך · ${Math.round(growth/base*100)}% מהסכום הסופי נוצר מעצמו</div></div>
+      <div class="kpi"><div class="l">אחרי תיקון דמי ניהול${eqBoost?' וחשיפה':''}</div><div class="v g">${fmt(better)}</div><div class="s">${diff>1000?`תוספת של ${fmt(diff)}`:'כבר קרוב למיטבי'}</div></div>
+    </div>
+    <div class="note">התחזית מניחה שההפקדה החודשית הנוכחית (${fmt(dep)}) נמשכת ללא שינוי, ותשואה קבועה של ${net.toFixed(1)}% בשנה. <b>המציאות לא קווית</b> — יהיו שנים של ירידות. זה כלי להשוואה בין תרחישים, לא הבטחה.${weightedRet()<=0?' מכיוון שלא הזנת תשואות, ההנחה היא 6% בשנה.':''}</div>`;
+}
+
 /* ---- 📊 חשיפה מנייתית ---- */
 function renderEquity(bal){
   const el=$('#dashEquity'); if(!el)return;
@@ -928,13 +1037,13 @@ function renderEquity(bal){
 }
 
 /* ============ SETTINGS ============ */
-$('#settingsBtn').onclick=()=>{$('#s_key').value=S.settings.key||'';$('#s_sync').value=S.settings.syncCode||'';$('#s_age').value=S.settings.age;$('#s_age_v').textContent=S.settings.age;$('#s_hz').value=S.settings.hz;$('#s_hz_v').textContent=S.settings.hz;$('#settingsModal').classList.add('open');};
+$('#settingsBtn').onclick=()=>{$('#s_key').value=S.settings.key||'';$('#s_status').value=S.settings.status||'שכיר';$('#s_sync').value=S.settings.syncCode||'';$('#s_age').value=S.settings.age;$('#s_age_v').textContent=S.settings.age;$('#s_hz').value=S.settings.hz;$('#s_hz_v').textContent=S.settings.hz;$('#settingsModal').classList.add('open');};
 $('#s_syncgen').onclick=()=>{$('#s_sync').value=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).slice(0,24);};
 $('#closeSettings').onclick=()=>$('#settingsModal').classList.remove('open');
 $('#settingsModal').onclick=e=>{if(e.target.id==='settingsModal')$('#settingsModal').classList.remove('open');};
 $('#s_age').oninput=e=>$('#s_age_v').textContent=e.target.value;
 $('#s_hz').oninput=e=>$('#s_hz_v').textContent=e.target.value;
-$('#saveSettings').onclick=()=>{S.settings.key=$('#s_key').value.trim();S.settings.syncCode=$('#s_sync').value.trim();S.settings.age=+$('#s_age').value;S.settings.hz=+$('#s_hz').value;save();$('#settingsModal').classList.remove('open');renderAll();if(window.__cloudReconnect)window.__cloudReconnect();};
+$('#saveSettings').onclick=()=>{S.settings.key=$('#s_key').value.trim();S.settings.status=$('#s_status').value;S.settings.syncCode=$('#s_sync').value.trim();S.settings.age=+$('#s_age').value;S.settings.hz=+$('#s_hz').value;save();$('#settingsModal').classList.remove('open');renderAll();if(window.__cloudReconnect)window.__cloudReconnect();};
 $('#exportData').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='shuk-hahon-backup.json';a.click();};
 $('#importBtn').onclick=()=>$('#importFile').click();
 $('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=Object.assign(JSON.parse(JSON.stringify(DEF)),JSON.parse(r.result));save();applyTheme();renderAll();alert('הנתונים יובאו בהצלחה.');$('#settingsModal').classList.remove('open');}catch(err){alert('קובץ לא תקין.');}};r.readAsText(f);};
