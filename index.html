@@ -92,6 +92,8 @@ select option{background:var(--card); color:var(--ink)}
 .btn:hover{filter:brightness(1.08)}
 .btn.sec{background:var(--card2); color:var(--ink2); border:1px solid var(--line)}
 .btn.sm{padding:7px 12px; font-size:13px}
+tr.grouphead td{background:var(--card2,rgba(125,125,145,.10)); border-top:2px solid var(--brand2); padding-top:12px; padding-bottom:12px}
+tr.grouphead input, tr.grouphead select{background:transparent}
 .btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
 
 .field{margin-bottom:14px}
@@ -212,20 +214,24 @@ canvas{width:100%; height:auto; display:block}
   <!-- FUNDS -->
   <section class="view" id="v-funds">
     <h2 class="vt">הקרנות שלי</h2>
-    <p class="vs">רכזו כאן את קרן ההשתלמות, הפנסיה והגמל. הכלי מסמן אוטומטית דמי ניהול גבוהים ומסלול שמרני מדי לטווח שלכם, ומחשב כמה כל קרן עולה לכם בשנה.</p>
+    <p class="vs">רכזו כאן את קרן ההשתלמות, הפנסיה והגמל. קופה שמפוצלת בין שני מסלולים — הוסיפו שורה לכל מסלול בעזרת "＋ מסלול" שבתוך הקופה, והן יופיעו מקובצות יחד עם סכום משותף.</p>
     <div class="tw">
       <table>
         <thead><tr>
-          <th>שם / גוף</th><th>סוג</th><th>מסלול</th><th>יתרה ₪</th><th>דמי ניהול %</th><th>תשואה שנתית %</th><th>עלות שנתית</th><th>סימונים</th><th></th>
+          <th>מסלול</th><th>% מהקופה</th><th>יתרה ₪</th><th>הפקדה חודשית ₪</th><th>ד״נ מהפקדה %</th><th>ד״נ מצבירה %</th><th>תשואה % <span style="font-weight:400;color:var(--ink3)">(רשות)</span></th><th>עלות שנתית ₪</th><th>סימונים</th><th></th>
         </tr></thead>
         <tbody id="fundsBody"></tbody>
       </table>
     </div>
     <div class="btnrow">
-      <button class="btn" id="addFund">＋ הוסף קרן</button>
+      <button class="btn" id="addFund">＋ הוסף קופה</button>
       <button class="btn sec" id="seedFund">מלא דוגמה</button>
     </div>
-    <div class="note">כלל אצבע לסימון: מסלול עוקב-מדד עם דמי ניהול מעל <b>0.7%</b>, או מסלול כללי/מנוהל מעל <b>1.0%</b> — שווה בדיקה/מיקוח. מסלול "סולידי/כללי" עם טווח מעל <b>10 שנים</b> — ייתכן שמרני מדי. (הטווח נקבע בהגדרות.)</div>
+    <div class="note"><b>שני סוגי דמי ניהול:</b> <b>מצבירה</b> נגבה כל שנה מכל הכסף שצברת (המקסימום החוקי 1.05% בפנסיה, 2% בגמל/השתלמות) — זה הרכיב שכואב לאורך זמן. <b>מהפקדה</b> נגבה רק מכל הפקדה חדשה שנכנסת (מקסימום 6% בפנסיה) — רלוונטי רק אם עדיין מפקידים. שניהם מופיעים בדוח השנתי ובאתר הקופה.<br>
+    כדי שהכלי יתרגם את "מהפקדה" לשקלים, מלא גם את עמודת <b>הפקדה חודשית</b>. אם כבר לא מפקידים לקופה — השאר 0.<br>
+    כלל אצבע לסימון: <b>מצבירה</b> — עוקב-מדד מעל <b>0.7%</b> או כללי/מנוהל מעל <b>1.0%</b>. <b>מהפקדה</b> — מעל <b>3%</b> גבוה, מתחת ל-<b>1.5%</b> טוב. מסלול "סולידי/כללי" עם טווח מעל <b>10 שנים</b> — ייתכן שמרני מדי. (הטווח נקבע בהגדרות.)</div>
+    <div class="note info"><b>אין לך את התשואה השנתית?</b> אפשר להשאיר את העמודה ריקה — היא לא משפיעה על שום חישוב בכלי. אם תרצה את הנתון המדויק, הוא פומבי וחינמי:
+    <b>גמל-נט</b> (השתלמות וגמל) ו<b>פנסיה-נט</b> (פנסיה) של רשות שוק ההון — מחפשים את שם הקופה ואת המסלול הספציפי, ומקבלים תשואה שנתית ומצטברת. חפש בגוגל "גמל נט" / "פנסיה נט".</div>
   </section>
 
   <!-- MARKET -->
@@ -451,46 +457,105 @@ $$('.tab').forEach(t=>t.onclick=()=>{
 /* ============ FUNDS ============ */
 const TRACKS=['עוקב מדד S&P 500','עוקב מדד עולמי','מנייתי','כללי','סולידי / אג״ח','אחר'];
 const FTYPES=['קרן השתלמות','קרן פנסיה','גמל להשקעה','תיק פרטי'];
+const NUMK=['bal','dep','fee','feeDep','ret'];
+/* עלות שנתית בש״ח = דמי ניהול מצבירה על היתרה + דמי ניהול מהפקדה על ההפקדות השנתיות */
+function fundCost(f){return (f.bal||0)*(f.fee||0)/100 + (f.dep||0)*12*(f.feeDep||0)/100;}
 function fundFlags(f){
   const out=[]; const hz=S.settings.hz;
   const isIndex=(f.track||'').includes('מדד');
-  if(f.fee>0 && ((isIndex && f.fee>0.7)||(!isIndex && f.fee>1.0))) out.push(['r','דמי ניהול גבוהים']);
-  else if(f.fee>0 && f.fee<=0.6) out.push(['g','דמי ניהול טובים']);
+  if(f.fee>0 && ((isIndex && f.fee>0.7)||(!isIndex && f.fee>1.0))) out.push(['r','צבירה גבוה']);
+  else if(f.fee>0 && f.fee<=0.6) out.push(['g','צבירה טוב']);
+  if(f.feeDep>3) out.push(['r','הפקדה גבוה']);
+  else if(f.feeDep>0 && f.feeDep<=1.5) out.push(['g','הפקדה טוב']);
   if((f.track==='סולידי / אג״ח'||f.track==='כללי') && hz>10) out.push(['w','שמרני לטווח ארוך']);
   if((f.track||'').includes('מדד')||f.track==='מנייתי'){ if(hz>0 && hz<4) out.push(['w','מנייתי לטווח קצר']);}
   return out;
 }
+/* מקבץ שורות-מסלול לקופות לפי שם הגוף. שורות עם אותו שם = קופה אחת. */
+function fundGroups(){
+  const g=[],idx={};
+  S.funds.forEach((f,i)=>{
+    const k=(f.name||'').trim()||'__ריק__'+i;
+    if(idx[k]===undefined){idx[k]=g.length;g.push({name:f.name||'',type:f.type,rows:[]});}
+    g[idx[k]].rows.push({f,i});
+  });
+  return g;
+}
 function renderFunds(){
   const b=$('#fundsBody'); b.innerHTML='';
-  if(!S.funds.length){b.innerHTML='<tr><td colspan="9"><div class="empty"><div class="ico">🏦</div>עוד לא הוספת קרנות. לחץ "הוסף קרן" או "מלא דוגמה".</div></td></tr>';return;}
-  S.funds.forEach((f,i)=>{
-    const cost=(f.bal||0)*(f.fee||0)/100;
-    const flags=fundFlags(f).map(x=>`<span class="pill ${x[0]}">${x[1]}</span>`).join(' ')||'<span class="pill n">—</span>';
-    const tr=document.createElement('tr');
-    tr.innerHTML=`
-      <td><input value="${(f.name||'').replace(/"/g,'&quot;')}" data-i="${i}" data-k="name" placeholder="שם הגוף"></td>
-      <td><select data-i="${i}" data-k="type">${FTYPES.map(t=>`<option ${f.type===t?'selected':''}>${t}</option>`).join('')}</select></td>
-      <td><select data-i="${i}" data-k="track">${TRACKS.map(t=>`<option ${f.track===t?'selected':''}>${t}</option>`).join('')}</select></td>
-      <td><input type="number" value="${f.bal||''}" data-i="${i}" data-k="bal"></td>
-      <td><input type="number" step="0.01" value="${f.fee||''}" data-i="${i}" data-k="fee"></td>
-      <td><input type="number" step="0.1" value="${f.ret||''}" data-i="${i}" data-k="ret"></td>
-      <td style="font-weight:700;color:var(--bad)">${cost?fmt(cost):'—'}</td>
-      <td class="flagcell">${flags}</td>
-      <td><button class="del" data-del="${i}">✕</button></td>`;
-    b.appendChild(tr);
+  if(!S.funds.length){b.innerHTML='<tr><td colspan="10"><div class="empty"><div class="ico">🏦</div>עוד לא הוספת קופות. לחץ "הוסף קופה" או "מלא דוגמה".</div></td></tr>';return;}
+  fundGroups().forEach((grp,gi)=>{
+    const tot=grp.rows.reduce((a,r)=>a+(r.f.bal||0),0);
+    const totCost=grp.rows.reduce((a,r)=>a+fundCost(r.f),0);
+    const head=document.createElement('tr');
+    head.className='grouphead';
+    head.innerHTML=`
+      <td colspan="2"><input value="${(grp.name||'').replace(/"/g,'&quot;')}" data-g="${gi}" data-gk="name" placeholder="שם הקופה / הגוף" style="font-weight:800"></td>
+      <td><select data-g="${gi}" data-gk="type">${FTYPES.map(t=>`<option ${grp.type===t?'selected':''}>${t}</option>`).join('')}</select></td>
+      <td colspan="3" style="font-weight:800">סה״כ ${fmt(tot)}${totCost?` <span style="font-weight:500;color:var(--ink3)">· עלות ${fmt(totCost)} בשנה</span>`:''}</td>
+      <td colspan="4" style="text-align:left">
+        <button class="btn sec sm" data-addtrack="${gi}">＋ מסלול</button>
+        <button class="btn sec sm" data-split="${gi}">% פיצול</button>
+      </td>`;
+    b.appendChild(head);
+    grp.rows.forEach(({f,i})=>{
+      const cAcc=(f.bal||0)*(f.fee||0)/100, cDep=(f.dep||0)*12*(f.feeDep||0)/100;
+      const cost=cAcc+cDep;
+      const breakdown=cost?`מצבירה ${fmt(cAcc)}${cDep?` + מהפקדה ${fmt(cDep)}`:''}`:'';
+      const pct=tot?((f.bal||0)/tot*100):0;
+      const flags=fundFlags(f).map(x=>`<span class="pill ${x[0]}">${x[1]}</span>`).join(' ')||'<span class="pill n">—</span>';
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td style="padding-right:22px"><select data-i="${i}" data-k="track">${TRACKS.map(t=>`<option ${f.track===t?'selected':''}>${t}</option>`).join('')}</select></td>
+        <td style="color:var(--ink3);font-weight:700">${tot?pct.toFixed(0)+'%':'—'}</td>
+        <td><input type="number" value="${f.bal||''}" data-i="${i}" data-k="bal"></td>
+        <td><input type="number" value="${f.dep||''}" data-i="${i}" data-k="dep" placeholder="0"></td>
+        <td><input type="number" step="0.01" value="${f.feeDep||''}" data-i="${i}" data-k="feeDep" placeholder="0"></td>
+        <td><input type="number" step="0.01" value="${f.fee||''}" data-i="${i}" data-k="fee"></td>
+        <td><input type="number" step="0.1" value="${f.ret||''}" data-i="${i}" data-k="ret" placeholder="לא חובה"></td>
+        <td style="font-weight:700;color:var(--bad)">${cost?fmt(cost):'—'}${breakdown?`<div style="font-weight:500;font-size:11.5px;color:var(--ink3)">${breakdown}</div>`:''}</td>
+        <td class="flagcell">${flags}</td>
+        <td><button class="del" data-del="${i}">✕</button></td>`;
+      b.appendChild(tr);
+    });
   });
-  b.querySelectorAll('input,select').forEach(el=>el.onchange=e=>{
+  /* עריכת שורת מסלול */
+  b.querySelectorAll('[data-i]').forEach(el=>el.onchange=e=>{
     const i=+e.target.dataset.i,k=e.target.dataset.k;
-    S.funds[i][k]=(k==='bal'||k==='fee'||k==='ret')?parseFloat(e.target.value)||0:e.target.value;
+    S.funds[i][k]=NUMK.includes(k)?parseFloat(e.target.value)||0:e.target.value;
+    save();renderFunds();
+  });
+  /* עריכת כותרת קופה — משנה את כל שורות הקופה יחד */
+  b.querySelectorAll('[data-g]').forEach(el=>el.onchange=e=>{
+    const grp=fundGroups()[+e.target.dataset.g],k=e.target.dataset.gk;
+    grp.rows.forEach(r=>{S.funds[r.i][k]=e.target.value;});
+    save();renderFunds();
+  });
+  b.querySelectorAll('[data-addtrack]').forEach(el=>el.onclick=e=>{
+    const grp=fundGroups()[+e.target.dataset.addtrack],last=grp.rows[grp.rows.length-1];
+    S.funds.splice(last.i+1,0,{name:grp.name,type:grp.type,track:'כללי',bal:0,dep:0,fee:last.f.fee||0,feeDep:last.f.feeDep||0,ret:0});
+    save();renderFunds();
+  });
+  /* ממלא יתרות משני אחוזים כשיודעים רק את סכום הקופה והפיצול */
+  b.querySelectorAll('[data-split]').forEach(el=>el.onclick=e=>{
+    const grp=fundGroups()[+e.target.dataset.split];
+    if(grp.rows.length<2){alert('הוסף קודם מסלול שני לקופה ("＋ מסלול").');return;}
+    const tot=parseFloat(prompt('סכום כולל של הקופה (₪):'));
+    if(!isFinite(tot)||tot<=0)return;
+    const p1=parseFloat(prompt(`אחוז המסלול "${grp.rows[0].f.track}" (למשל 70):`));
+    if(!isFinite(p1)||p1<0||p1>100)return;
+    S.funds[grp.rows[0].i].bal=Math.round(tot*p1/100);
+    S.funds[grp.rows[1].i].bal=Math.round(tot*(100-p1)/100);
     save();renderFunds();
   });
   b.querySelectorAll('[data-del]').forEach(el=>el.onclick=e=>{S.funds.splice(+e.target.dataset.del,1);save();renderFunds();});
 }
-$('#addFund').onclick=()=>{S.funds.push({name:'',type:'קרן השתלמות',track:'כללי',bal:0,fee:0,ret:0});save();renderFunds();};
+$('#addFund').onclick=()=>{S.funds.push({name:'',type:'קרן השתלמות',track:'כללי',bal:0,dep:0,fee:0,feeDep:0,ret:0});save();renderFunds();};
 $('#seedFund').onclick=()=>{S.funds=[
-  {name:'השתלמות — בית השקעות א׳',type:'קרן השתלמות',track:'כללי',bal:120000,fee:0.85,ret:6.2},
-  {name:'פנסיה מקיפה',type:'קרן פנסיה',track:'כללי',bal:340000,fee:1.1,ret:5.8},
-  {name:'גמל להשקעה',type:'גמל להשקעה',track:'עוקב מדד S&P 500',bal:60000,fee:0.6,ret:9.1}
+  {name:'השתלמות — בית השקעות א׳',type:'קרן השתלמות',track:'עוקב מדד S&P 500',bal:84000,dep:1000,fee:0.5,feeDep:0,ret:0},
+  {name:'השתלמות — בית השקעות א׳',type:'קרן השתלמות',track:'כללי',bal:36000,dep:430,fee:0.85,feeDep:0,ret:0},
+  {name:'פנסיה מקיפה',type:'קרן פנסיה',track:'כללי',bal:340000,dep:2400,fee:0.22,feeDep:2.5,ret:5.8},
+  {name:'גמל להשקעה',type:'גמל להשקעה',track:'עוקב מדד S&P 500',bal:60000,dep:0,fee:0.6,feeDep:0,ret:9.1}
 ];save();renderFunds();};
 
 /* ============ MARKET (live data) ============ */
@@ -697,15 +762,16 @@ function renderDash(){
   const holdVal=S.holdings.reduce((a,h)=>{const q=quotes[h.sym];const cur=q?q.price:(h.cur||0);return a+cur*(h.units||0);},0);
   const total=bal+holdVal;
   const wfee=bal?S.funds.reduce((a,f)=>a+(f.bal||0)*(f.fee||0),0)/bal:0;
-  const annualFee=bal*wfee/100;
+  const annualFee=S.funds.reduce((a,f)=>a+fundCost(f),0);
+  const depFee=S.funds.reduce((a,f)=>a+(f.dep||0)*12*(f.feeDep||0)/100,0);
   const years=S.settings.hz||20;
   const _proj=feeProjection(bal,wfee,0.5,years);
   const feeDragCur=_proj.curTotal, feeDragCheap=_proj.cheapTotal;
   const flagsN=S.funds.reduce((a,f)=>a+fundFlags(f).filter(x=>x[0]==='r'||x[0]==='w').length,0);
   $('#dashKpis').innerHTML=`
     <div class="kpi"><div class="l">חיסכון כולל (קרנות + תיק)</div><div class="v b">${fmt(total)}</div><div class="s">${fmt(bal)} בקרנות · ${fmt(holdVal)} בתיק</div></div>
-    <div class="kpi"><div class="l">דמי ניהול משוקללים</div><div class="v ${wfee>1?'r':wfee>0.7?'w':'g'}">${wfee?wfee.toFixed(2)+'%':'—'}</div><div class="s">${fmt(annualFee)} בשנה</div></div>
-    <div class="kpi"><div class="l">עלות דמי ניהול ל-${years} שנה</div><div class="v r">${fmt(feeDragCur)}</div><div class="s">במסלול זול: ${fmt(feeDragCheap)}</div></div>
+    <div class="kpi"><div class="l">ד״נ מצבירה משוקלל</div><div class="v ${wfee>1?'r':wfee>0.7?'w':'g'}">${wfee?wfee.toFixed(2)+'%':'—'}</div><div class="s">${fmt(annualFee)} בשנה סה״כ${depFee?` (מזה ${fmt(depFee)} מהפקדות)`:''}</div></div>
+    <div class="kpi"><div class="l">עלות מצטברת ל-${years} שנה</div><div class="v r">${fmt(feeDragCur)}</div><div class="s">במסלול זול: ${fmt(feeDragCheap)}</div></div>
     <div class="kpi"><div class="l">דגלים אדומים</div><div class="v ${flagsN?'w':'g'}">${flagsN}</div><div class="s">${flagsN?'יש מה לבדוק בלשונית הקרנות':'הכול נקי 👌'}</div></div>`;
   const fl=$('#dashFlags');const items=[];
   S.funds.forEach(f=>fundFlags(f).filter(x=>x[0]!=='g').forEach(x=>items.push(`<div class="check" style="margin-bottom:8px"><div><span class="pill ${x[0]}">${x[1]}</span> <b>${(f.name||'קרן').replace(/</g,'&lt;')}</b> <span style="color:var(--ink3);font-size:13px">(${f.track})</span></div></div>`)));
