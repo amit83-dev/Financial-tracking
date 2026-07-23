@@ -341,7 +341,7 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
   .top .row{padding:0 16px; height:58px; gap:10px}
   .top .row .iconbtn.wide{display:none}
   .brand{font-size:15.5px}
-  main{padding:0 16px calc(104px + env(safe-area-inset-bottom))}
+  main{padding:0 16px calc(112px + env(safe-area-inset-bottom))}
   h2.vt{font-size:24px; margin-top:24px}
   .vs{font-size:14.5px; margin-bottom:20px}
   h3{font-size:17px; margin-top:30px}
@@ -350,8 +350,15 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
   .kpi{padding:17px 17px 15px; border-radius:18px}
   .kpi .v{font-size:24px}
   .kpi .k-ico{top:14px; left:14px}
-  .callout{padding:22px 20px; border-radius:18px}
-  .callout .c-val{font-size:32px}
+  .callout{padding:20px 18px; border-radius:18px}
+  .callout .c-val{font-size:30px}
+  .callout .c-sub{font-size:13px; margin-bottom:16px}
+  /* גיבור קומפקטי בנייד — כדי שפאנל המדדים יהיה בהישג גלילה אחת */
+  .hero h1{font-size:25px!important}
+  .hero .hv{margin-top:6px}
+  .hero .hnote{display:none}
+  .hero-grid{gap:18px}
+  .hero .hleg{gap:14px; margin-top:8px}
   .result .big{font-size:28px}
   .modal{padding:12px} .modal .box{padding:20px}
   th,td{padding:10px; font-size:13px}
@@ -365,11 +372,11 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
     display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
     background:color-mix(in srgb,var(--surface) 94%,transparent); backdrop-filter:saturate(1.7) blur(16px);
     border-top:1px solid var(--rule); box-shadow:0 -2px 18px rgba(0,0,0,.10);
-    padding-bottom:max(env(safe-area-inset-bottom), 6px)}
+    padding-bottom:max(env(safe-area-inset-bottom), 16px)}
   .tabs::after{display:none}
   .tabs .ind{display:none}
-  .tab{flex-direction:column; align-items:center; justify-content:center; gap:3px; min-width:0; overflow:hidden;
-    padding:8px 1px 6px; font-size:10px; font-weight:700; min-height:56px; line-height:1.1; white-space:nowrap; position:relative}
+  .tab{flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:0; overflow:hidden;
+    padding:10px 1px 4px; font-size:10px; font-weight:700; min-height:54px; line-height:1.1; white-space:nowrap; position:relative}
   .tab svg{width:21px; height:21px}
   .tab.active{color:var(--accent)}
   .tab.active::before{content:''; position:absolute; top:0; width:28px; height:2.5px; border-radius:0 0 3px 3px; background:var(--accent)}
@@ -404,10 +411,10 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
     <p class="vs">איפה אתה עומד היום: כמה יש, כמה זה עולה, מה נזיל ומתי, ולאן זה מגיע. <b>מה לעשות עם זה — בלשונית "החלטות".</b></p>
     <div id="onboard"></div>
     <div id="dashHero"></div>
+    <div id="dashIdxStrip"></div>
     <div class="kpis" id="dashKpis"></div>
 
     <div id="dashQuality"></div>
-    <div id="dashIdxStrip"></div>
 
     <div class="card" style="margin-bottom:16px">
       <h4><span style="display:inline-flex;gap:9px;align-items:center"><span style="width:26px;height:26px;border-radius:8px;background:var(--good-bg);color:var(--good);display:grid;place-items:center"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 3s6 6.4 6 10.4A6 6 0 016 13.4C6 9.4 12 3 12 3z'/></svg></span>מתי כל כסף נפתח</span></h4>
@@ -1540,18 +1547,18 @@ function renderDash(){
       <div class="hv"><span style="font-size:.5em;font-weight:700;color:var(--ink2)">₪</span><span data-count="${Math.round(total)}"></span></div>
       ${dm!=null?`<div class="delta ${dm>=0?'g':'r'}">${svgi(dm>=0?'up':'down',2.6)}${Math.abs(dm).toFixed(2)}% היום · ${fmt(Math.abs(total*dm/100))}</div>`:''}
       ${bal?`
-      <div style="margin-top:24px;display:grid;gap:18px">
+      <div style="margin-top:20px;display:grid;gap:14px">
         <div>
           ${grpTitle('הקופות הנזילות',liquidTot,Math.round(liquidTot/bal*100))}
           <div class="hsplit" style="margin-top:9px">${segs.map(k=>bar(k,B[k],LB[k][1],LB[k][0])).join('')}</div>
           <div class="hleg" style="margin-top:10px">${segs.map(k=>`<span><em style="background:var(${LB[k][1]})"></em>${LB[k][0]} <b style="color:var(--ink);font-weight:700">${fmt(B[k])}</b></span>`).join('')}</div>
-          <div style="color:var(--ink3);font-size:12.5px;margin-top:7px">השתלמות וגמל להשקעה — כסף שאפשר להגיע אליו לפני הפרישה.</div>
+          <div class="hnote" style="color:var(--ink3);font-size:12.5px;margin-top:7px">השתלמות וגמל להשקעה — כסף שאפשר להגיע אליו לפני הפרישה.</div>
         </div>
         ${pension?`<div style="padding-top:16px;border-top:1px solid var(--rule)">
           ${grpTitle('פנסיה',pension,Math.round(pension/bal*100))}
           <div class="hsplit" style="margin-top:9px"><i style="flex:1;background:var(--c-lock)"></i></div>
           <div class="hleg" style="margin-top:10px"><span><em style="background:var(--c-lock)"></em>נעול עד גיל ${S.settings.retire||67} <b style="color:var(--ink);font-weight:700">${fmt(pension)}</b></span></div>
-          <div style="color:var(--ink3);font-size:12.5px;margin-top:7px">לא זמין לפני הפרישה — ולכן ההחלטות עליו הן לטווח ארוך בלבד.</div>
+          <div class="hnote" style="color:var(--ink3);font-size:12.5px;margin-top:7px">לא זמין לפני הפרישה — ולכן ההחלטות עליו הן לטווח ארוך בלבד.</div>
         </div>`:''}
       </div>`:''}
     </div>
@@ -1628,7 +1635,15 @@ function renderQuality(){
 function renderIdxStrip(){
   const el=$('#dashIdxStrip'); if(!el)return;
   const all=fundIndices();
-  if(!all.length){el.innerHTML='';return;}
+  if(!all.length){
+    el.innerHTML=`<div class="card" style="margin-bottom:16px">
+      <h4 style="margin:0;display:flex;gap:9px;align-items:center">
+        <span style="width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center">${svgi('trend',2)}</span>
+        המדדים שלי היום</h4>
+      <div class="empty" style="padding:22px 12px">בחר מסלול לכל קופה בלשונית "הקרנות שלי" — והמדדים שהן עוקבות אחריהם יופיעו כאן.</div>
+    </div>`;
+    return;
+  }
   const tot=all.reduce((a,x)=>a+x.bal,0);
   const have=all.filter(x=>quotes[x.sym]);
   let moved=0,covered=0;
