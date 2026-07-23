@@ -166,6 +166,20 @@ canvas{width:100%; height:auto; display:block}
   .result .big{font-size:28px}
   .modal{padding:12px}
   .modal .box{padding:18px}
+  /* בנייד: כרטיסי קופה במקום טבלה, ובר טאבים תחתון */
+  body #fundCards{display:block}
+  body #fundsTableWrap,body #fundsTableBtns,body #fundsScrollHint{display:none}
+  body #fundCardBtns{display:flex}
+  .top{backdrop-filter:none}          /* אחרת הוא יוצר containing block ומרתק את הבר התחתון */
+  .tabs{position:fixed; bottom:0; left:0; right:0; z-index:40; background:var(--card);
+        border-top:1px solid var(--line); padding:0; gap:0; overflow:visible; max-width:none;
+        box-shadow:0 -2px 14px rgba(0,0,0,.18); padding-bottom:env(safe-area-inset-bottom)}
+  .tab{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+       gap:3px; padding:9px 2px 8px; font-size:10.5px; font-weight:700; border-bottom:0;
+       border-top:3px solid transparent; min-height:56px; line-height:1.15}
+  .tab .ti{font-size:19px; line-height:1}
+  .tab.active{border-top-color:var(--brand); border-bottom-color:transparent; background:var(--card2)}
+  main{padding-bottom:96px}
   /* טבלאות רחבות הופכות לכרטיסים — כל שדה עם התווית שלו לידו */
   table.cards{min-width:0}
   table.cards thead{display:none}
@@ -180,6 +194,49 @@ canvas{width:100%; height:auto; display:block}
   table.cards tr.grouphead td[colspan]{display:flex}
   table.cards .flagcell{flex-wrap:wrap; justify-content:flex-start}
 }
+/* ===== כרטיסי קופה (נייד) ===== */
+#fundCards,#fundCardBtns{display:none}
+#fundsTableWrap table{min-width:1240px}
+#fundsTableWrap select{min-width:158px}
+#fundsTableWrap td[data-label="% מניות"]{min-width:74px}
+#fundsTableWrap td[data-label="% מניות"] input{width:62px}
+.fcard{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 16px; margin-bottom:11px; cursor:pointer; -webkit-tap-highlight-color:transparent}
+.fcard:active{transform:scale(.992)}
+.fcard .fc-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px}
+.fcard .fc-name{font-weight:800; font-size:16px; line-height:1.3}
+.fcard .fc-sub{color:var(--ink3); font-size:12.5px; margin-top:3px}
+.fcard .fc-edit{color:var(--ink3); font-size:19px; line-height:1; padding:2px 4px}
+.fcard .fc-mid{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-top:13px}
+.fcard .fc-bal{font-weight:800; font-size:21px; font-variant-numeric:tabular-nums}
+.fcard .fc-eq{color:var(--ink2); font-size:13px; font-weight:700}
+.fcard .fc-bar{height:8px; border-radius:5px; background:var(--card2); overflow:hidden; margin:9px 0 12px; display:flex}
+.fcard .fc-bar i{display:block; height:100%; background:var(--brand2)}
+.fcard .fc-foot{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; font-size:13px}
+.fcard .fc-cost{color:var(--ink2)}
+.fcard .fc-tracks{margin-top:10px; display:flex; flex-direction:column; gap:5px}
+.fcard .fc-tr{display:flex; justify-content:space-between; gap:10px; font-size:12.5px; color:var(--ink3)}
+/* ===== גיליון תחתון ===== */
+.sheet{position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; z-index:60; align-items:flex-end; justify-content:center}
+.sheet.open{display:flex}
+.sheet .sbox{background:var(--card); width:100%; max-width:520px; max-height:92vh; overflow-y:auto; border-radius:18px 18px 0 0; padding:8px 18px 26px; box-shadow:var(--shadow)}
+.sheet .grab{width:40px; height:4px; border-radius:3px; background:var(--line); margin:8px auto 14px}
+.sheet h3{margin:0 0 4px; font-size:18px}
+.sgroup{margin-top:18px}
+.sgroup>.st{font-size:12.5px; font-weight:800; color:var(--ink3); letter-spacing:.02em; margin-bottom:9px}
+.srow{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line)}
+.srow:last-child{border-bottom:0}
+.srow label{flex:1; font-size:14px}
+.srow .hint{display:block; color:var(--ink3); font-size:11.5px; margin-top:2px}
+.srow input,.srow select{flex:0 0 auto; width:44%; background:var(--card2); border:1px solid var(--line); border-radius:9px; color:var(--ink); padding:9px 11px; font-size:15px; font-family:inherit}
+.srow input[type=month]{width:52%}
+details.sadv summary{cursor:pointer; font-size:13.5px; -webkit-tap-highlight-color:transparent; font-weight:700; color:var(--brand2); padding:10px 0; list-style:none}
+details.sadv summary::-webkit-details-marker{display:none}
+details.sadv summary::before{content:'▸ '; display:inline-block; transition:transform .15s}
+details.sadv[open] summary::before{transform:rotate(90deg)}
+/* ===== מד שלמות נתונים ===== */
+.dq{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+.dq .dqbar{flex:1; min-width:120px; height:9px; border-radius:5px; background:var(--card2); overflow:hidden}
+.dq .dqbar i{display:block; height:100%; background:var(--good)}
 .scrollhint{font-size:11.5px; color:var(--ink3); text-align:center; margin:6px 0 0; display:none}
 @media(max-width:640px){.scrollhint{display:block}}
 </style>
@@ -194,11 +251,11 @@ canvas{width:100%; height:auto; display:block}
     <button class="iconbtn" id="settingsBtn">⚙ הגדרות</button>
   </div>
   <div class="tabs" id="tabs">
-    <button class="tab active" data-v="dash">📊 דשבורד</button>
-    <button class="tab" data-v="funds">🏦 הקרנות שלי</button>
-    <button class="tab" data-v="market">📈 מדדים ותיק חי</button>
-    <button class="tab" data-v="calc">🧮 מחשבונים</button>
-    <button class="tab" data-v="journal">🧭 החלטות</button>
+    <button class="tab active" data-v="dash"><span class="ti">📊</span><span>דשבורד</span></button>
+    <button class="tab" data-v="funds"><span class="ti">🏦</span><span>הקרנות</span></button>
+    <button class="tab" data-v="market"><span class="ti">📈</span><span>מדדים</span></button>
+    <button class="tab" data-v="calc"><span class="ti">🧮</span><span>מחשבונים</span></button>
+    <button class="tab" data-v="journal"><span class="ti">🧭</span><span>החלטות</span></button>
   </div>
 </div>
 
@@ -210,6 +267,7 @@ canvas{width:100%; height:auto; display:block}
     <div id="onboard"></div>
     <div class="kpis" id="dashKpis"></div>
 
+    <div id="dashQuality"></div>
     <div id="dashIdxStrip"></div>
 
     <div class="card" style="margin-bottom:16px">
@@ -231,24 +289,32 @@ canvas{width:100%; height:auto; display:block}
   <section class="view" id="v-funds">
     <h2 class="vt">הקרנות שלי</h2>
     <p class="vs">רכזו כאן את קרן ההשתלמות, הפנסיה והגמל. קופה שמפוצלת בין שני מסלולים — הוסיפו שורה לכל מסלול בעזרת "＋ מסלול" שבתוך הקופה, והן יופיעו מקובצות יחד עם סכום משותף.</p>
-    <div class="tw">
-      <table class="cards">
+    <div id="fundCards"></div>
+    <div class="tw" id="fundsTableWrap">
+      <table>
         <thead><tr>
           <th>מסלול</th><th>% מניות</th><th>% מהקופה</th><th>יתרה ₪</th><th>הפקדה חודשית ₪</th><th>ד״נ מהפקדה %</th><th>ד״נ מצבירה %</th><th>תשואה % <span style="font-weight:400;color:var(--ink3)">(רשות)</span></th><th>עלות שנתית ₪</th><th>סימונים</th><th></th>
         </tr></thead>
         <tbody id="fundsBody"></tbody>
       </table>
     </div>
-    <div class="btnrow">
+    <p class="scrollhint" id="fundsScrollHint" style="display:block">↔ אפשר לגלול את הטבלה לצדדים</p>
+    <div class="btnrow" id="fundsTableBtns">
       <button class="btn" id="addFund">＋ הוסף קופה</button>
       <button class="btn sec" id="seedFund">מלא דוגמה</button>
     </div>
+    <div class="btnrow" id="fundCardBtns">
+      <button class="btn" id="addFundM">＋ הוסף קופה</button>
+      <button class="btn sec" id="seedFundM">מלא דוגמה</button>
+    </div>
+<details class="sadv" style="margin-top:14px"><summary>מדריך קצר — דמי ניהול, % מניות ותשואה</summary>
     <div class="note"><b>שני סוגי דמי ניהול:</b> <b>מצבירה</b> נגבה כל שנה מכל הכסף שצברת (המקסימום החוקי 1.05% בפנסיה, 2% בגמל/השתלמות) — זה הרכיב שכואב לאורך זמן. <b>מהפקדה</b> נגבה רק מכל הפקדה חדשה שנכנסת (מקסימום 6% בפנסיה) — רלוונטי רק אם עדיין מפקידים. שניהם מופיעים בדוח השנתי ובאתר הקופה.<br>
     כדי שהכלי יתרגם את "מהפקדה" לשקלים, מלא גם את עמודת <b>הפקדה חודשית</b>. אם כבר לא מפקידים לקופה — השאר 0.<br>
     כלל אצבע לסימון: <b>מצבירה</b> — עוקב-מדד מעל <b>0.7%</b> או כללי/מנוהל מעל <b>1.0%</b>. <b>מהפקדה</b> — מעל <b>3%</b> גבוה, מתחת ל-<b>1.5%</b> טוב. מסלול "סולידי/כללי" עם טווח מעל <b>10 שנים</b> — ייתכן שמרני מדי. (הטווח נקבע בהגדרות.)</div>
     <div class="note"><b>עמודת "% מניות"</b> — כל מסלול מגיע עם חשיפה מנייתית מוגדרת מראש, והמספר האפור בשדה הוא ברירת המחדל. אם הדוח הרבעוני של הקופה שלך מראה מספר אחר — הקלד אותו, והוא יגבר. זה מה שמזין את כרטיס החשיפה המנייתית ואת התחזית.</div>
     <div class="note info"><b>אין לך את התשואה השנתית?</b> אפשר להשאיר את העמודה ריקה — היא לא משפיעה על שום חישוב בכלי. אם תרצה את הנתון המדויק, הוא פומבי וחינמי:
     <b>גמל-נט</b> (השתלמות וגמל) ו<b>פנסיה-נט</b> (פנסיה) של רשות שוק ההון — מחפשים את שם הקופה ואת המסלול הספציפי, ומקבלים תשואה שנתית ומצטברת. חפש בגוגל "גמל נט" / "פנסיה נט".</div>
+    </details>
   </section>
 
   <!-- MARKET -->
@@ -387,6 +453,9 @@ canvas{width:100%; height:auto; display:block}
     <div id="journalList"></div>
   </section>
 </main>
+
+<!-- Fund edit sheet -->
+<div class="sheet" id="fundSheet"><div class="sbox"><div class="grab"></div><div id="sheetBody"></div></div></div>
 
 <!-- Settings modal -->
 <div class="modal" id="settingsModal">
@@ -704,15 +773,116 @@ function renderFunds(){
     S.funds[grp.rows[1].i].bal=Math.round(tot*(100-p1)/100);
     save();renderFunds();
   });
-  b.querySelectorAll('[data-del]').forEach(el=>el.onclick=e=>{S.funds.splice(+e.target.dataset.del,1);save();renderFunds();});
+  b.querySelectorAll('[data-del]').forEach(el=>el.onclick=e=>{S.funds.splice(+e.target.dataset.del,1);save();renderFunds();renderFundCards();});
 }
-$('#addFund').onclick=()=>{S.funds.push({name:'',type:'קרן השתלמות',track:'כללי',bal:0,dep:0,fee:0,feeDep:0,ret:0});save();renderFunds();};
+/* ============ כרטיסי קופה + גיליון עריכה (נייד) ============ */
+function renderFundCards(){
+  const el=$('#fundCards'); if(!el)return;
+  if(!S.funds.length){el.innerHTML='<div class="empty"><div class="ico">🏦</div>עוד לא הוספת קופות. לחץ "הוסף קופה" או "מלא דוגמה".</div>';return;}
+  el.innerHTML=fundGroups().map((g,gi)=>{
+    const f0=g.rows[0].f;
+    const tot=g.rows.reduce((a,r)=>a+(r.f.bal||0),0);
+    const cost=g.rows.reduce((a,r)=>a+fundCost(r.f),0);
+    const eq=tot?g.rows.reduce((a,r)=>a+(r.f.bal||0)*fundEq(r.f),0)/tot:0;
+    const yrs=fundYears(f0);
+    const flags=[...new Set(g.rows.flatMap(r=>fundFlags(r.f).filter(x=>x[0]!=='g').map(x=>x[1])))];
+    const tracks=g.rows.length>1?`<div class="fc-tracks">${g.rows.map(r=>
+       `<div class="fc-tr"><span>${r.f.track}</span><span>${tot?Math.round((r.f.bal||0)/tot*100):0}% · ${fmt(r.f.bal||0)}</span></div>`).join('')}</div>`:'';
+    return `<div class="fcard" data-open="${gi}">
+      <div class="fc-top">
+        <div><div class="fc-name">${(g.name||'ללא שם').replace(/</g,'&lt;')}</div>
+          <div class="fc-sub">${g.type} · ${yrs>0?`${yrs} שנה למשיכה`:'זמין עכשיו'}${g.rows.length>1?` · ${g.rows.length} מסלולים`:''}</div></div>
+        <div class="fc-edit">✎</div>
+      </div>
+      <div class="fc-mid"><div class="fc-bal">${fmt(tot)}</div><div class="fc-eq">${Math.round(eq)}% מניות</div></div>
+      <div class="fc-bar"><i style="width:${Math.min(100,eq)}%"></i></div>
+      <div class="fc-foot">
+        <span class="fc-cost">${cost?`${fmt(cost)} עלות בשנה`:'לא הוזנו דמי ניהול'}</span>
+        <span>${flags.length?flags.map(t=>`<span class="pill w">${t}</span>`).join(' '):'<span class="pill g">נקי</span>'}</span>
+      </div>${tracks}
+    </div>`;
+  }).join('');
+  el.querySelectorAll('[data-open]').forEach(c=>c.onclick=()=>openFundSheet(+c.dataset.open));
+}
+function closeSheet(){$('#fundSheet').classList.remove('open');}
+function openFundSheet(gi){
+  const g=fundGroups()[gi]; if(!g)return;
+  const f0=g.rows[0].f;
+  const row=(lbl,hint,inp)=>`<div class="srow"><label>${lbl}${hint?`<span class="hint">${hint}</span>`:''}</label>${inp}</div>`;
+  const num=(i,k,v,ph)=>`<input type="number" ${k==='fee'||k==='feeDep'||k==='eq'?'step="0.01"':''} value="${v||v===0?v:''}" data-si="${i}" data-sk="${k}" placeholder="${ph||''}">`;
+  const trackBlock=(r,n)=>{
+    const f=r.f, i=r.i;
+    return `<div class="sgroup"><div class="st">${g.rows.length>1?`מסלול ${n}`:'המסלול'}</div>
+      ${row('מסלול','',`<select data-si="${i}" data-sk="track" style="width:60%">${TRACKS.map(t=>`<option ${f.track===t?'selected':''}>${t}</option>`).join('')}</select>`)}
+      ${row('יתרה ₪','',num(i,'bal',f.bal))}
+      ${row('הפקדה חודשית ₪','0 אם כבר לא מפקידים',num(i,'dep',f.dep))}
+      ${row('דמי ניהול מצבירה %','נגבה כל שנה מכל הצבירה',num(i,'fee',f.fee))}
+      ${row('דמי ניהול מהפקדה %','נגבה מכל הפקדה חדשה',num(i,'feeDep',f.feeDep))}
+      <details class="sadv"><summary>מתקדם</summary>
+        ${row('% מניות','ריק = לפי המסלול. דייק לפי הדוח הרבעוני',num(i,'eq',f.eq,TRACKDEF[f.track]?TRACKDEF[f.track].eq:50))}
+        ${row('תשואה שנתית %','רשות — לא משפיע על חישוב',num(i,'ret',f.ret))}
+      </details></div>`;
+  };
+  $('#sheetBody').innerHTML=`
+    <h3>${(g.name||'קופה חדשה').replace(/</g,'&lt;')}</h3>
+    <div style="color:var(--ink3);font-size:13px">${g.type}</div>
+    <div class="sgroup"><div class="st">פרטי הקופה</div>
+      ${row('שם הגוף','',`<input value="${(g.name||'').replace(/"/g,'&quot;')}" data-sg="${gi}" data-sgk="name" style="width:56%">`)}
+      ${row('סוג','',`<select data-sg="${gi}" data-sgk="type" style="width:56%">${FTYPES.map(t=>`<option ${g.type===t?'selected':''}>${t}</option>`).join('')}</select>`)}
+      ${row('תאריך פתיחה',f0.type==='קרן השתלמות'?'קובע מתי הקרן נזילה':'',`<input type="month" value="${f0.opened||''}" data-sg="${gi}" data-sgk="opened">`)}
+      ${row('שנים עד משיכה',`ריק = ${yearsSource(f0)}`,`<input type="number" step="0.5" min="0" value="${f0.yrs||''}" data-sg="${gi}" data-sgk="yrs" placeholder="${fundYears(f0)}">`)}
+    </div>
+    ${g.rows.map((r,n)=>trackBlock(r,n+1)).join('')}
+    <div class="btnrow" style="margin-top:20px">
+      <button class="btn sec sm" id="sh_addtrack">＋ הוסף מסלול</button>
+      <button class="btn sec sm" id="sh_split">% פיצול לפי אחוזים</button>
+    </div>
+    <button class="btn" id="sh_done" style="width:100%;margin-top:14px">סיום</button>
+    <button class="btn sec sm" id="sh_del" style="width:100%;margin-top:8px;color:var(--bad)">מחק את הקופה</button>`;
+
+  const B=$('#sheetBody');
+  B.querySelectorAll('[data-si]').forEach(el=>el.onchange=e=>{
+    const i=+e.target.dataset.si,k=e.target.dataset.sk;
+    S.funds[i][k]=NUMK.includes(k)?(e.target.value===''?undefined:parseFloat(e.target.value)||0):e.target.value;
+    save();renderFundCards();renderFunds();renderDash();renderRecs();
+  });
+  B.querySelectorAll('[data-sg]').forEach(el=>el.onchange=e=>{
+    const k=e.target.dataset.sgk, v=(k==='yrs')?(parseFloat(e.target.value)||0):e.target.value;
+    fundGroups()[gi].rows.forEach(r=>{S.funds[r.i][k]=v;});
+    save();renderFundCards();renderFunds();renderDash();renderRecs();openFundSheet(gi);
+  });
+  $('#sh_addtrack').onclick=()=>{
+    const last=g.rows[g.rows.length-1];
+    S.funds.splice(last.i+1,0,{name:g.name,type:g.type,track:'כללי',bal:0,dep:0,fee:last.f.fee||0,feeDep:last.f.feeDep||0,ret:0,opened:last.f.opened,yrs:last.f.yrs});
+    save();renderFundCards();renderFunds();openFundSheet(gi);
+  };
+  $('#sh_split').onclick=()=>{
+    const gg=fundGroups()[gi];
+    if(gg.rows.length<2){alert('הוסף קודם מסלול שני.');return;}
+    const t=parseFloat(prompt('סכום כולל של הקופה (₪):')); if(!isFinite(t)||t<=0)return;
+    const p1=parseFloat(prompt(`אחוז המסלול "${gg.rows[0].f.track}" (למשל 70):`)); if(!isFinite(p1)||p1<0||p1>100)return;
+    S.funds[gg.rows[0].i].bal=Math.round(t*p1/100); S.funds[gg.rows[1].i].bal=Math.round(t*(100-p1)/100);
+    save();renderFundCards();renderFunds();openFundSheet(gi);
+  };
+  $('#sh_del').onclick=()=>{
+    if(!confirm(`למחוק את "${g.name||'הקופה'}" על כל המסלולים שבה?`))return;
+    fundGroups()[gi].rows.map(r=>r.i).sort((a,b)=>b-a).forEach(i=>S.funds.splice(i,1));
+    save();closeSheet();renderAll();
+  };
+  $('#sh_done').onclick=()=>{closeSheet();renderAll();};
+  $('#fundSheet').classList.add('open');
+}
+$('#fundSheet').onclick=e=>{if(e.target.id==='fundSheet'){closeSheet();renderAll();}};
+$('#addFundM').onclick=()=>{S.funds.push({name:'',type:'קרן השתלמות',track:'כללי',bal:0,dep:0,fee:0,feeDep:0,ret:0});save();renderFundCards();renderFunds();openFundSheet(fundGroups().length-1);};
+$('#seedFundM').onclick=()=>$('#seedFund').click();
+
+$('#addFund').onclick=()=>{S.funds.push({name:'',type:'קרן השתלמות',track:'כללי',bal:0,dep:0,fee:0,feeDep:0,ret:0});save();renderFunds();renderFundCards();};
 $('#seedFund').onclick=()=>{S.funds=[
   {name:'השתלמות — בית השקעות א׳',type:'קרן השתלמות',track:'עוקב מדד S&P 500',bal:84000,dep:1000,fee:0.5,feeDep:0,ret:0},
   {name:'השתלמות — בית השקעות א׳',type:'קרן השתלמות',track:'כללי',bal:36000,dep:430,fee:0.85,feeDep:0,ret:0},
   {name:'פנסיה מקיפה',type:'קרן פנסיה',track:'כללי',bal:340000,dep:2400,fee:0.22,feeDep:2.5,ret:5.8},
   {name:'גמל להשקעה',type:'גמל להשקעה',track:'עוקב מדד S&P 500',bal:60000,dep:0,fee:0.6,feeDep:0,ret:9.1}
-];save();renderFunds();};
+];save();renderFunds();renderFundCards();};
 
 /* ============ MARKET (live data) ============ */
 let quotes={};
@@ -1076,10 +1246,39 @@ function renderDash(){
     <div class="kpi"><div class="l">עלות שנתית</div><div class="v ${wfee>1?'r':wfee>0.7?'w':'g'}">${fmt(annualFee)}</div><div class="s">${wfee.toFixed(2)}% מצבירה${depFee?` · ${fmt(depFee)} מהפקדות`:''} · ${fmt(feeDragCur)} עד המשיכה</div></div>
     <div class="kpi"><div class="l">חשיפה מנייתית</div><div class="v ${Math.abs(eqGap)<=10?'g':Math.abs(eqGap)<=25?'w':'r'}">${Math.round(eqAct)}%</div><div class="s">מותאם לך ${eqRec}%${Math.abs(eqGap)>10?` · ${eqGap<0?'שמרני':'אגרסיבי'} ב-${Math.abs(eqGap)} נק׳`:' · תואם'}</div></div>
     <div class="kpi"><div class="l">פעולות מומלצות</div><div class="v ${nRecs?'w':'g'}">${nRecs}</div><div class="s">${nRecs?`שוות ${fmt(recWorth)} · ראה לשונית "החלטות"`:'אין פעולה פתוחה 👌'}</div></div>`;
+  renderQuality();
   renderIdxStrip();
   renderLiquidity(bal);
   renderProjection(bal);
   renderOnboard();
+}
+
+/* ---- מד שלמות נתונים ---- */
+function dataQuality(){
+  const miss=[];
+  if(!S.funds.length) return {pct:0,miss:['לא הוזנו קופות']};
+  const hi=S.funds.filter(f=>f.type==='קרן השתלמות');
+  let checks=0,ok=0;
+  const add=(cond,label)=>{checks++; if(cond)ok++; else if(label&&!miss.includes(label))miss.push(label);};
+  add(S.funds.every(f=>(f.bal||0)>0),'יתרה בכל מסלול');
+  add(S.funds.every(f=>(f.fee||0)>0),'דמי ניהול מצבירה');
+  add(S.funds.some(f=>(f.dep||0)>0),'הפקדה חודשית');
+  add(!hi.length||hi.every(f=>f.opened),'תאריך פתיחה להשתלמות');
+  add(!S.funds.some(f=>f.track==='אחר'),'מסלול מדויק (יש "אחר")');
+  add(!!S.settings.retire,'גיל פרישה בהגדרות');
+  return {pct:Math.round(ok/checks*100),miss};
+}
+function renderQuality(){
+  const el=$('#dashQuality'); if(!el)return;
+  const q=dataQuality();
+  if(!S.funds.length||q.pct===100){el.innerHTML='';return;}
+  el.innerHTML=`<div class="card" style="margin-bottom:16px;padding:15px 18px">
+    <div class="dq">
+      <b style="white-space:nowrap">שלמות הנתונים ${q.pct}%</b>
+      <div class="dqbar"><i style="width:${q.pct}%;background:${q.pct>=80?'var(--good)':q.pct>=50?'var(--warn)':'var(--bad)'}"></i></div>
+    </div>
+    <div style="margin-top:9px;font-size:13px;color:var(--ink2)">חסר: ${q.miss.join(' · ')}. ככל שהנתונים שלמים יותר, ההמלצות מדויקות יותר.</div>
+  </div>`;
 }
 
 /* ---- 🎯 רצועת המדדים בדשבורד ---- */
@@ -1231,7 +1430,7 @@ function renderOnboard(){
 
 function addScrollHints(){
   $$('.tw').forEach(tw=>{
-    if(tw.querySelector('table.cards'))return;   /* טבלת כרטיסים — אין גלילה לצדדים בנייד */
+    if(tw.id==='fundsTableWrap')return;      /* בנייד מוצגים כרטיסים במקום טבלה */
     if(tw.nextElementSibling && tw.nextElementSibling.classList.contains('scrollhint'))return;
     const h=document.createElement('p');h.className='scrollhint';h.textContent='↔ אפשר לגלול את הטבלה לצדדים';
     tw.after(h);
@@ -1239,7 +1438,7 @@ function addScrollHints(){
 }
 
 /* ============ INIT ============ */
-function renderAll(){renderFunds();renderWatch();renderHold();renderMyIdx();renderRecs();renderChecklist();renderJournal();calcCompound();calcFee();calcAlloc();calcReal();renderDash();renderOnboard();}
+function renderAll(){renderFunds();renderFundCards();renderWatch();renderHold();renderMyIdx();renderRecs();renderChecklist();renderJournal();calcCompound();calcFee();calcAlloc();calcReal();renderDash();renderOnboard();}
 renderAll();
 addScrollHints();
 </script>
