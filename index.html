@@ -198,7 +198,7 @@ canvas{width:100%; height:auto; display:block}
     <button class="tab" data-v="funds">🏦 הקרנות שלי</button>
     <button class="tab" data-v="market">📈 מדדים ותיק חי</button>
     <button class="tab" data-v="calc">🧮 מחשבונים</button>
-    <button class="tab" data-v="journal">📓 יומן והחלטות</button>
+    <button class="tab" data-v="journal">🧭 החלטות</button>
   </div>
 </div>
 
@@ -206,9 +206,11 @@ canvas{width:100%; height:auto; display:block}
   <!-- DASHBOARD -->
   <section class="view active" id="v-dash">
     <h2 class="vt">תמונת מצב</h2>
-    <p class="vs">סיכום כל מה שהזנת — חיסכון כולל, כמה דמי ניהול עולים לך, ומה הכי דחוף לתקן.</p>
+    <p class="vs">איפה אתה עומד היום: כמה יש, כמה זה עולה, מה נזיל ומתי, ולאן זה מגיע. <b>מה לעשות עם זה — בלשונית "החלטות".</b></p>
     <div id="onboard"></div>
     <div class="kpis" id="dashKpis"></div>
+
+    <div id="dashIdxStrip"></div>
 
     <div class="card" style="margin-bottom:16px">
       <h4>💧 מה נזיל ומה נעול</h4>
@@ -217,41 +219,11 @@ canvas{width:100%; height:auto; display:block}
     </div>
 
     <div class="card" style="margin-bottom:16px">
-      <h4>🎯 איפה כדאי להילחם</h4>
-      <p class="desc">כמה תחסוך בכל קופה אם תמקח את דמי הניהול לתעריף שבר-השגה — ממוין לפי הסכום. זה סדר השיחות שכדאי לעשות.</p>
-      <div id="dashSavings"></div>
-    </div>
-
-    <div class="card" style="margin-bottom:16px">
-      <h4>🧾 ניצול תקרות והטבות מס</h4>
-      <p class="desc">מיקוח על דמי ניהול הוא מהלך חד-פעמי. תקרה שלא נוצלה היא דליפה שחוזרת כל שנה — ואי אפשר להשלים אותה רטרואקטיבית.</p>
-      <div id="dashCaps"></div>
-    </div>
-
-    <div class="card" style="margin-bottom:16px">
       <h4>🔭 לאן זה מגיע — תחזית לסוף הטווח</h4>
       <p class="desc">השווי הצפוי בסוף הטווח שהגדרת, ומה הוא היה אילו תיקנת את דמי הניהול ואת החשיפה המנייתית.</p>
       <div id="dashProj"></div>
     </div>
 
-    <div class="card" style="margin-bottom:16px">
-      <h4>📊 חשיפה מנייתית — בפועל מול מותאם לך</h4>
-      <p class="desc">כמה מהכסף שלך באמת חשוף למניות, לעומת מה שמתאים לגיל ולטווח שהגדרת.</p>
-      <div id="dashEquity"></div>
-    </div>
-
-    <div class="grid2">
-      <div class="card">
-        <h4>עלות דמי ניהול לאורך הזמן</h4>
-        <p class="desc">כמה תשלמו בדמי ניהול עד סוף טווח ההשקעה — וכמה הייתם חוסכים במסלול זול (בהשראת מנתח העמלות של Empower).</p>
-        <canvas id="feeChart" width="520" height="240"></canvas>
-      </div>
-      <div class="card">
-        <h4>🚩 מה כדאי לבדוק</h4>
-        <p class="desc">דגלים אדומים שזוהו אוטומטית מהנתונים שהזנת.</p>
-        <div id="dashFlags"></div>
-      </div>
-    </div>
     <div class="note info">💡 כל הנתונים נשמרים <b>רק במכשיר שלך</b> (בזיכרון הדפדפן). שום דבר לא נשלח לשרת. גיבוי/העברה למכשיר אחר — דרך כפתור "ייצוא" בהגדרות.</div>
   </section>
 
@@ -262,7 +234,7 @@ canvas{width:100%; height:auto; display:block}
     <div class="tw">
       <table class="cards">
         <thead><tr>
-          <th>מסלול</th><th>% מהקופה</th><th>יתרה ₪</th><th>הפקדה חודשית ₪</th><th>ד״נ מהפקדה %</th><th>ד״נ מצבירה %</th><th>תשואה % <span style="font-weight:400;color:var(--ink3)">(רשות)</span></th><th>עלות שנתית ₪</th><th>סימונים</th><th></th>
+          <th>מסלול</th><th>% מניות</th><th>% מהקופה</th><th>יתרה ₪</th><th>הפקדה חודשית ₪</th><th>ד״נ מהפקדה %</th><th>ד״נ מצבירה %</th><th>תשואה % <span style="font-weight:400;color:var(--ink3)">(רשות)</span></th><th>עלות שנתית ₪</th><th>סימונים</th><th></th>
         </tr></thead>
         <tbody id="fundsBody"></tbody>
       </table>
@@ -274,6 +246,7 @@ canvas{width:100%; height:auto; display:block}
     <div class="note"><b>שני סוגי דמי ניהול:</b> <b>מצבירה</b> נגבה כל שנה מכל הכסף שצברת (המקסימום החוקי 1.05% בפנסיה, 2% בגמל/השתלמות) — זה הרכיב שכואב לאורך זמן. <b>מהפקדה</b> נגבה רק מכל הפקדה חדשה שנכנסת (מקסימום 6% בפנסיה) — רלוונטי רק אם עדיין מפקידים. שניהם מופיעים בדוח השנתי ובאתר הקופה.<br>
     כדי שהכלי יתרגם את "מהפקדה" לשקלים, מלא גם את עמודת <b>הפקדה חודשית</b>. אם כבר לא מפקידים לקופה — השאר 0.<br>
     כלל אצבע לסימון: <b>מצבירה</b> — עוקב-מדד מעל <b>0.7%</b> או כללי/מנוהל מעל <b>1.0%</b>. <b>מהפקדה</b> — מעל <b>3%</b> גבוה, מתחת ל-<b>1.5%</b> טוב. מסלול "סולידי/כללי" עם טווח מעל <b>10 שנים</b> — ייתכן שמרני מדי. (הטווח נקבע בהגדרות.)</div>
+    <div class="note"><b>עמודת "% מניות"</b> — כל מסלול מגיע עם חשיפה מנייתית מוגדרת מראש, והמספר האפור בשדה הוא ברירת המחדל. אם הדוח הרבעוני של הקופה שלך מראה מספר אחר — הקלד אותו, והוא יגבר. זה מה שמזין את כרטיס החשיפה המנייתית ואת התחזית.</div>
     <div class="note info"><b>אין לך את התשואה השנתית?</b> אפשר להשאיר את העמודה ריקה — היא לא משפיעה על שום חישוב בכלי. אם תרצה את הנתון המדויק, הוא פומבי וחינמי:
     <b>גמל-נט</b> (השתלמות וגמל) ו<b>פנסיה-נט</b> (פנסיה) של רשות שוק ההון — מחפשים את שם הקופה ואת המסלול הספציפי, ומקבלים תשואה שנתית ומצטברת. חפש בגוגל "גמל נט" / "פנסיה נט".</div>
   </section>
@@ -281,9 +254,16 @@ canvas{width:100%; height:auto; display:block}
   <!-- MARKET -->
   <section class="view" id="v-market">
     <h2 class="vt">מדדים ותיק חי</h2>
-    <p class="vs">מעקב אחרי מדדים/מניות במחירים חיים, והתיק הפרטי שלך עם תשואה כוללת (בהשראת Sharesight). דורש מפתח API חינמי חד-פעמי — ראו הגדרות.</p>
+    <p class="vs">המדדים שהקרנות שלך צמודות אליהם, רשימת מעקב חופשית, והתיק הפרטי שלך עם תשואה כוללת. דורש מפתח API חינמי חד-פעמי — ראו הגדרות.</p>
 
-    <h3>רשימת מעקב (Watchlist)</h3>
+    <h3>🎯 המדדים שהקרנות שלי עוקבות אחריהם</h3>
+    <p class="desc" style="margin:-4px 0 12px">נגזר אוטומטית מהמסלולים שהזנת בלשונית "הקרנות שלי" — כמה מהכסף שלך צמוד לכל מדד, ואיך הוא נע היום.</p>
+    <div id="myIdx"></div>
+    <div class="btnrow">
+      <button class="btn sm" id="refreshIdx">🔄 רענן מחירים</button>
+    </div>
+
+    <h3 style="margin-top:26px">רשימת מעקב (Watchlist)</h3>
     <div class="tw">
       <table>
         <thead><tr><th>סימבול</th><th>שם</th><th>מחיר אחרון</th><th>שינוי יומי</th><th></th></tr></thead>
@@ -378,10 +358,14 @@ canvas{width:100%; height:auto; display:block}
 
   <!-- JOURNAL -->
   <section class="view" id="v-journal">
-    <h2 class="vt">יומן החלטות ומשימות</h2>
-    <p class="vs">שני נשקים נגד הפסיכולוגיה שמפילה משקיעים: צ׳ק-ליסט הפעולות מהחוברת, ויומן שמכריח אותך לנמק כל החלטה לפני שאתה מבצע — כדי לתפוס החלטות רגשיות בזמן אמת.</p>
+    <h2 class="vt">החלטות</h2>
+    <p class="vs">מה כדאי לעשות עכשיו לפי הנתונים שהזנת, מנומק ומתועדף — ואחריו הכלים שמונעים החלטות רגשיות: צ׳ק-ליסט ויומן.</p>
 
-    <h3>✅ תוכנית הפעולה — צ׳ק-ליסט</h3>
+    <h3>🧭 מה כדאי לעשות עכשיו</h3>
+    <p class="desc" style="margin:-4px 0 12px">כל המלצה נגזרת מהנתונים שלך ומהאופק של הקופה הספציפית — ממוינת לפי כמה היא שווה לך בשקלים.</p>
+    <div id="recs"></div>
+
+    <h3 style="margin-top:26px">✅ תוכנית הפעולה — צ׳ק-ליסט</h3>
     <div id="checklist"></div>
 
     <h3>📓 יומן החלטות</h3>
@@ -501,9 +485,32 @@ $$('.tab').forEach(t=>t.onclick=()=>{
 });
 
 /* ============ FUNDS ============ */
-const TRACKS=['עוקב מדד S&P 500','עוקב מדד עולמי','מנייתי','כללי','סולידי / אג״ח','אחר'];
+/* ====== מסלולי השקעה — הגדרה אחת שממנה נגזר הכל ======
+   eq  = חשיפה מנייתית באחוזים (מקור: דוחות הגופים / חוזרי רשות שוק ההון)
+   sym = ETF שעוקב אחרי תמהיל דומה, לתצוגת מחיר חי בלבד                    */
+const TRACKDEF={
+  'עוקב מדד S&P 500'          :{eq:100,sym:'SPY', note:'500 החברות הגדולות בארה״ב'},
+  'עוקב מדד עולמי'            :{eq:100,sym:'URTH',note:'מניות עולמיות, שווקים מפותחים'},
+  'מנייתי'                    :{eq:100,sym:'ACWI',note:'מניות עולמיות כולל שווקים מתעוררים'},
+  'מנייתי (75%-120% מניות)'   :{eq:100,sym:'ACWI',note:'מדיניות מור: לא פחות מ-75% ולא יותר מ-120% מניות'},
+  'תלוי גיל — עד 50'          :{eq:58, sym:'AOR', note:'מודל תלוי-גיל (ברירת המחדל בחוק) — כ-58% מניות'},
+  'תלוי גיל — 50 עד 60'       :{eq:45, sym:'AOM', note:'מודל תלוי-גיל — חשיפה מנייתית מופחתת'},
+  'תלוי גיל — 60 ומעלה'       :{eq:30, sym:'AOK', note:'מודל תלוי-גיל — חשיפה מנייתית נמוכה'},
+  'כללי'                      :{eq:50, sym:'AOR', note:'מסלול כללי — תמהיל משתנה בין גופים'},
+  'כללי (מור, ~52% מניות)'    :{eq:52, sym:'AOR', note:'מור גמל להשקעה כללי — חשיפה בפועל 51.63%'},
+  'אג״ח ומניות — עד 25% מניות':{eq:25, sym:'AOK', note:'אשראי ואג״ח עם רכיב מנייתי מוגבל'},
+  'אג״ח / אשראי (ללא מניות)'  :{eq:0,  sym:'AGG', note:'אג״ח ואשראי בלבד'},
+  'סולידי / אג״ח'             :{eq:15, sym:'AGG', note:'מסלול סולידי'},
+  'אחר'                       :{eq:50, sym:null,  note:'מסלול שאינו ברשימה — הזן % מניות ידנית'}
+};
+const TRACKS=Object.keys(TRACKDEF);
+/* חשיפה מנייתית בפועל: דריסה ידנית גוברת על ברירת המחדל של המסלול */
+function fundEq(f){
+  if(f.eq!==undefined && f.eq!==null && f.eq!=='') return +f.eq;
+  const d=TRACKDEF[f.track]; return d?d.eq:50;
+}
 const FTYPES=['קרן השתלמות','קרן פנסיה','גמל להשקעה','תיק פרטי'];
-const NUMK=['bal','dep','fee','feeDep','ret'];
+const NUMK=['bal','dep','fee','feeDep','ret','eq'];
 
 /* ====== נזילות: מתי אפשר באמת להגיע לכסף ====== */
 function monthsSince(ym){
@@ -522,6 +529,21 @@ function liquidity(f){
   return {k:'soon',left:72-ms};
 }
 const LQ={now:['נזיל עכשיו','#22c55e'],soon:['נזיל בקרוב','#f59e0b'],locked:['חסום עד פרישה','#64748b'],unknown:['חסר תאריך','#ef4444']};
+
+/* ====== מיפוי מסלול → ETF שעוקב אחרי אותו מדד ======
+   הקופות הישראליות לא נסחרות, ולכן אין להן מחיר חי. ה-ETF משמש כמראה
+   של המדד שהמסלול עוקב אחריו — כיוון ותנועה, לא שווי הקופה עצמה.       */
+const IDXNAME={SPY:'S&P 500',URTH:'MSCI World',ACWI:'MSCI All Country World',AOR:'תמהיל 60/40',AOM:'תמהיל 40/60',AOK:'תמהיל 30/70',AGG:'אג״ח ארה״ב מצרפי'};
+function fundIndices(){
+  const m={};
+  S.funds.forEach(f=>{
+    const d=TRACKDEF[f.track]; if(!d||!d.sym)return;
+    if(!m[d.sym]) m[d.sym]={sym:d.sym, name:IDXNAME[d.sym]||d.sym, bal:0, tracks:new Set()};
+    m[d.sym].bal+=(f.bal||0);
+    m[d.sym].tracks.add(f.track);
+  });
+  return Object.values(m).filter(x=>x.bal>0).sort((a,b)=>b.bal-a.bal);
+}
 
 /* ====== אופק לכל קופה בנפרד ======
    לכל קופה מועד משיכה אחר. ברירת המחדל נגזרת מסוג הקופה, וניתנת לדריסה ידנית. */
@@ -582,7 +604,7 @@ function hishtCeiling(){
 }
 
 /* ====== חשיפה מנייתית בפועל ====== */
-const EQMAP={'עוקב מדד S&P 500':100,'עוקב מדד עולמי':100,'מנייתי':100,'כללי':50,'סולידי / אג״ח':15,'אחר':50};
+
 function recEquity(age,hz){
   const byAge=Math.max(20,Math.min(100,110-age));
   const byHz= hz>=15?100: hz>=7?80: hz>=3?55: hz>=1?30:15;
@@ -613,7 +635,7 @@ function fundGroups(){
 }
 function renderFunds(){
   const b=$('#fundsBody'); b.innerHTML='';
-  if(!S.funds.length){b.innerHTML='<tr><td colspan="10"><div class="empty"><div class="ico">🏦</div>עוד לא הוספת קופות. לחץ "הוסף קופה" או "מלא דוגמה".</div></td></tr>';return;}
+  if(!S.funds.length){b.innerHTML='<tr><td colspan="11"><div class="empty"><div class="ico">🏦</div>עוד לא הוספת קופות. לחץ "הוסף קופה" או "מלא דוגמה".</div></td></tr>';return;}
   fundGroups().forEach((grp,gi)=>{
     const tot=grp.rows.reduce((a,r)=>a+(r.f.bal||0),0);
     const totCost=grp.rows.reduce((a,r)=>a+fundCost(r.f),0);
@@ -624,7 +646,7 @@ function renderFunds(){
       <td data-label="סוג"><select data-g="${gi}" data-gk="type">${FTYPES.map(t=>`<option ${grp.type===t?'selected':''}>${t}</option>`).join('')}</select></td>
       <td data-label="${grp.type==='קרן השתלמות'?'תאריך פתיחה':'נפתחה'}"><input type="month" value="${grp.rows[0].f.opened||''}" data-g="${gi}" data-gk="opened" title="נדרש כדי לחשב מתי קרן ההשתלמות נזילה"></td>
       <td data-label="שנים עד משיכה"><input type="number" step="0.5" min="0" value="${grp.rows[0].f.yrs||''}" data-g="${gi}" data-gk="yrs" placeholder="${fundYears(grp.rows[0].f)}" title="מתי אתה צפוי למשוך את הכסף מהקופה הזו. ריק = ברירת המחדל לפי סוג הקופה"></td>
-      <td colspan="2" style="font-weight:800">סה״כ ${fmt(tot)}${totCost?` <span style="font-weight:500;color:var(--ink3)">· עלות ${fmt(totCost)} בשנה</span>`:''}</td>
+      <td colspan="3" style="font-weight:800">סה״כ ${fmt(tot)}${totCost?` <span style="font-weight:500;color:var(--ink3)">· עלות ${fmt(totCost)} בשנה</span>`:''}</td>
       <td colspan="2" style="text-align:left">
         <button class="btn sec sm" data-addtrack="${gi}">＋ מסלול</button>
         <button class="btn sec sm" data-split="${gi}">% פיצול</button>
@@ -638,7 +660,8 @@ function renderFunds(){
       const flags=fundFlags(f).map(x=>`<span class="pill ${x[0]}">${x[1]}</span>`).join(' ')||'<span class="pill n">—</span>';
       const tr=document.createElement('tr');
       tr.innerHTML=`
-        <td data-label="מסלול" style="padding-right:22px"><select data-i="${i}" data-k="track">${TRACKS.map(t=>`<option ${f.track===t?'selected':''}>${t}</option>`).join('')}</select></td>
+        <td data-label="מסלול" style="padding-right:22px"><select data-i="${i}" data-k="track">${TRACKS.map(t=>`<option ${f.track===t?'selected':''}>${t}</option>`).join('')}</select>${TRACKDEF[f.track]&&TRACKDEF[f.track].note?`<div style="color:var(--ink3);font-size:11.5px;margin-top:3px">${TRACKDEF[f.track].note}</div>`:''}</td>
+        <td data-label="% מניות"><input type="number" step="1" min="0" max="120" value="${f.eq!==undefined&&f.eq!==''?f.eq:''}" data-i="${i}" data-k="eq" placeholder="${TRACKDEF[f.track]?TRACKDEF[f.track].eq:50}" title="ריק = לפי המסלול. מלא כדי לדייק לפי הדוח של הקופה שלך"></td>
         <td data-label="% מהקופה" style="color:var(--ink3);font-weight:700">${tot?pct.toFixed(0)+'%':'—'}</td>
         <td data-label="יתרה ₪"><input type="number" value="${f.bal||''}" data-i="${i}" data-k="bal"></td>
         <td data-label="הפקדה חודשית ₪"><input type="number" value="${f.dep||''}" data-i="${i}" data-k="dep" placeholder="0"></td>
@@ -746,15 +769,51 @@ function renderHold(){
 $('#addWatch').onclick=()=>{S.watch.push({sym:'',name:''});save();renderWatch();};
 $('#addHold').onclick=()=>{S.holdings.push({sym:'',units:0,buy:0,cur:0});save();renderHold();};
 async function doRefresh(which){
-  const syms=[...new Set((which==='w'?S.watch:S.holdings).map(x=>x.sym).filter(Boolean))];
+  const src = which==='w'?S.watch : which==='h'?S.holdings : fundIndices();
+  const syms=[...new Set(src.map(x=>x.sym).filter(Boolean))];
   if(!syms.length)return;
-  const btn=which==='w'?$('#refreshWatch'):$('#refreshHold'); const orig=btn.textContent; btn.textContent='טוען…';
-  try{await fetchQuotes(syms); which==='w'?renderWatch():renderHold(); renderDash();}
+  const btn=which==='w'?$('#refreshWatch'):which==='h'?$('#refreshHold'):$('#refreshIdx');
+  const orig=btn.textContent; btn.textContent='טוען…';
+  try{await fetchQuotes(syms); which==='w'?renderWatch():which==='h'?renderHold():renderMyIdx(); renderDash();}
   catch(err){alert(err.message);}
   btn.textContent=orig;
 }
 $('#refreshWatch').onclick=()=>doRefresh('w');
 $('#refreshHold').onclick=()=>doRefresh('h');
+$('#refreshIdx').onclick=()=>doRefresh('i');
+
+/* ---- 🎯 המדדים של הקרנות שלי ---- */
+function renderMyIdx(){
+  const el=$('#myIdx'); if(!el)return;
+  const idx=fundIndices();
+  if(!idx.length){el.innerHTML='<div class="empty"><div class="ico">🎯</div>מלא את לשונית "הקרנות שלי" עם יתרות ומסלולים — והמדדים שלך יופיעו כאן אוטומטית.</div>';return;}
+  const tot=idx.reduce((a,x)=>a+x.bal,0);
+  /* תנועת החיסכון היום — ממוצע משוקלל של המדדים, לפי כמה כסף צמוד לכל אחד */
+  let moved=0, covered=0;
+  idx.forEach(x=>{const q=quotes[x.sym]; if(q&&q.chg!=null){moved+=q.chg*x.bal; covered+=x.bal;}});
+  const dayMove = covered? moved/covered : null;
+  const head = dayMove==null ? '' : `<div class="kpi" style="margin-bottom:14px">
+      <div class="l">תנועת החיסכון שלך היום (מוערך)</div>
+      <div class="v ${dayMove>=0?'g':'r'}">${dayMove>=0?'+':''}${dayMove.toFixed(2)}%</div>
+      <div class="s">כ-${fmt(Math.abs(covered*dayMove/100))} ${dayMove>=0?'עלייה':'ירידה'} · לפי המדדים שהקרנות שלך עוקבות אחריהם</div></div>`;
+  el.innerHTML = head + `<div class="tw"><table class="cards">
+    <thead><tr><th>מדד</th><th>מהחיסכון שלך</th><th>מיוצג ע״י</th><th>מחיר</th><th>שינוי יומי</th></tr></thead><tbody>
+    ${idx.map(x=>{
+      const q=quotes[x.sym], chg=q?q.chg:null;
+      const chgHtml = chg==null?'<span class="pill n">—</span>':`<span class="pill ${chg>=0?'g':'r'}">${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}%</span>`;
+      return `<tr>
+        <td data-label="מדד"><b>${x.name}</b><div style="color:var(--ink3);font-size:12px">${[...x.tracks].join(" · ")}</div></td>
+        <td data-label="מהחיסכון שלך"><b>${Math.round(x.bal/tot*100)}%</b> <span style="color:var(--ink3);font-size:12px">${fmt(x.bal)}</span></td>
+        <td data-label="מיוצג ע״י" style="font-weight:700">${x.sym}</td>
+        <td data-label="מחיר" style="font-weight:700">${q?q.price.toFixed(2):'—'}</td>
+        <td data-label="שינוי יומי">${chgHtml}</td></tr>`;
+    }).join('')}
+    </tbody></table></div>
+    <div class="note" style="margin-top:12px"><b>חשוב להבין מה זה כן ומה זה לא.</b> קופות הגמל והפנסיה בישראל אינן נסחרות בבורסה — אין להן מחיר חי, והשווי שלהן מתפרסם בדיווח חודשי בפיגור. הטבלה מציגה <b>ETF שעוקב אחרי אותו מדד</b> — כדי לראות את הכיוון והתנועה, לא את שווי הקופה שלך.
+    <br>הפערים מול הקופה בפועל: דמי ניהול, שער הדולר-שקל, מדיניות הגידור של הקופה, ואחזקות שאינן במדד. במסלול "כללי" הייצוג מקורב במיוחד — לכל גוף תמהיל אחר.
+    ${idx.some(x=>x.tracks.has('כללי'))?'':''}
+    ${S.funds.some(f=>f.track==='אחר')?'<br>מסלולים שסומנו "אחר" לא מיוצגים כאן — אין להם מדד ידוע.':''}</div>`;
+}
 
 /* ============ CALCULATORS ============ */
 function compound(init,month,years,rate){
@@ -819,6 +878,128 @@ function calcReal(){
 ['a_age','a_hz'].forEach(id=>$('#'+id).addEventListener('input',calcAlloc));
 ['r_nom','r_inf'].forEach(id=>$('#'+id).addEventListener('input',calcReal));
 
+/* ============ 🧭 מנוע ההמלצות ============
+   כל המלצה נשענת על הנתונים שהוזנו ועל האופק של הקופה הספציפית.
+   worth = כמה זה שווה בשקלים, ולפיו נקבע הסדר.                        */
+function recommendations(){
+  const R=[]; const bal=S.funds.reduce((a,f)=>a+(f.bal||0),0);
+  const net=weightedRet()>0?weightedRet():6;
+
+  /* 1. נתונים חסרים — בלעדיהם ההמלצות האחרות לא אמינות */
+  const noOpen=S.funds.filter(f=>f.type==='קרן השתלמות'&&!f.opened);
+  if(noOpen.length) R.push({sev:'info',worth:0,title:'השלם תאריך פתיחה לקרן ההשתלמות',
+    why:`בלי תאריך הפתיחה הכלי לא יודע מתי הקרן נזילה, ומניח 6 שנים מהיום. זה מזיז את התחזית ואת ההמלצות על ${[...new Set(noOpen.map(f=>f.name||'הקרן'))].join(', ')}.`,
+    action:'מלא את השדה "תאריך פתיחה" בכותרת הקופה, בלשונית "הקרנות שלי".',
+    how:'התאריך מופיע בדוח השנתי של הקרן, או באזור האישי באתר הגוף המנהל.'});
+  const noDep=S.funds.filter(f=>(f.bal||0)>0&&!(f.dep>0)&&f.type!=='תיק פרטי');
+  if(noDep.length===S.funds.length&&S.funds.length) R.push({sev:'info',worth:0,title:'הזן הפקדה חודשית',
+    why:'בלי ההפקדה החודשית אי אפשר לחשב ניצול תקרות מס, דמי ניהול מהפקדה, ולא תחזית אמינה.',
+    action:'מלא את עמודת "הפקדה חודשית ₪" בכל קופה פעילה. בקופות שכבר לא מפקידים אליהן — השאר 0.',
+    how:'הסכום מופיע בתלוש השכר (הפרשות לפנסיה/השתלמות) או בדוח הרבעוני.'});
+
+  /* 2. מיקוח דמי ניהול — שורה אחת לכל קופה, לא לכל מסלול */
+  const byFund={};
+  savingRows().forEach(r=>{
+    const k=(r.f.name||'קופה').trim();
+    if(!byFund[k]) byFund[k]={name:k,years:r.years,cum:0,ann:0,rows:[]};
+    byFund[k].cum+=r.cumSave; byFund[k].ann+=r.annSave; byFund[k].rows.push(r);
+  });
+  Object.values(byFund).forEach(g=>{
+    if(g.cum<3000)return;                                   /* מתחת לזה — רעש */
+    const wAcc=g.rows.reduce((a,r)=>a+(r.f.bal||0)*(r.f.fee||0),0)/Math.max(1,g.rows.reduce((a,r)=>a+(r.f.bal||0),0));
+    const tAcc=Math.min(...g.rows.map(r=>r.tAcc));
+    const dNow=Math.max(...g.rows.map(r=>r.f.feeDep||0)), dTgt=Math.min(...g.rows.map(r=>r.tDep));
+    const isDep=dNow>dTgt+0.1;
+    const isPen=g.rows.some(r=>r.f.type==='קרן פנסיה');
+    R.push({sev:g.cum>50000?'high':'med',worth:g.cum,
+      title:`מקח את דמי הניהול ב${g.name}`,
+      why:`אתה משלם ${wAcc.toFixed(2)}% מצבירה${isDep?` ו-${dNow.toFixed(2)}% מהפקדה`:''}, מול ${tAcc.toFixed(2)}%${isDep?` ו-${dTgt.toFixed(2)}%`:''} שגופים מסכימים להם בפועל מול לקוח שמבקש. הקופה רצה עוד ${g.years} שנה — ולכן ההפרש מצטבר ל-${fmt(g.cum)}, ${fmt(g.ann)} כבר בשנה הראשונה.${g.rows.length>1?` (מאחד את ${g.rows.length} המסלולים בקופה.)`:''}`,
+      action:`התקשר לשירות הלקוחות ובקש הפחתה ל-${tAcc.toFixed(2)}% מצבירה${isDep?` ו-${dTgt.toFixed(2)}% מהפקדה`:''}.`,
+      how:'ציין שאתה שוקל לעבור גוף אחר. מעבר בין גופים חינם ואינו אירוע מס, וזה המנוף היחיד שבאמת עובד. אם מסרבים — בקש מחלקת שימור לקוחות.',
+      caveat:isPen?'בדוק שההנחה אינה זמנית ("לשנתיים") — בקש אותה בכתב ולתקופה בלתי מוגבלת.':null});
+  });
+
+  /* 3. חשיפה מנייתית מול האופק — לכל קופה בנפרד */
+  fundGroups().forEach(g=>{
+    const f0=g.rows[0].f, yrs=fundYears(f0);
+    const gb=g.rows.reduce((a,r)=>a+(r.f.bal||0),0); if(!gb)return;
+    const eq=g.rows.reduce((a,r)=>a+(r.f.bal||0)*fundEq(r.f),0)/gb;
+    const rec=recEquity(S.settings.age,yrs);
+    const gap=rec-eq;
+    if(gap>=15&&yrs>=8){
+      const boost=gap/100*3;                        /* פער תשואה מוערך */
+      const worth=compound(gb,0,yrs,net+boost).final-compound(gb,0,yrs,net).final;
+      R.push({sev:'med',worth,title:`שקול מסלול מנייתי יותר ב${g.name||'קופה'}`,
+        why:`הקופה הזו נמשכת רק בעוד ${yrs} שנה, אבל היא מוחזקת ב-${Math.round(eq)}% מניות בלבד — לעומת ${rec}% שמתאימים לאופק כזה. בטווח כזה יש מספיק זמן להתאושש מירידות, והמחיר של שמרנות עודפת הוא תשואה שלא נצברה. הפער שווה בערך ${fmt(worth)} עד המשיכה.`,
+        action:`בדוק מעבר למסלול עם חשיפה מנייתית גבוהה יותר בתוך אותו גוף.`,
+        how:'מעבר בין מסלולים באותה קופה מתבצע אונליין באזור האישי, חינם, ואינו אירוע מס. לא צריך למכור ולקנות.',
+        caveat:'זו לא המלצת השקעה. חשיפה מנייתית גבוהה יותר = תנודתיות גבוהה יותר. עשה זאת רק אם אתה יודע שלא תיבהל ותמכור בירידה — בדיוק שם נגרם הנזק האמיתי.'});
+    }
+    if(gap<=-20&&yrs<=3&&yrs>0){
+      R.push({sev:'med',worth:0,title:`${g.name||'קופה'} — חשיפה מנייתית גבוהה לטווח קצר`,
+        why:`הקופה מיועדת למשיכה בעוד ${yrs} שנה בלבד, ומוחזקת ב-${Math.round(eq)}% מניות. ירידה חדה סמוך למועד המשיכה לא תספיק להתאושש, ותפגע בדיוק בכסף שאתה מתכוון להשתמש בו.`,
+        action:'החלט קודם כל — האם אתה באמת מתכוון למשוך את הכסף במועד הזה?',
+        how:'אם כן — שקול הפחתת חשיפה מנייתית לקראת המשיכה. אם לא (ורוב האנשים משאירים את הקרן ממשיכה לצמוח) — עדכן את העמודה "שנים עד משיכה" בכותרת הקופה למספר האמיתי, וההמלצה הזו תיעלם.',
+        caveat:'"נזיל" לא אומר "צריך למשוך". קרן השתלמות שהבשילה יכולה להמשיך לצמוח בפטור ממס.'});
+    }
+  });
+
+  /* 4. תקרות מס */
+  const hisht=S.funds.filter(f=>f.type==='קרן השתלמות');
+  if(hisht.length){
+    const used=hisht.reduce((a,f)=>a+(f.dep||0)*12,0);
+    const {cap}=hishtCeiling(); const gap=cap-used;
+    if(used>0&&gap>1000){
+      const yrs=Math.max(...hisht.map(fundYears),1);
+      const worth=(compound(0,gap/12,yrs,net).final-gap*yrs)*0.25;   /* מס רווח הון שנחסך */
+      R.push({sev:'high',worth,title:'אתה לא מנצל את תקרת ההשתלמות',
+        why:`מפקיד ${fmt(used)} מתוך ${fmt(cap)} מותרים — נשאר מקום של ${fmt(gap)} בשנה. הרווחים על הכסף הזה פטורים ממס רווח הון (25%), וזו ההטבה הנדיבה ביותר בחיסכון הישראלי. הטבה שלא נוצלה השנה אבודה — אי אפשר להשלים אותה רטרואקטיבית.`,
+        action:'בדוק מול המעסיק אם אפשר להגדיל את ההפרשה לקרן ההשתלמות עד התקרה.',
+        how:'אצל שכיר ההפקדה נגזרת מהשכר (7.5% מעסיק + 2.5% עובד) עד תקרת שכר של ₪15,712 לחודש. אם שכרך נמוך מהתקרה — אין מה לעשות. אם הוא גבוה והמעסיק מפריש על בסיס נמוך יותר — זו שיחה שכדאי לנהל.',
+        caveat:'שווי ההטבה תלוי בשנים שהכסף יישאר בקרן ובתשואה בפועל.'});
+    }
+    if(gap<-1000) R.push({sev:'high',worth:0,title:'אתה מפקיד מעל תקרת ההשתלמות',
+      why:`הפקדה של ${fmt(-gap)} מעל התקרה. הרווחים על החלק העודף חייבים במס רווח הון ואינם פטורים — רוב האנשים לא מודעים לזה ומחזיקים כסף באפיק נחות בלי לדעת.`,
+      action:'בדוק מול המעסיק את בסיס ההפרשה, ושקול להפנות את העודף לאפיק אחר.',
+      how:'גמל להשקעה נותן פטור מלא ממס אם מושכים כקצבה אחרי גיל 60, ותקרה גבוהה בהרבה (₪83,641 לשנה).'});
+  }
+
+  /* 5. דגלים שאין להם ערך כספי מחושב */
+  const unknown=S.funds.filter(f=>f.track==='אחר');
+  if(unknown.length) R.push({sev:'info',worth:0,title:'יש לך מסלול מסומן "אחר"',
+    why:'מסלול לא מזוהה לא נכנס לחישוב החשיפה המנייתית ולא מיוצג במדדים — מה שמעוות את שאר ההמלצות.',
+    action:'בחר את המסלול המדויק מהרשימה, או הזן את אחוז המניות ידנית בעמודת "% מניות".',
+    how:'החשיפה המנייתית מופיעה בדוח הרבעוני של הקופה תחת "חשיפה למניות".'});
+
+  return R.sort((a,b)=>(b.worth-a.worth)||({high:2,med:1,info:0}[b.sev]-{high:2,med:1,info:0}[a.sev]));
+}
+function renderRecs(){
+  const el=$('#recs'); if(!el)return;
+  if(!S.funds.length){el.innerHTML='<div class="empty"><div class="ico">🧭</div>מלא את לשונית "הקרנות שלי" — וכאן תופיע רשימת פעולות מנומקת ומתועדפת.</div>';return;}
+  const R=recommendations();
+  if(!R.length){el.innerHTML='<div class="empty"><div class="ico">👌</div>לא נמצאה פעולה כדאית לפי הנתונים שהזנת. זה מצב טוב — בדוק שוב בעוד 6 חודשים.</div>';return;}
+  const tot=R.reduce((a,r)=>a+(r.worth||0),0);
+  const tone={high:['r','דחוף'],med:['w','שווה בדיקה'],info:['n','השלמת נתונים']};
+  el.innerHTML=(tot>1000?`<div class="kpi" style="margin-bottom:14px"><div class="l">שווי כל הפעולות ברשימה</div><div class="v g">${fmt(tot)}</div><div class="s">מצטבר עד מועד המשיכה של כל קופה. הפעולה הראשונה היא המשתלמת ביותר.</div></div>`:'')
+  + R.map((r,i)=>`<div class="card" style="margin-bottom:12px;border-right:3px solid var(--${r.sev==='high'?'bad':r.sev==='med'?'warn':'line'})">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">
+        <h4 style="margin:0">${i+1}. ${r.title}</h4>
+        <div style="display:flex;gap:8px;align-items:baseline">
+          <span class="pill ${tone[r.sev][0]}">${tone[r.sev][1]}</span>
+          ${r.worth>1000?`<b style="color:var(--good);white-space:nowrap">${fmt(r.worth)}</b>`:''}
+        </div>
+      </div>
+      <p style="margin:10px 0 0;line-height:1.65">${r.why}</p>
+      <div style="margin-top:12px;padding:11px 13px;background:var(--card2);border-radius:9px">
+        <div style="font-weight:700;margin-bottom:4px">מה לעשות</div>
+        <div>${r.action}</div>
+        <div style="margin-top:8px;color:var(--ink2);font-size:13.5px">${r.how}</div>
+      </div>
+      ${r.caveat?`<div class="note" style="margin:10px 0 0;font-size:13px">⚠️ ${r.caveat}</div>`:''}
+    </div>`).join('')
+  + `<div class="note info">ההמלצות נגזרות אוטומטית מהנתונים שהזנת ומהאופק של כל קופה — הן <b>נקודת פתיחה לבדיקה, לא ייעוץ השקעות</b>. אין כאן התחשבות במצבך המשפחתי, בהכנסות, בחובות, בכריות ביטחון או בביטוחים שבקופה. לפני מהלך משמעותי — התייעץ עם בעל רישיון פנסיוני.</div>`;
+}
+
 /* ============ JOURNAL & CHECKLIST ============ */
 const STEPS=[
   ['מפה את מה שכבר יש לך','הר הכסף / המסלקה הפנסיונית — אילו קרנות, איזה מסלול, כמה דמי ניהול.'],
@@ -870,23 +1051,6 @@ function feeProjection(bal,feePct,cheapPct,years){
   const cur=sim(feePct), cheap=sim(Math.min(feePct,cheapPct));
   return {curCum:cur.cum, cheapCum:cheap.cum, curTotal:cur.total, cheapTotal:cheap.total};
 }
-function drawFeeChart(){
-  const cv=$('#feeChart'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-  ctx.clearRect(0,0,W,H);
-  const bal=S.funds.reduce((a,f)=>a+(f.bal||0),0);
-  const wfee=bal?S.funds.reduce((a,f)=>a+(f.bal||0)*(f.fee||0),0)/bal:0;
-  const years=Math.max(1,...S.funds.map(fundYears));   /* עד המשיכה האחרונה */
-  const proj=feeProjection(bal,wfee,0.5,years);
-  const curP=proj.curCum, cheapP=proj.cheapCum;
-  const max=Math.max(...curP,1),pad=24;
-  const x=i=>pad+i*(W-2*pad)/(years||1),y=v=>H-pad-v/max*(H-2*pad);
-  ctx.strokeStyle=cssv('--line');ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
-  const line=(P,col)=>{ctx.beginPath();ctx.moveTo(x(0),y(P[0]));P.forEach((p,i)=>ctx.lineTo(x(i),y(p)));ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.stroke();};
-  line(cheapP,cssv('--good'));line(curP,cssv('--bad'));
-  ctx.fillStyle=cssv('--ink3');ctx.font='11px Heebo';ctx.textAlign='right';
-  ctx.fillText('מסלול נוכחי',W-pad,y(curP[curP.length-1])-6);
-  ctx.fillStyle=cssv('--good');ctx.fillText('מסלול זול 0.5%',W-pad,y(cheapP[cheapP.length-1])+14);
-}
 function renderDash(){
   const bal=S.funds.reduce((a,f)=>a+(f.bal||0),0);
   const holdVal=S.holdings.reduce((a,h)=>{const q=quotes[h.sym];const cur=q?q.price:(h.cur||0);return a+cur*(h.units||0);},0);
@@ -902,22 +1066,45 @@ function renderDash(){
     feeDragCur+=pr.curTotal; feeDragCheap+=pr.cheapTotal;
   });
   const flagsN=S.funds.reduce((a,f)=>a+fundFlags(f).filter(x=>x[0]==='r'||x[0]==='w').length,0);
+  const eqAct=bal?S.funds.reduce((a,f)=>a+(f.bal||0)*fundEq(f),0)/bal:0;
+  const eqRec=recEquity(S.settings.age,S.settings.hz);
+  const eqGap=Math.round(eqAct-eqRec);
+  const nRecs=recommendations().filter(r=>r.sev!=='info').length;
+  const recWorth=recommendations().reduce((a,r)=>a+(r.worth||0),0);
   $('#dashKpis').innerHTML=`
-    <div class="kpi"><div class="l">חיסכון כולל (קרנות + תיק)</div><div class="v b">${fmt(total)}</div><div class="s">${fmt(bal)} בקרנות · ${fmt(holdVal)} בתיק</div></div>
-    <div class="kpi"><div class="l">ד״נ מצבירה משוקלל</div><div class="v ${wfee>1?'r':wfee>0.7?'w':'g'}">${wfee?wfee.toFixed(2)+'%':'—'}</div><div class="s">${fmt(annualFee)} בשנה סה״כ${depFee?` (מזה ${fmt(depFee)} מהפקדות)`:''}</div></div>
-    <div class="kpi"><div class="l">עלות דמי ניהול עד המשיכה</div><div class="v r">${fmt(feeDragCur)}</div><div class="s">במסלול זול: ${fmt(feeDragCheap)}</div></div>
-    <div class="kpi"><div class="l">דגלים אדומים</div><div class="v ${flagsN?'w':'g'}">${flagsN}</div><div class="s">${flagsN?'יש מה לבדוק בלשונית הקרנות':'הכול נקי 👌'}</div></div>`;
-  const fl=$('#dashFlags');const items=[];
-  S.funds.forEach(f=>fundFlags(f).filter(x=>x[0]!=='g').forEach(x=>items.push(`<div class="check" style="margin-bottom:8px"><div><span class="pill ${x[0]}">${x[1]}</span> <b>${(f.name||'קרן').replace(/</g,'&lt;')}</b> <span style="color:var(--ink3);font-size:13px">(${f.track})</span></div></div>`)));
-  if(wfee>1) items.unshift(`<div class="check" style="margin-bottom:8px"><div><span class="pill r">כללי</span> דמי הניהול המשוקללים שלך (${wfee.toFixed(2)}%) גבוהים — יעד מומלץ מתחת ל-0.7%.</div></div>`);
-  fl.innerHTML=items.length?items.join(''):'<div class="empty"><div class="ico">✅</div>לא זוהו דגלים. מלא את לשונית "הקרנות שלי" כדי לקבל ניתוח.</div>';
+    <div class="kpi"><div class="l">חיסכון כולל</div><div class="v b">${fmt(total)}</div><div class="s">${fmt(bal)} בקרנות${holdVal?` · ${fmt(holdVal)} בתיק`:''}</div></div>
+    <div class="kpi"><div class="l">עלות שנתית</div><div class="v ${wfee>1?'r':wfee>0.7?'w':'g'}">${fmt(annualFee)}</div><div class="s">${wfee.toFixed(2)}% מצבירה${depFee?` · ${fmt(depFee)} מהפקדות`:''} · ${fmt(feeDragCur)} עד המשיכה</div></div>
+    <div class="kpi"><div class="l">חשיפה מנייתית</div><div class="v ${Math.abs(eqGap)<=10?'g':Math.abs(eqGap)<=25?'w':'r'}">${Math.round(eqAct)}%</div><div class="s">מותאם לך ${eqRec}%${Math.abs(eqGap)>10?` · ${eqGap<0?'שמרני':'אגרסיבי'} ב-${Math.abs(eqGap)} נק׳`:' · תואם'}</div></div>
+    <div class="kpi"><div class="l">פעולות מומלצות</div><div class="v ${nRecs?'w':'g'}">${nRecs}</div><div class="s">${nRecs?`שוות ${fmt(recWorth)} · ראה לשונית "החלטות"`:'אין פעולה פתוחה 👌'}</div></div>`;
+  renderIdxStrip();
   renderLiquidity(bal);
-  renderSavings();
-  renderCaps();
   renderProjection(bal);
-  renderEquity(bal);
-  drawFeeChart();
   renderOnboard();
+}
+
+/* ---- 🎯 רצועת המדדים בדשבורד ---- */
+function renderIdxStrip(){
+  const el=$('#dashIdxStrip'); if(!el)return;
+  const idx=fundIndices().filter(x=>quotes[x.sym]);
+  if(!idx.length){el.innerHTML='';return;}      /* מוצג רק אחרי שנמשכו מחירים */
+  const tot=fundIndices().reduce((a,x)=>a+x.bal,0);
+  let moved=0,covered=0;
+  idx.forEach(x=>{const q=quotes[x.sym]; if(q.chg!=null){moved+=q.chg*x.bal;covered+=x.bal;}});
+  const dm=covered?moved/covered:null;
+  el.innerHTML=`<div class="card" style="margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px">
+      <h4 style="margin:0">🎯 המדדים שלך היום</h4>
+      ${dm==null?'':`<div style="font-size:15px">תנועה משוקללת: <b class="${dm>=0?'g':'r'}" style="color:${dm>=0?'var(--good)':'var(--bad)'}">${dm>=0?'+':''}${dm.toFixed(2)}%</b> <span style="color:var(--ink3);font-size:13px">(כ-${fmt(Math.abs(covered*dm/100))})</span></div>`}
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      ${idx.map(x=>{const q=quotes[x.sym],c=q.chg;
+        return `<div style="flex:1;min-width:150px;background:var(--card2);border-radius:10px;padding:10px 12px">
+          <div style="font-size:12.5px;color:var(--ink3)">${x.name} · ${Math.round(x.bal/tot*100)}% מהכסף</div>
+          <div style="font-weight:800;font-size:17px;margin-top:3px">${c==null?'—':`<span style="color:${c>=0?'var(--good)':'var(--bad)'}">${c>=0?'▲':'▼'} ${Math.abs(c).toFixed(2)}%</span>`}</div>
+        </div>`;}).join('')}
+    </div>
+    <div class="note" style="margin:12px 0 0;font-size:12.5px">קירוב לפי ETF שעוקב אחרי אותו מדד — הקופות עצמן אינן נסחרות. לפירוט מלא: לשונית "מדדים ותיק חי".</div>
+  </div>`;
 }
 
 /* ---- 💧 נזילות ---- */
@@ -949,72 +1136,7 @@ function renderLiquidity(bal){
     ${msg}`;
 }
 
-/* ---- 🎯 איפה כדאי להילחם ---- */
-function renderSavings(){
-  const el=$('#dashSavings'); if(!el)return;
-  const rows=savingRows();
-  if(!rows.length){el.innerHTML='<div class="empty"><div class="ico">👌</div>דמי הניהול שלך כבר בטווח הטוב — אין כאן מה למקח כרגע.</div>';return;}
-  const tot=rows.reduce((a,r)=>a+r.cumSave,0);
-  el.innerHTML=`
-    <div class="kpi" style="margin-bottom:14px"><div class="l">סך הכל על השולחן</div><div class="v g">${fmt(tot)}</div><div class="s">זה מה ששיחות המיקוח שוות לך, כל קופה עד מועד המשיכה שלה</div></div>
-    <div class="tw"><table class="cards"><thead><tr><th>קופה / מסלול</th><th>משלם היום</th><th>יעד בר-השגה</th><th>חיסכון לשנה</th><th>מצטבר עד המשיכה</th></tr></thead><tbody>
-    ${rows.map((r,i)=>`<tr>
-      <td data-label="קופה"><b>${(r.f.name||'ללא שם').replace(/</g,'&lt;')}</b>${i===0?' <span class="pill g">התחל כאן</span>':''}<div style="color:var(--ink3);font-size:12px">${r.f.track||''}</div></td>
-      <td data-label="משלם היום">${(r.f.fee||0).toFixed(2)}% צבירה${r.f.feeDep?` · ${(r.f.feeDep).toFixed(2)}% הפקדה`:''}</td>
-      <td data-label="יעד">${r.tAcc.toFixed(2)}% צבירה${r.f.feeDep?` · ${r.tDep.toFixed(2)}% הפקדה`:''}</td>
-      <td data-label="חיסכון לשנה" style="font-weight:700">${fmt(r.annSave)}</td>
-      <td data-label="מצטבר עד המשיכה" style="font-weight:800;color:var(--good)">${fmt(r.cumSave)}<div style="font-weight:500;font-size:11.5px;color:var(--ink3)">על פני ${r.years} שנה</div></td>
-    </tr>`).join('')}
-    </tbody></table></div>
-    <div class="note" style="margin-top:12px">היעדים הם תעריפים שגופים מוסדיים מסכימים להם בפועל מול לקוח שמבקש: <b>פנסיה</b> 0.25% מצבירה ו-1.5% מהפקדה, <b>השתלמות/גמל</b> 0.5% מצבירה. החישוב מניח תשואה של ${(weightedRet()>0?weightedRet():6).toFixed(1)}% בשנה. <b>הדרך למקח:</b> טלפון לשירות הלקוחות, לבקש הצעה משופרת, ולציין שאתה שוקל לעבור גוף — המעבר עצמו חינם ולא גורר אירוע מס.</div>`;
-}
 
-/* ---- 🧾 ניצול תקרות ---- */
-function renderCaps(){
-  const el=$('#dashCaps'); if(!el)return;
-  const items=[];
-  const bar=(used,cap,color)=>`<div style="height:10px;border-radius:6px;background:var(--card2);overflow:hidden;margin:8px 0 6px"><div style="width:${Math.min(100,used/cap*100)}%;height:100%;background:${color}"></div></div>`;
-  const block=(title,used,cap,capLabel,msg,tone)=>{
-    const c=tone==='over'?'var(--bad)':tone==='under'?'var(--warn)':'var(--good)';
-    return `<div style="padding:14px 0;border-bottom:1px solid var(--line)">
-      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><b>${title}</b>
-      <span style="color:var(--ink3);font-size:13px">${capLabel}: ${fmt(cap)} לשנה</span></div>
-      ${bar(used,cap,c)}
-      <div style="display:flex;justify-content:space-between;font-size:13px"><span>מפקיד ${fmt(used)}</span><b style="color:${c}">${Math.round(used/cap*100)}%</b></div>
-      <div style="margin-top:8px;font-size:13.5px">${msg}</div></div>`;
-  };
-
-  /* קרן השתלמות */
-  const hisht=S.funds.filter(f=>f.type==='קרן השתלמות');
-  if(hisht.length){
-    const used=hisht.reduce((a,f)=>a+(f.dep||0)*12,0);
-    const {cap,label}=hishtCeiling();
-    const gap=cap-used;
-    let msg,tone;
-    if(used===0){msg='לא הזנת הפקדה חודשית לקרן ההשתלמות — מלא אותה בלשונית "הקרנות שלי" כדי לראות את ניצול התקרה.';tone='under';}
-    else if(gap>500){tone='under';msg=`נשאר לך מקום של <b>${fmt(gap)}</b> בשנה. כל שקל שתפקיד עד התקרה — <b>הרווחים עליו פטורים ממס רווח הון</b> (25% ריאלי), וזו ההטבה הכי נדיבה שיש בחיסכון הישראלי.`;}
-    else if(gap<-500){tone='over';msg=`אתה מפקיד <b>${fmt(-gap)}</b> מעל התקרה. הרווחים על החלק העודף <b>חייבים במס רווח הון</b> ולא פטורים — רוב האנשים לא מודעים לזה. שווה לבדוק אם עדיף להעביר את העודף לאפיק אחר.`;}
-    else {tone='ok';msg='אתה מנצל את התקרה כמעט במלואה. זה בדיוק המצב הרצוי.';}
-    items.push(block('קרן השתלמות',used,cap,label,msg,tone));
-    if((S.settings.status||'')!=='שכיר'){
-      items.push(`<div class="note" style="margin:12px 0 0">כעצמאי מגיע לך גם <b>ניכוי ממס</b> על ההפקדה — עד ${fmt(CAPS2026.hishtSelfDeduct)} בשנה (4.5% מהכנסה קובעת של עד ₪293,397). בשיעור מס שולי של 31% זה שווה כ-${fmt(CAPS2026.hishtSelfDeduct*0.31)} בשנה. החישוב המדויק תלוי בהכנסה שלך — הוא נמצא בקובץ "מחשבון מס" שלך.</div>`);
-    }
-  }
-  /* גמל להשקעה */
-  const gemel=S.funds.filter(f=>f.type==='גמל להשקעה');
-  if(gemel.length){
-    const used=gemel.reduce((a,f)=>a+(f.dep||0)*12,0);
-    const cap=CAPS2026.gemelInvest, gap=cap-used;
-    let msg,tone;
-    if(gap<-500){tone='over';msg=`חריגה של <b>${fmt(-gap)}</b>. התקרה חלה על <b>כל</b> קופות הגמל להשקעה על שמך יחד, גם בגופים שונים — הפקדה מעבר לה תידחה או תוחזר.`;}
-    else {tone=used/cap>0.8?'ok':'under';msg=`נשאר מקום של <b>${fmt(gap)}</b> בשנה. הטבת המס כאן שונה: אין פטור על ההפקדה, אבל אם תמשוך כקצבה אחרי גיל 60 — <b>הרווחים פטורים ממס לחלוטין</b>.`;}
-    items.push(block('גמל להשקעה',used,cap,'תקרה שנתית לאדם',msg,tone));
-  }
-  if(!items.length){el.innerHTML='<div class="empty"><div class="ico">🧾</div>הוסף קרן השתלמות או גמל להשקעה, ומלא הפקדה חודשית, כדי לראות את ניצול התקרות.</div>';return;}
-  el.innerHTML=items.join('')+
-    `<div class="note info" style="margin-top:14px"><b>קרן פנסיה לא מופיעה כאן בכוונה.</b> הטבת המס עליה (סעיפים 45א ו-47) תלויה בכלל ההכנסה שלך, במעמד התעסוקתי ובהפקדות אחרות — זה חישוב מס מלא ולא כרטיס בדשבורד. לזה יש לך את קובץ "מחשבון מס".
-    <br>הערכים לעיל נכונים לשנת ${CAPS2026.year} וצמודים למדד — יש לעדכן אותם בתחילת כל שנה.</div>`;
-}
 
 /* ---- 🔭 תחזית — כל קופה עד מועד המשיכה שלה ---- */
 function renderProjection(bal){
@@ -1032,7 +1154,7 @@ function renderProjection(bal){
     const gross=net+wfee;
     const val=compound(bal0,dep0*(1-((f0.feeDep||0)/100)),years,gross-wfee).final;
     const tAcc=bal0?g.rows.reduce((a,r)=>{const b=BENCH[r.f.type]||{acc:0.5};return a+(r.f.bal||0)*Math.min(r.f.fee||0,b.acc);},0)/bal0:0;
-    const eqNow=bal0?g.rows.reduce((a,r)=>a+(r.f.bal||0)*(EQMAP[r.f.track]!==undefined?EQMAP[r.f.track]:50),0)/bal0:0;
+    const eqNow=bal0?g.rows.reduce((a,r)=>a+(r.f.bal||0)*fundEq(r.f),0)/bal0:0;
     const eqBoost=Math.max(0,(recEquity(S.settings.age,years)-eqNow)/100*3);
     const better=compound(bal0,dep0*(1-((f0.feeDep||0)/100)),years,gross-tAcc+eqBoost).final;
     return {name:g.name||'ללא שם',type:g.type,years,bal0,dep0,val,better,src:yearsSource(f0)};
@@ -1072,25 +1194,6 @@ function renderProjection(bal){
 }
 
 /* ---- 📊 חשיפה מנייתית ---- */
-function renderEquity(bal){
-  const el=$('#dashEquity'); if(!el)return;
-  if(!bal){el.innerHTML='<div class="empty"><div class="ico">📊</div>מלא קופות כדי לראות את החשיפה המנייתית שלך.</div>';return;}
-  const actual=S.funds.reduce((a,f)=>a+(f.bal||0)*(EQMAP[f.track]!==undefined?EQMAP[f.track]:50),0)/bal;
-  const rec=recEquity(S.settings.age,S.settings.hz);
-  const gap=Math.round(actual-rec);
-  const tone=Math.abs(gap)<=10?'g':Math.abs(gap)<=25?'w':'r';
-  let verdict;
-  if(Math.abs(gap)<=10) verdict='החשיפה שלך תואמת את הגיל והטווח שהגדרת. אין כאן מה לשנות.';
-  else if(gap<0) verdict=`אתה <b>שמרני ב-${Math.abs(gap)} נקודות</b> ממה שמתאים לטווח שלך. המשמעות: תשואה נמוכה יותר לאורך זמן, בתמורה לתנודתיות שאתה כנראה לא באמת צריך להימנע ממנה בטווח של ${S.settings.hz} שנה.`;
-  else verdict=`אתה <b>אגרסיבי ב-${gap} נקודות</b> ממה שמתאים לטווח שלך. בטווח קצר יחסית, ירידה חדה עלולה לתפוס אותך בדיוק לפני המשיכה.`;
-  const bar=(v,c)=>`<div style="flex:1"><div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink3);margin-bottom:5px"><span>${c}</span><b style="color:var(--ink)">${Math.round(v)}% מניות</b></div>
-    <div style="height:12px;border-radius:7px;background:var(--card2);overflow:hidden"><div style="width:${v}%;height:100%;background:var(--brand2)"></div></div></div>`;
-  const mix=S.funds.reduce((m,f)=>{const k=f.track||'אחר';m[k]=(m[k]||0)+(f.bal||0);return m;},{});
-  el.innerHTML=`
-    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:14px">${bar(actual,'בפועל אצלך')}${bar(rec,`מותאם לגיל ${S.settings.age} וטווח ${S.settings.hz} שנה`)}</div>
-    <div class="kpi"><div class="l">פער</div><div class="v ${tone}">${gap>0?'+':''}${gap} נק׳</div><div class="s">${verdict}</div></div>
-    <div class="note" style="margin-top:12px">הפילוח מחושב לפי המסלולים שהזנת: ${Object.entries(mix).map(([k,v])=>`${k} ${Math.round(v/bal*100)}%`).join(' · ')}. ההנחה: מסלול עוקב-מדד ומנייתי = 100% מניות, כללי = 50%, סולידי = 15%.</div>`;
-}
 
 /* ============ SETTINGS ============ */
 $('#settingsBtn').onclick=()=>{$('#s_key').value=S.settings.key||'';$('#s_status').value=S.settings.status||'שכיר';$('#s_ret').value=S.settings.retire||67;$('#s_ret_v').textContent=S.settings.retire||67;$('#s_sync').value=S.settings.syncCode||'';$('#s_age').value=S.settings.age;$('#s_age_v').textContent=S.settings.age;$('#s_hz').value=S.settings.hz;$('#s_hz_v').textContent=S.settings.hz;$('#settingsModal').classList.add('open');};
@@ -1136,7 +1239,7 @@ function addScrollHints(){
 }
 
 /* ============ INIT ============ */
-function renderAll(){renderFunds();renderWatch();renderHold();renderChecklist();renderJournal();calcCompound();calcFee();calcAlloc();calcReal();renderDash();renderOnboard();}
+function renderAll(){renderFunds();renderWatch();renderHold();renderMyIdx();renderRecs();renderChecklist();renderJournal();calcCompound();calcFee();calcAlloc();calcReal();renderDash();renderOnboard();}
 renderAll();
 addScrollHints();
 </script>
