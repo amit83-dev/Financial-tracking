@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4338CA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0E13" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="שוק ההון">
+
 <title>הכלי שלי לשוק ההון</title>
 <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%20%22%D7%94%D7%9B%D7%9C%D7%99%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%22%2C%20%22short_name%22%3A%20%22%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%22%2C%20%22id%22%3A%20%22https%3A%2F%2Famit83-dev.github.io%2FFinancial-tracking%2F%22%2C%20%22start_url%22%3A%20%22https%3A%2F%2Famit83-dev.github.io%2FFinancial-tracking%2F%22%2C%20%22scope%22%3A%20%22https%3A%2F%2Famit83-dev.github.io%2FFinancial-tracking%2F%22%2C%20%22display%22%3A%20%22standalone%22%2C%20%22background_color%22%3A%20%22%230e1014%22%2C%20%22theme_color%22%3A%20%22%230e1014%22%2C%20%22dir%22%3A%20%22rtl%22%2C%20%22lang%22%3A%20%22he%22%2C%20%22icons%22%3A%20%5B%7B%22src%22%3A%20%22data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAGh0lEQVR4nO3dX4hUVQDH8Xt3ZnVn1VURTUjEDSVqqfAfkbfCFgqFwF6EInpxackg0ISgHgp96K2il8IlInrwQYMigsJqC2L6K2LGliRk2h%2BsNW13Xdfd2bsTNrTZNHd35v7mzpx7zvfz5DJzZ9bdL%2BecOXPnrr%2BmZ9AD4mqJfSRAQFAxAkFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEZLNwx56kn4KALBfu2JNoRgRks8yrz5X%2BkVxDBOSKMJmhiIDcEtY7IwJyUVi%2Fhvw1PYP1eiykLpfpRVJsjEBOC%2BUZjYDgKQ0xhTkhrC6RGDMaI5D9Bl6eX83d4q2HsjGOgWUywlKaEcgJJzbuT%2BiFGAHZr%2FdQJuomXsZjFkH3wuTqYQ3kSj29hzLeqjqnU8IU5srYk%2FknmjrWQ0Cu1JPvH0qiHjYS3aonCUxhtgkaWA8BWS6fcD0EZPPwk0%2B%2BHgJyZcsnOayBLBE0dukzjYBsEDSpHgKyQdC8eggo9YKm1kNA6RY0ux4CSrHAgHoIKK0CM%2BohoFQKjKmHgNInMKkeAkqZwLB6CChNAvPqIaDUCIysh4DSITC1HgJKgcDgegjIdIHZ9RCQ0QLj6yGg1MgbWQ8BmSto%2BMmp8XBCmYmCZpycGo9tl3fpeywX3Bh5LYF4ikVvZKz452jxzO%2FFL78PPzo%2B%2BcPZqVmP6lze8s4z7RVvunfvpVPRj5CKpY%2B1ASXB972Odr%2Bj3V%2B51Lu9K7P7vjkfHJt8%2Fs2JM4OzZ1SrdNXDFBaH73t3r80efDK36YaM4%2FUQUHwLcv5Lj%2BZu7sy4XA8BSVqz3gsPt81v852th4BUyxf7D2xudbYeAqqDh%2B5qbfEdrce2V2EzXM%2F24CeFvQfGa33ABTl%2F5TL%2FnrXZBze35uZWzmRJh3%2F9ipbvfppysB57AqryUsi1GhkrDpwuDpyeOHx08rXHc%2B0RDa1fnYkRkAX1MIVVa%2BDM1P53C1G3XrPYd7MeSwJKaPgp89ZnhWKx8k2L5tUW0LpbF9hRjyUBNca54eKv5yvPU21z4q%2BiU10PAdXm53OVhyDf1XpsWEQH3Qt7D3l928OZ77b82jlBd1vZL%2ByWzsyBJ3IV79%2F91OhvF8pzGb0cMYe5Wk%2B6A4pxzsP0IfF%2BeWH93jzNW1FPigMqq6f05yBmHYfKDr9uSdHz6v%2BO%2BqyOfjHi2aLFmrEn3z%2FUtfNi%2FttqG4KLI1BUOrMeePaXiXz%2FeLpO9kuFrAv1VLw%2FJbkVUF3qKTv2YmfG6678Kmzjpo4LY%2BpTuCDrYDrxnr3WZ1x3ZbvZ%2FgWZ6QE1t56y72TJ0inPq2orKHBmpWVuQFG%2Fg8bU89Wnw6vXdsR7S643%2Bk9M2sfQgEwYeKpfbm%2FdkN264d83dEvbUU%2B%2F50RGJgZkQj0Vn%2FqR2%2F7zLjqMC8i0dMr8MVjwVlT7E9u3xf4VtFk70YbXA3NHoOaul5HuEShq4El7Pdv2XfIc0OQRKF3T1q6%2By9WfU9tejw8cmq9pAaUrnZl17bx4dUalL7duMGJ5kLTm%2FCdtqmdaqZtpM3xsvjDpWaPRATmyXp7b6m1ZH%2FmzHRqt56mxDgVk5cBT0a5tc5ctrLwGGi9c%2BbyiZ4vGBWR9PZkWb9F8%2F6ZVmfvvbL2jK3L%2BOn7Kqg3GRgSUxnT6n52X0CN%2FfsKqgBLfB0pjPckZL3hv5CM%2FIp1GyQZEPWUOfFw4N2zPAqjOU9jVGyGk839fnwpffLvmS8w4EVDZVuzfX4Zl51U5O22VHDkZ7u67bNMOUENfhblcz9Bo8fUPC68cnpi0avVcv4Cirq7St%2F3KIORgOhOT3vCl4vmR4jc%2FhkdOhu8fC8fGrVr3XM1f0zOY3OV5ynb3YZ%2Fmn84B1wOKGmYYflzACIRmr4GmlZ0QAxfUMyA4iCkMEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgeIq%2FAKcIBznsX2LAAAAAAElFTkSuQmCC%22%2C%20%22sizes%22%3A%20%22192x192%22%2C%20%22type%22%3A%20%22image%2Fpng%22%2C%20%22purpose%22%3A%20%22any%20maskable%22%7D%2C%20%7B%22src%22%3A%20%22data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAR5klEQVR4nO3df6zd9V3H8e%2B5597ethQLJbDxIxvLKJA1ijoZW2pM6MzUxLlkS4l%2FjMWss7HGH4tosiX%2BSBQTjcFkmQvSTDQuUWYXGZnJcC6NgB1ZgmwOCihMfoUyqDAKBe%2Bvc47p7iwdvb2%2Fzvec74%2FX45H9sezH7TeH2%2Ffz%2B%2Fl8v%2Bf77Wzfc7QAIM9E1QcAQDUEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAQJzeR2%2Bo%2BhBqQQCARL2P3iADne17jlb9DwJg3HqnLAK6t96U%2BQ%2FACgBI10vdERIAgCJzR0gAAEIz4BoAEKq37KxPuDBgBQCwhISlgAAAhO4I2QICcvVWPd9buSNkBQAQuhoQAIDQDAgAkKu7ro2d1jRAAABClwICABCaAQEACM2A20CBdL3yxnez7ha1AgAoTbOWAgIAELojZAsIoBjRyK75jpAVAEDoakAAAEartg2wBQQwpjFdtx0hKwCA0B0hAQAoDt%2B8ZTyfQq0WAZNVHwBAhG6dRv8iKwAg3eHvnf4%2FcvUtUdNfAABGrp7T3xYQQOLoX2QLCOD7yt0Fqvn0FwCAkaj%2F9LcFBJA4%2BhfZAgJInP4CAFDsPdAt5TJAs6a%2FLSAg3c5dW4f%2FIY0b%2FYtsAQEUpy4CQqa%2FAADRdp5y%2Bn%2ByAWvaBWru9LcFBOTaOdzmz2Indtx6vGgsD4MDEu1cavovLgL27%2B6t%2BH9%2F5Opbduxr8Ohf5BoAEGf5c%2F%2B9B7rL7wK1Y%2Fp7IxgQZ5U7P3df%2BrEWj%2F5FtoCAIMPs%2B3dvvanRO%2F6nswUEpBhy%2BhetIwBAhLVO%2F%2B7%2FT%2FzurTe1cvoLABBhrdP%2F0MFji%2F%2BmraN%2FUWf7nqNVHwNAHad%2F69kCAtrM9F%2BGAACtZfovTwCAdjL9VyQAQAuZ%2FqshAEDbmP6rJABAq5j%2BqycAQK5DMXd8LkkAgNDT%2F0PZ018AgPYw%2FdfKCgBoA9N%2FHQQAaDzTf30EAGg203%2FdBABoMNN%2FGAIAJL7gBQEAmsoXvoZnBQA0j%2BlfCgEAGsb0L4sAAE1i%2BpdIAIDGMP3LJQBAM5j%2BpRMAoAFM%2F1EQAKDuTP8REQCg1kz%2F0REAoD084n9NBACoL4%2F6GSkBAGrK9B81AQDqyPQfAwEAasf0Hw8BAOrF9B8bAQBqxPQfJwEA6sILXsZMAIBa8IWv8RMAoHqmfyUEAKiY6V8VAQCqZPpXSACAypj%2B1RIAoBqmf%2BUEAKiA6V8HAgCMm%2BlfEwIAjJXpXx8CANSXF7yMlAAA4%2BNRP7UiAMCYmP51IwDAOJj%2BNSQAwMiZ%2FvUkAMBomf61JQDACJn%2BdSYAwKh4wUvNCQAwEr7wVX8CAJTP9G8EAQBKZvo3hQAAZTL9G0QAgNKY%2Fs0iAEA5TP%2FGEQCgBKZ%2FEwkAMCzTv6EEABiK6d9cAgCMjxe81IoAAOvnUT%2BNJgDAOpn%2BTScAwHqY%2Fi0gAMCamf7tIADA2pj%2BrSEAwBqY%2Fm0iAMBqecFLy0xWfQDU3R2%2Fv%2FmyC1t%2BotAfFLNzg5n5Yna%2BeOGVwXPf7T%2F30uDJ5%2FsPP91%2F5On%2B8ZnB%2BA%2Fp07%2BycddVQ%2F31%2FJdvLHx8%2F0x5R%2BQLXy0kAFBMdIpN051N0yc%2Bijef29nxlteDNxgUjx7p33N44e4He%2Fc%2F1utX0IJa8HXfVhIAWE6nU1x%2B8cTlF2%2FY877i2RcHXzg0%2F4%2BH5p8%2FltUB07%2BtWr60hxJduK3z6%2B%2Ff8JUbz%2FrkddPbtnRCPlvTv8UEANZmarL48LVTd%2F7R5g9fO9VpewVM%2F3YTAFiPszZ2Pnnd9Gd%2FY9ObzmltBEz%2F1hMAWL93X9m97RObr7ikhX%2BPTP8ELfzFhXG6YGvnczdsetfl3TZ97KZ%2FCAGAYZ21sfMX%2BzaeevNoo5n%2BOVryKwvVOmtj5y9%2FbdPF58X9hfKCl0aL%2B32FEdl2dufP9kx3G%2F5XyqN%2BojT8txXq5Kq3dX%2F15zcUjWX6pxEAKNPH3rfhrRc08q%2BV6R%2Bokb%2BpUFuT3eK3P9i8RYDpn0kAoGS7rpp8R6PuCDL9YzXp1xSa4vpdjVkEmP7JBADK93PvnDy3CU%2BL84KXcAIA5ZuaPLERVPNP1he%2BEAAYifdeVeuHQ5j%2BeCEMKzh88xaf0fpcc%2BVkd6Lo9ev4%2BZn%2BLKr7KpUWjP6%2F%2Bsrcn98%2BV9TD9FSxaUPn%2FK2di7ZNXHHJxNWXd995WXd6qvw%2FaONUccUlEw89VbsCmP6cJABknfjPnnjz%2B%2BClVwePHunf9WCx%2F85iy8bO%2B6%2BZ%2FOWf2fCmc0u%2BbPvDl3brFgDTn1MJACmj%2F0yOzwz%2B%2Fq752782%2F5sfmP7Ie8tcC1x2Yb2usZn%2BvEG9fkGhKjPzxZ9%2BYfZ3%2F3a2X9773i%2FaVqM7QU1%2FTicARJ%2F%2Bv8Ht985%2F5kulXa64qDZPhzb9WVJdfkGpnOm%2F6JY75w4%2FWc7G%2FTn1%2BC6Y6c%2BZCAD8gMGguOn22VI%2BlE2NeR7E67zgJYoAcILT%2F1N9%2FT97%2F%2FVMCYuAjVPVrwA86odlCAAs4cv3LQz%2FuUxVfZOd6c%2FyBACWcNeDJQSgWuedv4ZbWu38ZBIAWMKjz%2FRfnSnvhtB6M%2F1jCQAsoT8ovv1svb7EOyKmfzIBYOQPhb%2F4LdNNfO78E8%2B3fwVg%2Boer%2BioVlRrnXD75ZzVl6Bw9FrECIJkVQK5Tp%2F%2FeA%2BN7eP3OXVsX%2F1XU23ePt3wF0JQSMzoCEKoO87fmGZipyxOsR8L0xxZQojPN3L0Huvt398Z%2BOPXdGppr%2FI2gZ1S3j5qquAaQZfkz7qoacKYSvO3NE%2F%2F0B5uH%2FLHX%2Fclr63u2Tz1f5jU805%2BTBCBFnTdbznSoRx56pepjaRvTn1O5BhBh9dN%2F74HuOC8IL%2B%2FHrzm76kNoFdOfNxCA9lvHuX99GkBZTH9OJwBtNsxtNnsPdHfsO172EVEN058lCUBrDbPpf%2BjgscWRsWPf8ccynojQYqY%2FZyIA7TTk9C%2F1WKiSf5osw11AbTPk3T7mRZv4p8nyBKBV6nni%2F8xTs4cOzjXrVtQWeOHofNWHQN0JQEs04sR%2F8U%2BRAagJAWiDep74r%2FgnjqcEV%2F3ElsNPvjyGPwgaRwAar1nTv5IS1PZxQ1AtAWiwRmz7rIYSQCUEoKmae%2BJfh4sEi39EbT8HGA8BaKRWTv%2FTj%2FBDH7A1BCMkAA3Tmm2f1bj%2F668UPzvs46AbepFg2%2FlTRdHyV5JROQFoknaf%2BNdBTbaGvncYnsDByAlAM0Sd%2BNfk095%2B6aCSKex7EoyNADSAE%2F8cpj%2Fj5GFwdWf65zD9GTMrgPqy7RPF9Gf8BKCmnPhHMf2phC2gOjL9o5j%2BVMUKoF5s%2B5TuP%2B47fvjJfk2G7OGbt5z%2BH%2B49UMWhgADUihP%2FFj%2BJesnRv2j%2F7t7iS5jHe0RgBVAPTvxb%2BSTq1Uz%2Fk%2Fbv7mkAY2YLqHpO%2FFtcgtWM%2FpMsBRgzF4ErZvpX69DBY74mTSwrgMrY9qmPqraGlmQviLERgGo48a%2BnmpRg%2F%2B7eN490KjwAQtgCqoDpX3%2BHDh579OH%2FrfooYLSsAMbKtg%2Br9KMXeRkAIycA4%2BPEH6gVARgHJ%2F5ADQnAyDnxB%2BrJReDRMv2B2rICGBXbPkDNCcBIOPFvgS%2FeO%2F%2FFe%2BfH8AQIqIotoJLt3LXV9GfHvuNDfgjfevzEI0JhpKwAymT0U5azNvomMCNnBVAa05%2ByFgE79h3fskkAGDkBKIFtH0pswI59xzdPdy7YKgCMnC2gYTnxp3Rvv3CiY%2F4zegIwFNOf1SwCVnlT0MkVw2UXWpozDn7P1sm2D%2BXuBZ36v3nXFd4PzDhYAayHE39KXAq8IQ%2BT3eLaHykhAH2PE2UlArA2vt%2FLqJcC776ye3YZtwDNrvNLbAQRgDVw4s8Y%2FNJPbyjl58zMWQKwAtcAVsv0Zwzec2X3PVeWcwFgZq6UH0ObWQGszLYP47FhsvidD02X9dP%2B52UrAFYgACtw4s94dCeKP%2F7IxisuKW1R%2FuyL%2FbJ%2BFG0lAMsx%2FRmP87d2brx%2B40%2FuKPPuzyMvWgGwAgFYmm0fxuO8H%2Br84k9NXb9rqpQ7f07qD4pHj1gBsAIBWIITf0ah0ymmJ4sTz%2Fk5p3PxeRPveOvE1du7P%2Fb27sQInvrwxHP9V2esAFiBAPwAJ%2F7t8w%2Bf2FzkeeAJp%2F%2BsTABe58Sf1rj7wYWqD4EG8D2A7zP9aY35heKew14oxsqsAGz70Db%2F9tCCCwCsRnoAnPjTPn%2F3rx4DxKpEbwGZ%2FrTP49%2Fp3%2FuI%2FR9WJXQF4G4f2urTX5obuP%2BT1UkMgBN%2F2uqb%2F9375%2Fvd%2F8NqZQXAiT8tttArbrxttuqjoEmCAuDEn3b71B1zDz%2Ft%2B1%2BkBmCZ9%2B2Z%2FrTbXQ8s%2FPVXvQGAyAAsOfpP%2Fa%2F2HljnTz508Nj6DwvG4oEner%2F12RnXfkm8DXSZ6X%2FS%2Ft1rvjHu0MFjpj%2F19%2FDT%2FX2fmfH%2BL%2BJWAKsZ%2FW9owN4Dq3rkutFPI3zt4d7H98%2F43i%2BJARgR05%2F66w%2BKv%2Fnq3KfumFvwrS8CA7Cm0%2F%2BT9u%2FuLbMIMPpphCef7%2F%2Fe52b%2F%2FTGzn8hrAOub%2FstfDzD9qb8XXh7ceNvsL%2Fzha6Y%2F0SuAEhn91N%2B3Hu99%2Fp6FO%2B%2Bbn%2FGoN5IDMMzp%2F%2BkbQaY%2FtTW3UHzj2727H1y464He48%2F5khcla2QASmT6U7lev5idH8zOF6%2FNDo4eGzz30uA7Lw4ee7b%2F0FO9x57tu8bL6HS27zla5K0ATn5DGCBWUy8CAzAkAQAIJQAAoQQAIFQjAzD89VtXgAEaGQAAcgMwzCm803%2BABgdg3XPc9AdofAAAiPsm8Pq%2BGOzcH6BtK4DVTHbTH6CFK4DllwJGP0D7AwBA1hYQAOsgAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEAKDI9H8j8wjpCynNCAAAAABJRU5ErkJggg%3D%3D%22%2C%20%22sizes%22%3A%20%22512x512%22%2C%20%22type%22%3A%20%22image%2Fpng%22%2C%20%22purpose%22%3A%20%22any%20maskable%22%7D%5D%7D">
 <meta name="theme-color" content="#0e1014">
@@ -336,6 +343,45 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
   .reveal{opacity:1; transform:none}
 }
 
+
+/* ═══ REPORT + PRINT ═══ */
+.report-actions{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap}
+.rep-sheet{background:var(--surface); border:1px solid var(--rule); border-radius:var(--r-lg); box-shadow:var(--sh-1); padding:32px; margin-bottom:20px}
+.rep-head{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; border-bottom:2px solid var(--ink); padding-bottom:16px; margin-bottom:22px}
+.rep-title{font-size:24px; font-weight:900; letter-spacing:-.6px}
+.rep-sub{color:var(--ink3); font-size:13px; margin-top:4px}
+.rep-kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px}
+.rep-kpi{border:1px solid var(--rule); border-radius:var(--r-md); padding:15px 16px}
+.rep-kpi .l{font-size:11.5px; color:var(--ink3); font-weight:700}
+.rep-kpi .v{font-size:22px; font-weight:900; letter-spacing:-.6px; margin-top:6px}
+.rep-h{font-size:15px; font-weight:800; margin:24px 0 12px; padding-bottom:7px; border-bottom:1px solid var(--rule)}
+.rep-scroll{overflow-x:auto}
+.rep-table{width:100%; border-collapse:collapse; font-size:13px}
+@media(max-width:640px){.rep-table{min-width:560px}}
+@media print{.rep-scroll{overflow:visible} .rep-table{min-width:0}}
+.rep-table th{text-align:right; font-size:11px; color:var(--ink3); font-weight:700; padding:8px 10px; border-bottom:1px solid var(--rule); text-transform:uppercase}
+.rep-table td{padding:9px 10px; border-bottom:1px solid var(--rule)}
+.rep-table tr:last-child td{border-bottom:0}
+.rep-table .tot td{font-weight:800; border-top:2px solid var(--rule2); border-bottom:0}
+.rep-foot{margin-top:24px; padding-top:14px; border-top:1px solid var(--rule); font-size:11px; color:var(--ink3); line-height:1.6}
+@media(max-width:640px){.rep-sheet{padding:20px} .rep-kpis{grid-template-columns:repeat(2,1fr)}}
+@media print{
+  @page{margin:14mm}
+  /* הדוח מודפס תמיד בהיר, ללא תלות בערכת הצבעים במסך */
+  :root, body, [data-theme="dark"], [data-theme="light"]{
+    --bg:#fff; --surface:#fff; --card:#fff; --card2:#f6f6f4; --card3:#ececea;
+    --ink:#111; --ink2:#444; --ink3:#777; --rule:#ddd; --rule2:#ccc;
+    --accent:#3730A3; --good:#0a6e5f; --bad:#9f1239; --warn:#92500a;
+  }
+  html,body{background:#fff!important; color:#111!important}
+  .top,.tabs,#tip,#toast,#sprog,.no-print,.disclaimer{display:none!important}
+  main{max-width:none; padding:0}
+  .view{display:none!important}
+  #v-report{display:block!important; animation:none!important}
+  .rep-sheet{border:0; box-shadow:none; padding:0; margin:0}
+  *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+}
+
 /* ═══════════════════ RESPONSIVE ═══════════════════ */
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr; gap:26px} .grid2{grid-template-columns:1fr}}
 @media(max-width:640px){
@@ -362,6 +408,8 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
   .hero-grid{gap:18px}
   .hero .hleg{gap:14px; margin-top:8px}
   .result .big{font-size:28px}
+  .simgrid{grid-template-columns:1fr!important; gap:0!important}
+  input[type=range]{min-width:0; max-width:100%}
   .modal{padding:12px} .modal .box{padding:20px}
   th,td{padding:10px; font-size:13px}
   /* funds: cards, not table */
@@ -371,15 +419,15 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
   /* bottom tab bar */
   .top{backdrop-filter:none}
   .tabs{position:fixed; bottom:0; left:0; right:0; z-index:50; max-width:none; padding:0; gap:0;
-    display:grid; grid-template-columns:repeat(6,minmax(0,1fr));
+    display:grid; grid-template-columns:repeat(7,minmax(0,1fr));
     background:color-mix(in srgb,var(--surface) 94%,transparent); backdrop-filter:saturate(1.7) blur(16px);
     border-top:1px solid var(--rule); box-shadow:0 -2px 18px rgba(0,0,0,.10);
     padding-bottom:max(env(safe-area-inset-bottom), 16px)}
   .tabs::after{display:none}
   .tabs .ind{display:none}
   .tab{flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:0; overflow:hidden;
-    padding:10px 1px 4px; font-size:9.5px; font-weight:700; min-height:54px; line-height:1.1; white-space:nowrap; position:relative}
-  .tab svg{width:20px; height:20px}
+    padding:10px 1px 4px; font-size:9px; font-weight:700; min-height:54px; line-height:1.1; white-space:nowrap; position:relative}
+  .tab svg{width:19px; height:19px}
   .tab.active{color:var(--accent)}
   .tab.active::before{content:''; position:absolute; top:0; width:28px; height:2.5px; border-radius:0 0 3px 3px; background:var(--accent)}
   .tab>span:last-child{max-width:100%; overflow:hidden; text-overflow:ellipsis}
@@ -394,17 +442,19 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
     <div class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 4 8-9"/></svg></span><span style="display:inline">הכלי שלי ל<b style="color:var(--accent);font-weight:800">שוק ההון</b></span></div>
     <div class="spacer"></div>
     <button class="iconbtn wide" id="helpBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8.5h.01"/></svg>איך זה עובד</button>
+    <button class="iconbtn" id="installBtn" title="התקן אפליקציה" aria-label="התקן אפליקציה" style="display:none;border-color:var(--accent);color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 11l4 4 4-4M4 19h16"/></svg></button>
     <button class="iconbtn" id="themeBtn" title="החלף תצוגה" aria-label="החלף תצוגה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4"/></svg></button>
     <button class="iconbtn" id="settingsBtn" title="הגדרות" aria-label="הגדרות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06A1.7 1.7 0 0015 19.4a1.7 1.7 0 00-1 1.55V21a2 2 0 11-4 0v-.09A1.7 1.7 0 009 19.4a1.7 1.7 0 00-1.87.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.55-1H3a2 2 0 110-4h.09A1.7 1.7 0 004.6 9a1.7 1.7 0 00-.33-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06A1.7 1.7 0 009 4.6a1.7 1.7 0 001-1.55V3a2 2 0 114 0v.09A1.7 1.7 0 0015 4.6a1.7 1.7 0 001.87-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.7 1.7 0 0019.4 9a1.7 1.7 0 001.55 1H21a2 2 0 110 4h-.09a1.7 1.7 0 00-1.51 1z"/></svg></button>
   </div>
   <div class="tabs" id="tabs">
     <span class="ind" id="tabInd"></span>
-    <button class="tab active" data-v="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="8.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="5" rx="2"/><rect x="13.5" y="10.5" width="7.5" height="10.5" rx="2"/><rect x="3" y="14" width="7.5" height="7" rx="2"/></svg><span>דשבורד</span></button>
+    <button class="tab active" data-v="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="8.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="5" rx="2"/><rect x="13.5" y="10.5" width="7.5" height="10.5" rx="2"/><rect x="3" y="14" width="7.5" height="7" rx="2"/></svg><span data-short="בית">דשבורד</span></button>
     <button class="tab" data-v="funds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v9M19 10v9M9.5 10v9M14.5 10v9M3 21h18"/></svg><span data-short="שלי">הקרנות שלי</span></button>
     <button class="tab" data-v="funds2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 20v-1.8a3.6 3.6 0 00-3.6-3.6H6.6A3.6 3.6 0 003 18.2V20"/><circle cx="9.8" cy="7.6" r="3.6"/><path d="M21 20v-1.8a3.6 3.6 0 00-2.7-3.48M15.6 4.2a3.6 3.6 0 010 6.97"/></svg><span data-short="בת הזוג">הקרנות של בת הזוג</span></button>
-    <button class="tab" data-v="market"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5.5-6 4 4L21 6"/><path d="M15.5 6H21v5.5"/></svg><span>מדדים</span></button>
-    <button class="tab" data-v="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.3-5.3 2.2 2.2-5.3z"/></svg><span>החלטות</span></button>
-    <button class="tab" data-v="calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="3"/><path d="M8 7h8M8 12h3M8 16.5h3M15 12v4.5"/></svg><span>מחשבונים</span></button>
+    <button class="tab" data-v="market"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5.5-6 4 4L21 6"/><path d="M15.5 6H21v5.5"/></svg><span data-short="מדדים">מדדים</span></button>
+    <button class="tab" data-v="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.3-5.3 2.2 2.2-5.3z"/></svg><span data-short="החלטות">החלטות</span></button>
+    <button class="tab" data-v="calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="3"/><path d="M8 7h8M8 12h3M8 16.5h3M15 12v4.5"/></svg><span data-short="כלים">מחשבונים</span></button>
+    <button class="tab" data-v="report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M6 2.5h8L19 8v13.5H6z"/><path d="M9 13h6M9 16.5h6M9 9.5h2"/></svg><span data-short="דוח">דוח</span></button>
   </div>
 </div>
 
@@ -415,6 +465,7 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
     <div id="onboard"></div>
     <div id="dashHero"></div>
     <div id="dashIdxStrip"></div>
+    <div id="dashTrend"></div>
     <div class="kpis" id="dashKpis"></div>
 
     <div id="dashQuality"></div>
@@ -429,6 +480,7 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
       <h4><span style="display:inline-flex;gap:9px;align-items:center"><span style="width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='M16.2 16.2L21 21'/></svg></span>לאן זה מגיע</span></h4>
       <p class="desc">השווי הצפוי בסוף הטווח שהגדרת, ומה הוא היה אילו תיקנת את דמי הניהול ואת החשיפה המנייתית.</p>
       <div id="dashProj"></div>
+    <div id="dashSim"></div>
     </div>
 
     <div class="note info">💡 כל הנתונים נשמרים <b>רק במכשיר שלך</b> (בזיכרון הדפדפן). שום דבר לא נשלח לשרת. גיבוי/העברה למכשיר אחר — דרך כפתור "ייצוא" בהגדרות.</div>
@@ -613,6 +665,18 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
     </div>
   </section>
 
+  <!-- REPORT -->
+  <section class="view" id="v-report">
+    <div class="report-actions no-print">
+      <div>
+        <h2 class="vt" style="margin:34px 0 4px">דוח סיכום</h2>
+        <p class="vs" style="margin:0">עמוד אחד מסודר לכל התמונה — להדפסה, לשמירה כ-PDF, או לפגישה עם יועץ פנסיוני.</p>
+      </div>
+      <button class="btn" id="printReport" style="white-space:nowrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-4a2 2 0 012-2h16a2 2 0 012 2v4a2 2 0 01-2 2h-2M6 14h12v7H6z"/></svg>הדפס / שמור PDF</button>
+    </div>
+    <div id="reportBody"></div>
+  </section>
+
   <!-- JOURNAL -->
   <section class="view" id="v-journal">
     <h2 class="vt">החלטות</h2>
@@ -716,12 +780,62 @@ const LS='shukhon_v1';
 const DEF={
   funds:[], holdings:[],
   watch:[{sym:'SPY',name:'S&P 500 (ETF)'},{sym:'QQQ',name:'נאסד״ק 100 (ETF)'},{sym:'URTH',name:'עולמי MSCI World'}],
-  journal:[], checks:{}, recSt:{}, settings:{key:'',syncCode:'',age:35,hz:20,retire:67,status:'שכיר',marg:31,nameMe:'עמית',nameP:'סיון'}, theme:'light'
+  journal:[], checks:{}, recSt:{}, snapshots:[], lastEdit:0, settings:{key:'',syncCode:'',age:35,hz:20,retire:67,status:'שכיר',marg:31,nameMe:'עמית',nameP:'סיון'}, theme:'light'
 };
 let S=load();
 function load(){try{const r=JSON.parse(localStorage.getItem(LS));return r?Object.assign(JSON.parse(JSON.stringify(DEF)),r):JSON.parse(JSON.stringify(DEF));}catch(e){return JSON.parse(JSON.stringify(DEF));}}
 let applyingRemote=false;
-function save(){localStorage.setItem(LS,JSON.stringify(S));if(!applyingRemote&&window.__cloudPush)window.__cloudPush();}
+function fundsSig(){return S.funds.map(f=>[f.own||'me',f.name,f.type,f.track,f.bal,f.dep,f.fee,f.feeDep,f.eq,f.opened,f.yrs].join('~')).join('|');}
+function save(){
+  const sig=fundsSig();
+  if(sig!==S._fsig){S.lastEdit=Date.now(); S._fsig=sig;}
+  localStorage.setItem(LS,JSON.stringify(S));
+  if(!applyingRemote&&window.__cloudPush)window.__cloudPush();
+}
+/* ---- תצלום חודשי: פעם בחודש שומרים את יתרות משק הבית לפי בעלים ---- */
+function ownerBal(o){return fundsOf(o).reduce((a,f)=>a+(f.bal||0),0);}
+function ownerDep(o){return fundsOf(o).reduce((a,f)=>a+(f.dep||0),0);}
+function captureSnapshot(force){
+  if(!S.funds.length)return;
+  const now=new Date(), ym=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  S.snapshots=S.snapshots||[];
+  const last=S.snapshots[S.snapshots.length-1];
+  if(last && last.ym===ym && !force)return;                 /* כבר יש תצלום החודש */
+  const snap={ym, ts:Date.now(),
+    me:ownerBal('me'), p:ownerBal('p'), j:ownerBal('j'),
+    depMe:ownerDep('me'), depP:ownerDep('p'), depJ:ownerDep('j')};
+  snap.total=snap.me+snap.p+snap.j;
+  if(last && last.ym===ym){S.snapshots[S.snapshots.length-1]=snap;}   /* עדכון תצלום החודש */
+  else S.snapshots.push(snap);
+  if(S.snapshots.length>60) S.snapshots=S.snapshots.slice(-60);
+  localStorage.setItem(LS,JSON.stringify(S));
+}
+/* ---- תשואה בפועל (Modified Dietz) בין התצלום הראשון לאחרון ---- */
+function realReturn(){
+  const snaps=(S.snapshots||[]).filter(x=>x.total>0);
+  if(snaps.length<2)return null;
+  const a=snaps[0], b=snaps[snaps.length-1];
+  const months=(new Date(b.ym+'-01')-new Date(a.ym+'-01'))/(30.44*864e5);
+  if(months<1)return null;
+  const depMonthly=(b.depMe+b.depP+b.depJ);        /* קצב הפקדה נוכחי — הערכה */
+  const C=depMonthly*months;                        /* סך הפקדות בתקופה */
+  const gain=b.total-a.total-C;
+  const denom=a.total+C*0.5;
+  if(denom<=0)return null;
+  const rPeriod=gain/denom;
+  const annual=Math.pow(1+rPeriod, 12/months)-1;
+  return {annual:annual*100, months:Math.round(months), gain, start:a, end:b, points:snaps};
+}
+function agoText(ts){
+  if(!ts)return null;
+  const d=Math.floor((Date.now()-ts)/864e5);
+  if(d<=0)return 'היום';
+  if(d===1)return 'אתמול';
+  if(d<7)return `לפני ${d} ימים`;
+  if(d<30)return `לפני ${Math.floor(d/7)} שבועות`;
+  if(d<365)return `לפני ${Math.floor(d/30)} חודשים`;
+  return `לפני ${Math.floor(d/365)} שנים`;
+}
 /* מופעל ע"י מנוע הסנכרון כשמגיע עדכון ממכשיר אחר */
 window.__applyCloud=function(obj){
   if(!obj||typeof obj!=='object')return;
@@ -753,6 +867,7 @@ const ICON={
   up:'<path d="M6 15l6-6 6 6"/>', down:'<path d="M6 9l6 6 6-6"/>', back:'<path d="M15 6l-6 6 6 6"/>',
   receipt:'<path d="M5 3.5v17l2.4-1.5 2.4 1.5 2.4-1.5 2.4 1.5 2.4-1.5V3.5z"/><path d="M8.5 8.5h7M8.5 12.5h4"/>',
   scope:'<circle cx="11" cy="11" r="7"/><path d="M16.2 16.2L21 21"/>',
+  sliders:'<path d="M4 6h10M18 6h2M4 12h2M10 12h10M4 18h13M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="19" cy="18" r="2"/>',
   pair:'<path d="M16.5 20v-1.8a3.6 3.6 0 00-3.6-3.6H6.6A3.6 3.6 0 003 18.2V20"/><circle cx="9.8" cy="7.6" r="3.6"/><path d="M21 20v-1.8a3.6 3.6 0 00-2.7-3.48M15.6 4.2a3.6 3.6 0 010 6.97"/>'
 };
 const svgi=(k,st)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${st||1.9}" stroke-linecap="round" stroke-linejoin="round">${ICON[k]||''}</svg>`;
@@ -824,6 +939,7 @@ $$('.tab').forEach(t=>t.onclick=()=>{
   $('#v-'+t.dataset.v).classList.add('active');
   moveTabInd(t); observeReveals();
   if(t.dataset.v==='dash') renderDash();
+  if(t.dataset.v==='report') renderReport();
   window.scrollTo({top:0,behavior:RM?'auto':'smooth'});
 });
 addEventListener('resize',()=>{applyTabLabels();moveTabInd($('.tab.active'));});
@@ -1208,7 +1324,8 @@ function openFundSheet(gi,owner){
   $('#sh_del').onclick=()=>{
     if(!confirm(`למחוק את "${g.name||'הקופה'}" על כל המסלולים שבה?`))return;
     fundGroups(owner)[gi].rows.map(r=>r.i).sort((a,b)=>b-a).forEach(i=>S.funds.splice(i,1));
-    save();closeSheet();renderAll();
+    save();closeSheet();
+renderAll();
   };
   $('#sh_done').onclick=()=>{closeSheet();renderAll();};
   $('#fundSheet').classList.add('open');
@@ -1619,6 +1736,7 @@ function renderDash(){
   const recWorth=_open.reduce((a,r)=>a+(r.worth||0),0);
   /* ---- גיבור: מספר אחד גדול, פילוח נזילות, וקריאה לפעולה ---- */
   renderIdxStrip();          /* קודם — הגיבור קורא ממנו את תנועת היום */
+  renderTrend();
 
   /* ---- קוביה לכל אדם, זו לצד זו, וסיכום משפחתי מתחת ---- */
   const dm=window.__dayMove;
@@ -1755,7 +1873,82 @@ function renderDash(){
   renderQuality();
   renderLiquidity(bal);
   renderProjection(bal);
+  renderSim(bal);
   renderOnboard();
+}
+
+/* ---- מגמת החיסכון + תשואה בפועל (מבוסס תצלומים חודשיים) ---- */
+function renderTrend(){
+  const el=$('#dashTrend'); if(!el)return;
+  const snaps=(S.snapshots||[]).filter(x=>x.total>0);
+  const rr=realReturn();
+  const ago=agoText(S.lastEdit);
+
+  if(snaps.length<2){
+    /* עדיין אין היסטוריה — מסבירים מה ייאסף */
+    el.innerHTML=`<div class="card" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <h4 style="margin:0;display:flex;gap:9px;align-items:center">
+          <span style="width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center">${svgi('bars',2)}</span>
+          מגמת החיסכון שלך
+        </h4>
+        ${ago?`<span class="pill n">עודכן ${ago}</span>`:''}
+      </div>
+      <div class="empty" style="padding:20px 12px">
+        הכלי שומר תצלום של היתרות פעם בחודש. <b>אחרי חודש-חודשיים</b> תופיע כאן עקומת המגמה בפועל, ו<b>התשואה האמיתית שלך</b> — כמה הכסף באמת עשה, אחרי דמי ניהול.
+        <div style="margin-top:8px;font-size:12.5px">נשמר עד כה: <b>${snaps.length}</b> תצלום.</div>
+      </div>
+    </div>`;
+    return;
+  }
+
+  /* --- גרף מגמה (שטח) --- */
+  const M=window.innerWidth<=640;
+  const W=M?390:780, H=M?150:170, PL=M?54:66, PR=M?26:38, PT=14, PB=26;
+  const vals=snaps.map(x=>x.total), n=vals.length;
+  const mn=Math.min(...vals), mx=Math.max(...vals), pad=(mx-mn)*0.15||mx*0.05||1;
+  const lo=Math.max(0,mn-pad), hi=mx+pad;
+  const X=i=>PL+(n===1?0:(i/(n-1))*(W-PL-PR));
+  const Y=v=>H-PB-((v-lo)/(hi-lo))*(H-PT-PB);
+  const line=vals.map((v,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+  const area=`${line} L${X(n-1).toFixed(1)},${H-PB} L${X(0).toFixed(1)},${H-PB} Z`;
+  const fs=M?9.5:11;
+  const uid='t'+Math.random().toString(36).slice(2,6);
+  let gl='';
+  [lo+(hi-lo)*0.5, hi].forEach(v=>{gl+=`<line x1="${PL}" y1="${Y(v)}" x2="${W-PR}" y2="${Y(v)}" stroke="var(--rule)" stroke-dasharray="3 5"/><text x="${PL-8}" y="${Y(v)+4}" text-anchor="end" font-size="${M?9:10}" fill="var(--ink3)" direction="ltr">₪${NF.format(Math.round(v))}</text>`;});
+  const step=Math.ceil(n/(M?4:7));
+  let xl='';
+  snaps.forEach((sp,i)=>{ if(i%step===0||i===n-1){const mm=sp.ym.split('-'); xl+=`<text x="${X(i)}" y="${H-9}" text-anchor="${i===0?'start':i===n-1?'end':'middle'}" font-size="${fs}" fill="var(--ink3)">${mm[1]}/${mm[0].slice(2)}</text>`;} });
+
+  const totNow=vals[n-1], totFirst=vals[0], chg=totNow-totFirst;
+
+  el.innerHTML=`<div class="card" style="margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+      <h4 style="margin:0;display:flex;gap:9px;align-items:center">
+        <span style="width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center">${svgi('bars',2)}</span>
+        מגמת החיסכון שלך
+      </h4>
+      ${ago?`<span class="pill n">עודכן ${ago}</span>`:''}
+    </div>
+    ${rr?`<div style="display:flex;gap:20px;flex-wrap:wrap;margin:4px 0 14px;padding-bottom:14px;border-bottom:1px solid var(--rule)">
+      <div><div style="font-size:12px;color:var(--ink3);font-weight:700">תשואה בפועל (שנתי)</div>
+        <div style="font-size:24px;font-weight:900;letter-spacing:-.8px;color:var(--${rr.annual>=0?'good':'bad'})">${rr.annual>=0?'+':''}${rr.annual.toFixed(1)}%</div>
+        <div style="font-size:11.5px;color:var(--ink3)">על פני ${rr.months} חודשים</div></div>
+      <div><div style="font-size:12px;color:var(--ink3);font-weight:700">שינוי מאז ההתחלה</div>
+        <div style="font-size:24px;font-weight:900;letter-spacing:-.8px;color:var(--${chg>=0?'good':'bad'})">${chg>=0?'+':''}${fmt(chg)}</div>
+        <div style="font-size:11.5px;color:var(--ink3)">${fmt(totFirst)} → ${fmt(totNow)}</div></div>
+    </div>`:''}
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
+      <defs><linearGradient id="${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--accent)" stop-opacity=".22"/><stop offset="100%" stop-color="var(--accent)" stop-opacity=".02"/></linearGradient></defs>
+      ${gl}
+      <path d="${area}" fill="url(#${uid})"/>
+      <path d="${line}" fill="none" stroke="var(--accent)" stroke-width="${M?2:2.4}" stroke-linejoin="round" stroke-linecap="round"/>
+      ${vals.map((v,i)=>`<circle cx="${X(i)}" cy="${Y(v)}" r="${M?2.6:3}" fill="var(--accent)" stroke="var(--card)" stroke-width="1.5"/>`).join('')}
+      ${xl}
+    </svg>
+    <div class="note" style="margin-top:10px;font-size:12.5px">${rr?`התשואה מחושבת בשיטת Modified Dietz — שווי סופי פחות ההפקדות, ביחס להון הממוצע בתקופה. זו התשואה <b>שלך</b> בפועל, אחרי דמי ניהול, ולא המספר המפורסם של הקופה.`:'הגרף מציג את סך החיסכון בכל תצלום חודשי.'} ${(S.snapshots||[]).length} תצלומים נשמרו.</div>
+  </div>`;
 }
 
 /* ---- מד שלמות נתונים ---- */
@@ -1961,6 +2154,105 @@ function wireCone(mid,X,Y,n,W,H,PL,PR){
   hit.onpointerleave=()=>{hl.setAttribute('opacity','0');hc.setAttribute('opacity','0');hideTip();};
 }
 
+/* ---- 🎚 סימולטור: מה יקרה אם — סליידרים חיים על התחזית ---- */
+let SIM=null;
+function simBaseline(){
+  const net=weightedRet()>0?weightedRet():6;
+  const bal=S.funds.reduce((a,f)=>a+(f.bal||0),0);
+  const wfee=bal?S.funds.reduce((a,f)=>a+(f.bal||0)*(f.fee||0),0)/bal:0;
+  return {ret:+(net+wfee).toFixed(1), fee:+wfee.toFixed(2), extra:0, retire:S.settings.retire||67};
+}
+/* שווי משק-הבית בסוף הטווח לפי פרמטרים נתונים */
+function simValue(pr){
+  const age=S.settings.age||35;
+  let v=0;
+  ['me','p','j'].forEach(o=>{
+    fundGroups(o).forEach(g=>{
+      const f0=g.rows[0].f;
+      const years=(f0.type==='קרן פנסיה')?Math.max(1,pr.retire-age):fundYears(f0);
+      const b0=g.rows.reduce((a,r)=>a+(r.f.bal||0),0);
+      const d0=g.rows.reduce((a,r)=>a+(r.f.dep||0),0);
+      const rate=pr.ret-pr.fee;                 /* תשואת שוק פחות דמי ניהול */
+      v+=compound(b0,d0,years,rate).final;
+    });
+  });
+  /* הפקדה חודשית נוספת — נכנסת לפוט ארוך-טווח עד הפרישה */
+  if(pr.extra>0){
+    const yrs=Math.max(1,pr.retire-age);
+    v+=compound(0,pr.extra,yrs,pr.ret-pr.fee).final;
+  }
+  return v;
+}
+function renderSim(bal){
+  const el=$('#dashSim'); if(!el)return;
+  if(!bal){el.innerHTML='';return;}
+  const base=simBaseline();
+  if(!SIM) SIM={...base};
+  const baseVal=simValue(base), simVal=simValue(SIM);
+  const diff=simVal-baseVal;
+  const age=S.settings.age||35;
+  const yrsToRet=Math.max(1,SIM.retire-age);
+  const monthlyIncome=simVal*0.04/12;            /* כלל 4% — הערכת קצבה חודשית */
+
+  const slider=(key,label,min,max,stepv,val,fmtv)=>`
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+        <label style="font-size:13.5px;font-weight:700;color:var(--ink2)">${label}</label>
+        <b class="num" id="simlbl-${key}" style="color:var(--accent);font-size:15px">${fmtv(val)}</b>
+      </div>
+      <input type="range" data-sim="${key}" min="${min}" max="${max}" step="${stepv}" value="${val}" style="width:100%">
+    </div>`;
+
+  el.innerHTML=`<div class="card" style="margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+      <div>
+        <h4 style="margin:0;display:flex;gap:9px;align-items:center">
+          <span style="width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center">${svgi('sliders',2)}</span>
+          מה יקרה אם…
+        </h4>
+        <p class="sect-desc" style="margin:5px 0 0">גררו את הסליידרים וראו איך זה משנה את התמונה. לא נוגע בנתונים שלכם.</p>
+      </div>
+      <button class="btn sec sm" id="simReset">${svgi('undo',2)}איפוס</button>
+    </div>
+    <div class="simgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:0 26px">
+      ${slider('ret','תשואת שוק שנתית',2,11,0.5,SIM.ret,v=>(+v).toFixed(1)+'%')}
+      ${slider('fee','דמי ניהול',0,2,0.05,SIM.fee,v=>(+v).toFixed(2)+'%')}
+      ${slider('extra','הפקדה חודשית נוספת',0,6000,100,SIM.extra,v=>'+'+fmt(+v))}
+      ${slider('retire','גיל פרישה',58,72,1,SIM.retire,v=>(+v)+'')}
+    </div>
+    <div class="simgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px">
+      <div style="background:var(--card2);border:1px solid var(--rule);border-radius:var(--r-md);padding:16px 18px">
+        <div style="font-size:12px;color:var(--ink3);font-weight:700">שווי צפוי בפרישה</div>
+        <div class="num" id="simVal" style="font-size:28px;font-weight:900;letter-spacing:-1.2px;margin-top:4px">${fmt(simVal)}</div>
+        <div id="simDiff" style="font-size:13px;font-weight:700;margin-top:3px;color:var(--${diff>=0?'good':'bad'})">${diff>=0?'+':''}${fmt(diff)} מול המצב הנוכחי</div>
+      </div>
+      <div style="background:var(--ink);color:var(--paper);border-radius:var(--r-md);padding:16px 18px">
+        <div style="font-size:12px;font-weight:700;opacity:.75">קצבה חודשית משוערת</div>
+        <div class="num" id="simInc" style="font-size:28px;font-weight:900;letter-spacing:-1.2px;margin-top:4px">${fmt(monthlyIncome)}</div>
+        <div style="font-size:12px;opacity:.75;margin-top:3px">לפי משיכה של 4% בשנה</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:14px;font-size:12.5px">הקצבה החודשית היא הערכה גסה לפי "כלל 4%" — לא חישוב אקטוארי. הסימולטור להמחשה בלבד.</div>
+  </div>`;
+
+  const upd=()=>{
+    const sv=simValue(SIM), d=sv-baseVal;
+    $('#simVal').textContent=fmt(sv);
+    $('#simInc').textContent=fmt(sv*0.04/12);
+    const dd=$('#simDiff'); dd.textContent=(d>=0?'+':'')+fmt(d)+' מול המצב הנוכחי';
+    dd.style.color='var(--'+(d>=0?'good':'bad')+')';
+  };
+  el.querySelectorAll('[data-sim]').forEach(r=>r.oninput=e=>{
+    const k=e.target.dataset.sim; SIM[k]=+e.target.value;
+    const lbl=$('#simlbl-'+k);
+    lbl.textContent = k==='ret'?SIM.ret.toFixed(1)+'%' : k==='fee'?SIM.fee.toFixed(2)+'%' : k==='extra'?'+'+fmt(SIM.extra) : SIM.retire;
+    upd();
+  });
+  $('#simReset').onclick=()=>{SIM={...base}; renderSim(bal);};
+}
+
+/* ---- 🎚 סימולטור END ---- */
+
 /* ---- 🔭 תחזית — כל קופה עד מועד המשיכה שלה ---- */
 function renderProjection(bal){
   const el=$('#dashProj'); if(!el)return;
@@ -2062,8 +2354,147 @@ function addScrollHints(){
   });
 }
 
+
+/* ============ 📄 REPORT ============ */
+function renderReport(){
+  const el=$('#reportBody'); if(!el)return;
+  const bal=S.funds.reduce((a,f)=>a+(f.bal||0),0);
+  if(!bal){el.innerHTML='<div class="empty"><div class="ico">📄</div>מלא קופות כדי להפיק דוח.</div>';return;}
+  const both=hasPartner();
+  const net=weightedRet()>0?weightedRet():6;
+  const today=new Date().toLocaleDateString('he-IL',{day:'numeric',month:'long',year:'numeric'});
+
+  const stat=os=>{
+    const F=fundsOfAny(...os);
+    const b=F.reduce((a,f)=>a+(f.bal||0),0);
+    const pen=F.filter(f=>f.type==='קרן פנסיה').reduce((a,f)=>a+(f.bal||0),0);
+    const cost=F.reduce((a,f)=>a+fundCost(f),0);
+    const wfee=b?F.reduce((a,f)=>a+(f.bal||0)*(f.fee||0),0)/b:0;
+    const eq=b?F.reduce((a,f)=>a+(f.bal||0)*fundEq(f),0)/b:0;
+    const fut=os.flatMap(o=>fundGroups(o)).map(groupProjection).reduce((a,g)=>a+g.val,0);
+    return {b,pen,liq:b-pen,cost,wfee,eq,fut};
+  };
+  const fam=stat(['me','p','j']);
+  const rr=realReturn();
+
+  const groupRows=os=>os.flatMap(o=>fundGroups(o).map(g=>{
+    const pr=groupProjection(g);
+    const b=g.rows.reduce((a,r)=>a+(r.f.bal||0),0);
+    const wfee=b?g.rows.reduce((a,r)=>a+(r.f.bal||0)*(r.f.fee||0),0)/b:0;
+    const eq=b?g.rows.reduce((a,r)=>a+(r.f.bal||0)*fundEq(r.f),0)/b:0;
+    const cost=g.rows.reduce((a,r)=>a+fundCost(r.f),0);
+    return `<tr><td><b>${(g.name||'ללא שם').replace(/</g,'&lt;')}</b>${both?` <span style="color:var(--ink3)">· ${ownerName(g.own)}</span>`:''}</td>
+      <td>${g.type}</td><td>${fmt(b)}</td><td>${wfee.toFixed(2)}%</td><td>${fmt(cost)}</td>
+      <td>${Math.round(eq)}%</td><td>${pr.years} שנה</td><td>${fmt(pr.val)}</td></tr>`;
+  })).join('');
+
+  const recs=recommendations().filter(r=>r.sev!=='info').slice(0,6);
+  const recRows=recs.map((r,i)=>`<tr><td>${i+1}</td><td>${r.title.replace(/<[^>]+>/g,'').trim()}</td>
+    <td>${r.sev==='high'?'דחוף':'שווה בדיקה'}</td><td>${r.worth>1000?fmt(r.worth):'—'}</td></tr>`).join('');
+
+  const kpi=(l,v)=>`<div class="rep-kpi"><div class="l">${l}</div><div class="v">${v}</div></div>`;
+
+  el.innerHTML=`<div class="rep-sheet" id="repSheet">
+    <div class="rep-head">
+      <div><div class="rep-title">דוח סיכום פיננסי${both?' — משק בית':''}</div>
+        <div class="rep-sub">${both?ownerName('me')+' ו'+ownerName('p'):''} · הופק ב-${today}</div></div>
+      <div style="text-align:left"><div style="font-size:12px;color:var(--ink3);font-weight:700">סך החיסכון</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.8px">${fmt(fam.b)}</div></div>
+    </div>
+
+    <div class="rep-kpis">
+      ${kpi('נזיל (לא פנסיה)',fmt(fam.liq))}
+      ${kpi('פנסיה',fmt(fam.pen))}
+      ${kpi('דמי ניהול משוקלל',fam.wfee.toFixed(2)+'%')}
+      ${kpi('חשיפה מנייתית',Math.round(fam.eq)+'%')}
+      ${kpi('עלות שנתית',fmt(fam.cost))}
+      ${kpi('תחזית סוף הטווח',fmt(fam.fut))}
+      ${kpi('תשואה בפועל',rr?(rr.annual>=0?'+':'')+rr.annual.toFixed(1)+'%':'—')}
+      ${kpi('הנחת תשואה',net.toFixed(1)+'%')}
+    </div>
+
+    <div class="rep-h">הקופות</div>
+    <div class="rep-scroll"><table class="rep-table">
+      <thead><tr><th>קופה</th><th>סוג</th><th>יתרה</th><th>ד״נ</th><th>עלות/שנה</th><th>מניות</th><th>אופק</th><th>תחזית</th></tr></thead>
+      <tbody>${groupRows(['me','p','j'])}
+        <tr class="tot"><td colspan="2">סה״כ</td><td>${fmt(fam.b)}</td><td>${fam.wfee.toFixed(2)}%</td><td>${fmt(fam.cost)}</td><td>${Math.round(fam.eq)}%</td><td></td><td>${fmt(fam.fut)}</td></tr>
+      </tbody>
+    </table></div>
+
+    ${recs.length?`<div class="rep-h">פעולות מומלצות</div>
+    <div class="rep-scroll"><table class="rep-table">
+      <thead><tr><th>#</th><th>פעולה</th><th>דחיפות</th><th>שווי</th></tr></thead>
+      <tbody>${recRows}</tbody>
+    </table></div>`:''}
+
+    <div class="rep-foot">
+      הדוח הופק על ידי "הכלי שלי לשוק ההון" ומבוסס על הנתונים שהוזנת. אינו ייעוץ השקעות או מס. התחזיות מניחות תשואה קבועה — המציאות תנודתית. לפני מהלך משמעותי התייעץ עם בעל רישיון פנסיוני.
+    </div>
+  </div>`;
+}
+$('#printReport') && ($('#printReport').onclick=()=>window.print());
+
+
+/* ============ PWA — התקנה למסך הבית + עבודה לא מקוונת ============ */
+(function(){
+  /* אייקון מצויר על קנבס — PNG אמיתי בלי קובץ נפרד */
+  function iconDataURL(size){
+    const c=document.createElement('canvas'); c.width=c.height=size;
+    const x=c.getContext('2d'), r=size*0.22;
+    x.fillStyle='#4338CA';
+    x.beginPath();
+    x.moveTo(r,0); x.arcTo(size,0,size,size,r); x.arcTo(size,size,0,size,r);
+    x.arcTo(0,size,0,0,r); x.arcTo(0,0,size,0,r); x.closePath(); x.fill();
+    /* קו-גרף לבן */
+    x.strokeStyle='#fff'; x.lineWidth=size*0.075; x.lineJoin='round'; x.lineCap='round';
+    const pts=[[.20,.66],[.42,.44],[.56,.56],[.80,.28]];
+    x.beginPath(); pts.forEach((pt,i)=>x[i?'lineTo':'moveTo'](pt[0]*size,pt[1]*size)); x.stroke();
+    x.beginPath(); x.arc(.80*size,.28*size,size*0.055,0,7); x.fillStyle='#fff'; x.fill();
+    return c.toDataURL('image/png');
+  }
+  try{
+    const i180=iconDataURL(180), i512=iconDataURL(512);
+    let al=document.querySelector('link[rel="apple-touch-icon"]');
+    if(!al){al=document.createElement('link'); al.rel='apple-touch-icon'; document.head.appendChild(al);}
+    al.href=i180;
+    let fav=document.querySelector('link[rel="icon"]');
+    if(!fav){fav=document.createElement('link'); fav.rel='icon'; document.head.appendChild(fav);}
+    fav.href=iconDataURL(64);
+    const manifest={name:'הכלי שלי לשוק ההון', short_name:'שוק ההון',
+      start_url:'.', scope:'.', display:'standalone', orientation:'portrait',
+      background_color:'#FAF9F7', theme_color:'#4338CA', dir:'rtl', lang:'he',
+      icons:[{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'},
+             {src:i180,sizes:'180x180',type:'image/png'}]};
+    const blob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
+    let ml=document.querySelector('link[rel="manifest"]');
+    if(!ml){ml=document.createElement('link'); ml.rel='manifest'; document.head.appendChild(ml);}
+    ml.href=URL.createObjectURL(blob);
+  }catch(e){}
+
+  /* כפתור התקנה (Chrome/Android) */
+  let deferred=null;
+  addEventListener('beforeinstallprompt',e=>{e.preventDefault(); deferred=e;
+    const b=document.getElementById('installBtn'); if(b)b.style.display='inline-flex';});
+  const ib=document.getElementById('installBtn');
+  if(ib) ib.onclick=async()=>{
+    if(deferred){deferred.prompt(); await deferred.userChoice; deferred=null; ib.style.display='none';}
+    else{ toast('פתח את תפריט הדפדפן ובחר "הוסף למסך הבית"','plus'); }
+  };
+  /* iOS: אין beforeinstallprompt — מציגים את הכפתור עם הנחיה, אם לא כבר מותקן */
+  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone=matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if(isIOS && !standalone && ib) ib.style.display='inline-flex';
+  addEventListener('appinstalled',()=>{const b=document.getElementById('installBtn'); if(b)b.style.display='none'; toast('האפליקציה הותקנה');});
+
+  /* service worker אופציונלי — אם קיים sw.js לצד הדף, נותן עבודה לא מקוונת */
+  if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  }
+})();
+
 /* ============ INIT ============ */
 function renderAll(){renderFunds();renderFundCards();renderWatch();renderHold();renderMyIdx();renderRecs();renderChecklist();renderJournal();calcCompound();calcFee();calcAlloc();calcReal();renderDash();renderOnboard();}
+captureSnapshot();
 renderAll();
 applyOwnerNames(); applyTabLabels(); moveTabInd($('.tab.active'));
 addScrollHints();
