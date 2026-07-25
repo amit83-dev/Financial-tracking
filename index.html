@@ -129,7 +129,7 @@ h4{margin:0 0 4px; font-size:17px; font-weight:800; letter-spacing:-.3px}
 .u{cursor:pointer; text-decoration:underline; text-underline-offset:3px}
 
 /* ═══════════════════ SURFACES ═══════════════════ */
-.card{background:var(--card); border:1px solid var(--rule); border-radius:var(--r-lg); padding:26px; margin-bottom:16px; box-shadow:var(--sh-1)}
+.card{background:var(--card); border:1px solid var(--rule); border-radius:var(--r-lg); padding:26px; margin-bottom:16px; box-shadow:var(--sh-1); isolation:isolate}
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
 .note{background:var(--card2); border:1px solid var(--rule); border-radius:var(--r-md); padding:14px 16px; font-size:13.5px; color:var(--ink2); margin:16px 0 0; line-height:1.65}
 .note b{color:var(--ink)}
@@ -159,9 +159,8 @@ h4{margin:0 0 4px; font-size:17px; font-weight:800; letter-spacing:-.3px}
 .hero .hs{margin-top:12px; color:var(--ink2); font-size:14.5px; line-height:1.7}
 .hero .hs b{color:var(--ink)}
 
-.callout{background:var(--ink); color:var(--paper); border-radius:var(--r-lg); padding:26px 28px; box-shadow:var(--sh-3); position:relative; overflow:hidden}
-.callout::after{content:''; position:absolute; inset:-40% -20% auto auto; width:260px; height:260px; border-radius:50%;
-  background:radial-gradient(circle, color-mix(in srgb,var(--accent) 72%,transparent), transparent 68%); opacity:.55; pointer-events:none}
+.callout{color:var(--paper); border-radius:var(--r-lg); padding:26px 28px; box-shadow:var(--sh-3); position:relative; overflow:hidden;
+  background:radial-gradient(220px 220px at top left, color-mix(in srgb,var(--accent) 60%,transparent), transparent 68%), var(--ink)}
 .callout .c-lbl{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; opacity:.72}
 .callout .c-val{font-size:38px; font-weight:900; letter-spacing:-1.6px; line-height:1.05; margin:8px 0 2px}
 .callout .c-sub{font-size:14px; opacity:.8; margin-bottom:20px}
@@ -388,6 +387,7 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
   /* מרווחי בטיחות מול המסך: צג עליון, פאנל תחתון, וקצוות (notch) */
   main{padding-left:max(14px, env(safe-area-inset-left)); padding-right:max(14px, env(safe-area-inset-right));
        padding-bottom:calc(80px + env(safe-area-inset-bottom)); padding-top:0}
+  .pairgrid .card .num{font-size:30px}
   h2.vt{font-size:24px; margin-top:24px}
   .vs{font-size:14.5px; margin-bottom:20px}
   h3{font-size:17px; margin-top:30px}
@@ -452,7 +452,7 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
     <button class="tab" data-v="funds2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 20v-1.8a3.6 3.6 0 00-3.6-3.6H6.6A3.6 3.6 0 003 18.2V20"/><circle cx="9.8" cy="7.6" r="3.6"/><path d="M21 20v-1.8a3.6 3.6 0 00-2.7-3.48M15.6 4.2a3.6 3.6 0 010 6.97"/></svg><span data-short="בת הזוג">הקרנות של בת הזוג</span></button>
     <button class="tab" data-v="market"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5.5-6 4 4L21 6"/><path d="M15.5 6H21v5.5"/></svg><span data-short="מדדים">מדדים</span></button>
     <button class="tab" data-v="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.3-5.3 2.2 2.2-5.3z"/></svg><span data-short="החלטות">החלטות</span></button>
-    <button class="tab" data-v="calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="3"/><path d="M8 7h8M8 12h3M8 16.5h3M15 12v4.5"/></svg><span data-short="כלים">מחשבונים</span></button>
+    <button class="tab" data-v="calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="3"/><path d="M8 7h8M8 12h3M8 16.5h3M15 12v4.5"/></svg><span data-short="ניתוח">ניתוח</span></button>
     <button class="tab" data-v="report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M6 2.5h8L19 8v13.5H6z"/><path d="M9 13h6M9 16.5h6M9 9.5h2"/></svg><span data-short="דוח">דוח</span></button>
   </div>
 </div>
@@ -599,69 +599,9 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
 
   <!-- CALCULATORS -->
   <section class="view" id="v-calc">
-    <h2 class="vt">מחשבונים</h2>
-    <p class="vs">ארבעה כלים שהופכים את העקרונות מהחוברת למספרים על המצב שלך.</p>
-
-    <div class="grid2">
-      <div class="card">
-        <h4>1 · ריבית דריבית</h4>
-        <p class="desc">כמה יצטבר מהפקדה קבועה לאורך זמן.</p>
-        <div class="field"><label>סכום התחלתי</label><div class="inp"><input id="c_init" type="number" value="50000"><span class="u">₪</span></div></div>
-        <div class="field"><label>הפקדה חודשית</label><div class="inp"><input id="c_month" type="number" value="1500"><span class="u">₪/חודש</span></div></div>
-        <div class="field"><label>מספר שנים: <span class="rangeval" id="c_years_v">30</span></label><input id="c_years" type="range" min="1" max="45" value="30"></div>
-        <div class="field"><label>תשואה שנתית ממוצעת: <span class="rangeval" id="c_rate_v">8%</span></label><input id="c_rate" type="range" min="1" max="14" step="0.5" value="8"></div>
-        <canvas id="compChart" width="520" height="200"></canvas>
-        <div class="result">
-          <div class="lbl">שווי צפוי בסוף התקופה</div>
-          <div class="big" id="c_final">—</div>
-          <div class="split"><div class="a" id="c_splitA"></div><div class="b" id="c_splitB"></div></div>
-          <div class="legend"><span><span class="dot" style="background:var(--brand)"></span>מהכיס: <b id="c_contrib">—</b></span><span><span class="dot" style="background:var(--good)"></span>רווח (ריבית דריבית): <b id="c_growth">—</b></span></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h4>2 · השוואת דמי ניהול</h4>
-        <p class="desc">כמה עולה ההפרש בין מסלול יקר לזול — הכסף שאתם משאירים על השולחן.</p>
-        <div class="field"><label>סכום התחלתי</label><div class="inp"><input id="f_init" type="number" value="200000"><span class="u">₪</span></div></div>
-        <div class="field"><label>הפקדה חודשית</label><div class="inp"><input id="f_month" type="number" value="1500"><span class="u">₪/חודש</span></div></div>
-        <div class="field"><label>שנים: <span class="rangeval" id="f_years_v">25</span></label><input id="f_years" type="range" min="1" max="45" value="25"></div>
-        <div class="field"><label>תשואה ברוטו (לפני דמי ניהול): <span class="rangeval" id="f_gross_v">8%</span></label><input id="f_gross" type="range" min="1" max="14" step="0.5" value="8"></div>
-        <div class="grid2" style="gap:10px">
-          <div class="field"><label>מסלול נוכחי — דמי ניהול</label><div class="inp"><input id="f_high" type="number" step="0.05" value="1.2"><span class="u">%</span></div></div>
-          <div class="field"><label>מסלול זול — דמי ניהול</label><div class="inp"><input id="f_low" type="number" step="0.05" value="0.5"><span class="u">%</span></div></div>
-        </div>
-        <div class="result">
-          <div class="lbl">כמה יותר יישאר בכיס במסלול הזול</div>
-          <div class="big g" id="f_diff">—</div>
-          <div class="lbl" id="f_detail" style="margin-top:8px"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h4>3 · התאמת מסלול לטווח</h4>
-        <p class="desc">חשיפת מניות מומלצת לפי גיל וטווח — כלל אצבע, לא ייעוץ.</p>
-        <div class="field"><label>גיל נוכחי: <span class="rangeval" id="a_age_v">35</span></label><input id="a_age" type="range" min="18" max="70" value="35"></div>
-        <div class="field"><label>שנים עד שאצטרך את הכסף: <span class="rangeval" id="a_hz_v">20</span></label><input id="a_hz" type="range" min="0" max="40" value="20"></div>
-        <div class="result">
-          <div class="lbl">חשיפת מניות מומלצת (כלל אצבע)</div>
-          <div class="big b" id="a_eq">—</div>
-          <div class="lbl" id="a_txt" style="margin-top:8px"></div>
-        </div>
-        <div class="note">שתי גישות משולבות: כלל הגיל (110 פחות הגיל) והתאמה לטווח. ככל שהטווח ארוך — יותר מניות, כי יש זמן להתאושש מירידות.</div>
-      </div>
-
-      <div class="card">
-        <h4>4 · תשואה ריאלית (נטו אינפלציה)</h4>
-        <p class="desc">מה נשאר מהתשואה אחרי שהאינפלציה כרסמה בכוח הקנייה.</p>
-        <div class="field"><label>תשואה נומינלית: <span class="rangeval" id="r_nom_v">8%</span></label><input id="r_nom" type="range" min="0" max="15" step="0.5" value="8"></div>
-        <div class="field"><label>אינפלציה שנתית: <span class="rangeval" id="r_inf_v">3%</span></label><input id="r_inf" type="range" min="0" max="10" step="0.5" value="3"></div>
-        <div class="result">
-          <div class="lbl">תשואה ריאלית (מה שבאמת גדלת)</div>
-          <div class="big" id="r_real">—</div>
-          <div class="lbl" style="margin-top:8px">גם 3% אינפלציה מכפילים מחירים בערך כל 24 שנה. תשואה שלא מנצחת אינפלציה = הפסד שקט.</div>
-        </div>
-      </div>
-    </div>
+    <h2 class="vt">ניתוח — מוכנות לפרישה</h2>
+    <p class="vs">האם אתם בדרך לפרישה שאתם רוצים? מזינים את ההכנסה החודשית הרצויה, והכלי מצליב אותה מול כל מה שידוע עליכם — קופות, הפקדות, תשואה — ומראה אם אתם בכיוון, מה הפער, וכמה עוד לחודש סוגר אותו.</p>
+    <div id="retireBody"></div>
   </section>
 
   <!-- REPORT -->
@@ -780,7 +720,7 @@ const LS='shukhon_v1';
 const DEF={
   funds:[], holdings:[],
   watch:[{sym:'SPY',name:'S&P 500 (ETF)'},{sym:'QQQ',name:'נאסד״ק 100 (ETF)'},{sym:'URTH',name:'עולמי MSCI World'}],
-  journal:[], checks:{}, recSt:{}, snapshots:[], lastEdit:0, settings:{key:'',syncCode:'',age:35,hz:20,retire:67,status:'שכיר',marg:31,nameMe:'עמית',nameP:'סיון'}, theme:'light'
+  journal:[], checks:{}, recSt:{}, snapshots:[], lastEdit:0, settings:{key:'',syncCode:'',age:35,hz:20,retire:67,status:'שכיר',marg:31,nameMe:'עמית',nameP:'סיון',incomeGoal:15000}, theme:'light'
 };
 let S=load();
 function load(){try{const r=JSON.parse(localStorage.getItem(LS));return r?Object.assign(JSON.parse(JSON.stringify(DEF)),r):JSON.parse(JSON.stringify(DEF));}catch(e){return JSON.parse(JSON.stringify(DEF));}}
@@ -948,6 +888,7 @@ $$('.tab').forEach(t=>t.onclick=()=>{
   moveTabInd(t); observeReveals();
   if(t.dataset.v==='dash') renderDash();
   if(t.dataset.v==='report') renderReport();
+  if(t.dataset.v==='calc') renderRetire();
   window.scrollTo({top:0,behavior:RM?'auto':'smooth'});
 });
 addEventListener('resize',()=>{applyTabLabels();moveTabInd($('.tab.active'));});
@@ -1475,7 +1416,7 @@ function drawLine(cv,pts,color){
   ctx.beginPath();ctx.moveTo(x(0),y(pts[0]));pts.forEach((p,i)=>ctx.lineTo(x(i),y(p)));
   ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
 }
-function calcCompound(){
+function calcCompound(){if(!document.getElementById('c_init')&&!document.getElementById('f_init')&&!document.getElementById('a_age')&&!document.getElementById('r_nom'))return;
   const init=+$('#c_init').value||0,month=+$('#c_month').value||0,years=+$('#c_years').value,rate=+$('#c_rate').value;
   $('#c_years_v').textContent=years;$('#c_rate_v').textContent=rate+'%';
   const {final,contrib,pts}=compound(init,month,years,rate);
@@ -1486,7 +1427,7 @@ function calcCompound(){
   $('#c_splitA').style.width=pa+'%';$('#c_splitB').style.width=(100-pa)+'%';
   drawLine($('#compChart'),pts,cssv('--brand2')||'#60a5fa');
 }
-function calcFee(){
+function calcFee(){if(!document.getElementById('c_init')&&!document.getElementById('f_init')&&!document.getElementById('a_age')&&!document.getElementById('r_nom'))return;
   const init=+$('#f_init').value||0,month=+$('#f_month').value||0,years=+$('#f_years').value,gross=+$('#f_gross').value,hi=+$('#f_high').value||0,lo=+$('#f_low').value||0;
   $('#f_years_v').textContent=years;$('#f_gross_v').textContent=gross+'%';
   const a=compound(init,month,years,gross-hi).final;
@@ -1495,7 +1436,7 @@ function calcFee(){
   $('#f_diff').textContent=fmt(diff);
   $('#f_detail').innerHTML=`מסלול נוכחי (${hi}%): <b>${fmt(a)}</b> · מסלול זול (${lo}%): <b>${fmt(b)}</b>. הפרש של ${(hi-lo).toFixed(2)}% בשנה = ${fmt(diff)} לאורך ${years} שנה.`;
 }
-function calcAlloc(){
+function calcAlloc(){if(!document.getElementById('c_init')&&!document.getElementById('f_init')&&!document.getElementById('a_age')&&!document.getElementById('r_nom'))return;
   const age=+$('#a_age').value,hz=+$('#a_hz').value;
   $('#a_age_v').textContent=age;$('#a_hz_v').textContent=hz;
   const eq=recEquity(age,hz);
@@ -1506,17 +1447,17 @@ function calcAlloc(){
   else txt='טווח קצר / קרוב למשיכה — משקל גבוה לסולידי כדי לא להיפגע מירידה ברגע הלא נכון.';
   $('#a_txt').innerHTML=`${eq}% מניות, ${100-eq}% סולידי. ${txt}`;
 }
-function calcReal(){
+function calcReal(){if(!document.getElementById('c_init')&&!document.getElementById('f_init')&&!document.getElementById('a_age')&&!document.getElementById('r_nom'))return;
   const nom=+$('#r_nom').value,inf=+$('#r_inf').value;
   $('#r_nom_v').textContent=nom+'%';$('#r_inf_v').textContent=inf+'%';
   const real=((1+nom/100)/(1+inf/100)-1)*100;
   const el=$('#r_real');el.textContent=real.toFixed(1)+'%';
   el.className='big '+(real>0?'g':'r');
 }
-['c_init','c_month','c_years','c_rate'].forEach(id=>$('#'+id).addEventListener('input',calcCompound));
-['f_init','f_month','f_years','f_gross','f_high','f_low'].forEach(id=>$('#'+id).addEventListener('input',calcFee));
-['a_age','a_hz'].forEach(id=>$('#'+id).addEventListener('input',calcAlloc));
-['r_nom','r_inf'].forEach(id=>$('#'+id).addEventListener('input',calcReal));
+['c_init','c_month','c_years','c_rate'].forEach(id=>{const e=$('#'+id);if(e)e.addEventListener('input',calcCompound);});
+['f_init','f_month','f_years','f_gross','f_high','f_low'].forEach(id=>{const e=$('#'+id);if(e)e.addEventListener('input',calcFee);});
+['a_age','a_hz'].forEach(id=>{const e=$('#'+id);if(e)e.addEventListener('input',calcAlloc);});
+['r_nom','r_inf'].forEach(id=>{const e=$('#'+id);if(e)e.addEventListener('input',calcReal);});
 
 /* ============ 🧭 מנוע ההמלצות ============
    כל המלצה נשענת על הנתונים שהוזנו ועל האופק של הקופה הספציפית.
@@ -1787,8 +1728,7 @@ function renderDash(){
   };
 
   const tableCallout=(st,tone)=>st.recN?`
-      <div style="margin-top:14px;background:var(--ink);color:var(--paper);border-radius:var(--r-md);padding:15px 17px;position:relative;overflow:hidden">
-        <div style="position:absolute;inset:-50% -25% auto auto;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(${tone}) 70%,transparent),transparent 68%);opacity:.5"></div>
+      <div style="margin-top:14px;color:var(--paper);border-radius:var(--r-md);padding:15px 17px;position:relative;overflow:hidden;background:radial-gradient(150px 150px at top left, color-mix(in srgb,var(${tone}) 55%,transparent), transparent 70%), var(--ink)">
         <div style="position:relative">
           <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;opacity:.72">על השולחן</div>
           <div style="font-size:26px;font-weight:900;letter-spacing:-1px;margin:5px 0 2px">${fmt(st.recW)}</div>
@@ -2364,6 +2304,115 @@ function addScrollHints(){
 }
 
 
+
+/* ============ 🎯 מוכנות לפרישה מול יעד ============ */
+/* פרישה: מקרנים כל קופה עד גיל הפרישה (ההנחה: משאירים הכל מושקע עד אז) */
+function retirePot(){
+  const age=S.settings.age||35, ret=S.settings.retire||67;
+  const net=weightedRet()>0?weightedRet():6;
+  const years=Math.max(1,ret-age);
+  let pot=0, contrib=0;
+  S.funds.forEach(f=>{
+    const b=f.bal||0, d=f.dep||0;
+    const wfee=f.fee||0;
+    const rate=net;                 /* net כבר מוערך נטו; משאירים עקבי עם התחזית */
+    pot+=compound(b, d*(1-((f.feeDep||0)/100)), years, rate).final;
+    contrib+=b + d*12*years;
+  });
+  return {pot, contrib, years, net, ret, age};
+}
+/* קצבה חודשית מוערכת מקרן — כלל 4% */
+const potToIncome=pot=>pot*0.04/12;
+/* הפקדה חודשית שנדרשת כדי לצבור FV נוסף תוך n שנים בתשואה r */
+function pmtFor(fv, years, ratePct){
+  const r=ratePct/100/12, n=years*12;
+  if(r<=0) return fv/n;
+  return fv * r / (Math.pow(1+r,n)-1);
+}
+function renderRetire(){
+  const el=$('#retireBody'); if(!el)return;
+  const bal=S.funds.reduce((a,f)=>a+(f.bal||0),0);
+  if(!bal){el.innerHTML='<div class="empty"><div class="ico">🎯</div>מלא קופות בלשונית "הקופות שלי" כדי לבדוק מוכנות לפרישה.</div>';return;}
+
+  const goal=S.settings.incomeGoal||15000;
+  const R=retirePot();
+  const income=potToIncome(R.pot);
+  const ratio=goal>0?income/goal:0;
+  const gapIncome=goal-income;                       /* חיובי = חסר */
+  const onTrack=gapIncome<=0;
+  const neededExtraPot=Math.max(0,gapIncome)*12/0.04; /* עוד הון שצריך בפרישה */
+  const extraMonthly=neededExtraPot>0?pmtFor(neededExtraPot,R.years,R.net):0;
+  const rr=realReturn();
+
+  const pctFill=Math.min(100,Math.round(ratio*100));
+  const tone=onTrack?'good':ratio>=0.75?'warn':'bad';
+
+  const bigMsg = onTrack
+    ? `אתם <b>בכיוון</b>. הקופות צפויות להניב כ-<b>${fmt(income)}</b> לחודש בפרישה — מעל היעד שהצבתם.`
+    : `צפוי <b>פער של ${fmt(gapIncome)} לחודש</b>. כדי לסגור אותו צריך עוד כ-<b>${fmt(neededExtraPot)}</b> בקרן עד גיל ${R.ret}, שהם עוד <b>${fmt(extraMonthly)} לחודש</b> מהיום.`;
+
+  el.innerHTML=`
+  <div class="card" style="margin-bottom:16px">
+    <div class="grid2" style="align-items:center">
+      <div>
+        <div class="field" style="margin:0">
+          <label>הכנסה חודשית רצויה בפרישה</label>
+          <div class="inp"><input type="number" id="ret_goal" value="${goal}" style="font-size:18px;font-weight:800"></div>
+        </div>
+        <p class="desc" style="margin:10px 0 0">כמה תרצו לקבל כל חודש כשתפרשו. אם אין לכם מספר — כלל אצבע נפוץ הוא כ-70% מההכנסה הנוכחית של משק הבית.</p>
+      </div>
+      <div style="text-align:center">
+        <div style="position:relative;width:150px;height:150px;margin:0 auto">
+          <svg viewBox="0 0 120 120" style="width:100%;height:100%;transform:rotate(-90deg)">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="var(--card3)" stroke-width="11"/>
+            <circle cx="60" cy="60" r="52" fill="none" stroke="var(--${tone})" stroke-width="11" stroke-linecap="round"
+              stroke-dasharray="${(2*Math.PI*52).toFixed(1)}" stroke-dashoffset="${(2*Math.PI*52*(1-pctFill/100)).toFixed(1)}"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <div style="font-size:30px;font-weight:900;letter-spacing:-1px;color:var(--${tone})">${pctFill}%</div>
+            <div style="font-size:11.5px;color:var(--ink3);font-weight:700">מהיעד</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:16px 18px;border-radius:var(--r-md);background:${onTrack?'var(--good-bg)':'var(--bad-bg)'};border:1px solid color-mix(in srgb,var(--${tone}) 26%,transparent);font-size:15px;line-height:1.7">${bigMsg}</div>
+  </div>
+
+  <div class="kpis" style="margin-bottom:16px">
+    <div class="kpi plain"><div class="l">קרן צפויה בפרישה</div><div class="v b">${fmt(R.pot)}</div><div class="s">כל הקופות עד גיל ${R.ret}</div></div>
+    <div class="kpi plain"><div class="l">קצבה חודשית צפויה</div><div class="v ${tone==='good'?'g':tone==='warn'?'w':'r'}">${fmt(income)}</div><div class="s">לפי משיכת 4% בשנה</div></div>
+    <div class="kpi plain"><div class="l">היעד שלכם</div><div class="v">${fmt(goal)}</div><div class="s">לחודש בפרישה</div></div>
+    <div class="kpi plain"><div class="l">${onTrack?'עודף חודשי':'תוספת חודשית לסגירה'}</div><div class="v ${onTrack?'g':'r'}">${onTrack?'+'+fmt(-gapIncome):fmt(extraMonthly)}</div><div class="s">${onTrack?'מעבר ליעד':`עד גיל ${R.ret}`}</div></div>
+  </div>
+
+  ${!onTrack?`<div class="card" style="margin-bottom:16px">
+    <h4 style="margin:0 0 4px">איך סוגרים את הפער</h4>
+    <p class="desc">שלוש דרכים, אפשר לשלב ביניהן:</p>
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--rule)">
+        <span style="flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800">1</span>
+        <div><b>להפקיד עוד ${fmt(extraMonthly)} לחודש</b><div style="color:var(--ink2);font-size:13.5px;margin-top:2px">מהיום ועד גיל ${R.ret}, בתשואה של ${R.net.toFixed(1)}%, זה סוגר את כל הפער.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--rule)">
+        <span style="flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800">2</span>
+        <div><b>להוריד דמי ניהול</b><div style="color:var(--ink2);font-size:13.5px;margin-top:2px">כל 0.5% שתחסכו בדמי ניהול שקולים לתשואה גבוהה יותר — ראו את ההמלצות בלשונית "החלטות".</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 0">
+        <span style="flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800">3</span>
+        <div><b>לדחות את הפרישה</b><div style="color:var(--ink2);font-size:13.5px;margin-top:2px">כל שנה נוספת מוסיפה הפקדות וזמן צמיחה. שנו את "גיל פרישה" בהגדרות כדי לראות את ההשפעה.</div></div>
+      </div>
+    </div>
+  </div>`:''}
+
+  <div class="note">${rr?`התחזית מניחה תשואה של ${R.net.toFixed(1)}% בשנה — קרובה לתשואה שלכם בפועל (${rr.annual>=0?'+':''}${rr.annual.toFixed(1)}%). `:`התחזית מניחה תשואה של ${R.net.toFixed(1)}% בשנה. `}הקצבה החודשית היא הערכה לפי "כלל 4%" ולא חישוב אקטוארי — הקצבה בפועל תלויה במקדם ההמרה של הקופה בזמן הפרישה. זהו כלי הכוונה, לא ייעוץ פנסיוני.</div>
+  <div class="note info" style="margin-top:12px"><b>ההנחה כאן שונה מכרטיס התחזית בדשבורד:</b> שם כל קופה נמשכת במועד שלה (השתלמות בעוד 6 שנים וכו׳). כאן מקרינים <b>את הכל עד גיל הפרישה</b>, כי זו השאלה של "כמה יהיה לי כשאפרוש".</div>`;
+
+  const g=$('#ret_goal'); if(g) g.onchange=()=>{
+    const v=parseFloat(g.value)||0; S.settings.incomeGoal=v; save(); renderRetire();
+  };
+}
+/* ============ מוכנות לפרישה END ============ */
+
 /* ============ 📄 REPORT ============ */
 function renderReport(){
   const el=$('#reportBody'); if(!el)return;
@@ -2502,7 +2551,7 @@ $('#printReport') && ($('#printReport').onclick=()=>window.print());
 })();
 
 /* ============ INIT ============ */
-function renderAll(){renderFunds();renderFundCards();renderWatch();renderHold();renderMyIdx();renderRecs();renderChecklist();renderJournal();calcCompound();calcFee();calcAlloc();calcReal();renderDash();renderOnboard();}
+function renderAll(){renderFunds();renderFundCards();renderWatch();renderHold();renderMyIdx();renderRecs();renderChecklist();renderJournal();renderDash();renderOnboard();}
 captureSnapshot();
 renderAll();
 applyOwnerNames(); applyTabLabels(); moveTabInd($('.tab.active'));
