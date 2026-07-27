@@ -250,6 +250,10 @@ input[type=range]:focus{box-shadow:none}
 .modal .box{background:var(--surface); border:1px solid var(--rule); border-radius:var(--r-lg); padding:26px; max-width:460px; width:100%; box-shadow:var(--sh-3); max-height:90vh; overflow-y:auto; animation:pop .28s var(--ease)}
 @keyframes pop{from{opacity:0; transform:translateY(14px) scale(.97)} to{opacity:1; transform:none}}
 .modal .box.wide{max-width:760px}
+.setgrp{border:1px solid var(--rule); border-radius:var(--r-md); padding:14px 16px; margin-bottom:14px; background:var(--card2)}
+.setgrp-t{font-size:12.5px; font-weight:800; color:var(--ink3); letter-spacing:.02em; margin-bottom:10px}
+.setgrp-t b{color:var(--accent)}
+.setgrp .field:last-child{margin-bottom:0}
 .sheet{position:fixed; inset:0; background:rgba(8,10,16,.55); backdrop-filter:blur(3px); display:none; z-index:70; align-items:flex-end; justify-content:center}
 .sheet.open{display:flex; animation:fade .2s var(--ease)}
 .sheet .sbox{background:var(--surface); width:100%; max-width:520px; max-height:92vh; overflow-y:auto;
@@ -690,12 +694,25 @@ kbd{background:var(--card2); border:1px solid var(--rule2); border-radius:6px; p
   <div class="box">
     <h3>הגדרות</h3>
     <div class="field"><label>מפתח API למחירים חיים (Twelve Data — חינם)</label><div class="inp"><input id="s_key" placeholder="הדבק כאן את ה-API Key"></div></div>
-    <div class="field"><label>גיל: <span class="rangeval" id="s_age_v">35</span></label><input id="s_age" type="range" min="18" max="75" value="35"></div>
-    <div class="field"><label>שנים עד משיכה (טווח): <span class="rangeval" id="s_hz_v">20</span></label><input id="s_hz" type="range" min="0" max="45" value="20"></div>
     <div class="field"><label>שמות התצוגה</label><div class="inp">
       <input id="s_nameMe" placeholder="עמית"><input id="s_nameP" placeholder="סיון"></div></div>
-    <div class="field"><label>גיל פרישה מתוכנן: <span class="rangeval" id="s_ret_v">67</span></label><input id="s_ret" type="range" min="55" max="75" value="67"></div>
-    <div class="field"><label>מעמד תעסוקתי (קובע את תקרת ההשתלמות)</label><div class="inp"><select id="s_status"><option value="שכיר">שכיר</option><option value="עצמאי">עצמאי</option><option value="שכיר+עצמאי">שכיר וגם עצמאי</option></select></div></div>
+
+    <div class="setgrp">
+      <div class="setgrp-t">הגדרות <b id="setLblMe">עמית</b></div>
+      <div class="field"><label>גיל: <span class="rangeval" id="s_age_v">35</span></label><input id="s_age" type="range" min="18" max="75" value="35"></div>
+      <div class="field"><label>גיל פרישה מתוכנן: <span class="rangeval" id="s_ret_v">67</span></label><input id="s_ret" type="range" min="55" max="75" value="67"></div>
+      <div class="field"><label>מעמד תעסוקתי (לתקרת השתלמות)</label><div class="inp"><select id="s_status"><option value="שכיר">שכיר</option><option value="עצמאי">עצמאי</option><option value="שכיר+עצמאי">שכיר וגם עצמאי</option></select></div></div>
+    </div>
+
+    <div class="setgrp">
+      <div class="setgrp-t">הגדרות <b id="setLblP">סיון</b></div>
+      <div class="field"><label>גיל: <span class="rangeval" id="s_ageP_v">35</span></label><input id="s_ageP" type="range" min="18" max="75" value="35"></div>
+      <div class="field"><label>גיל פרישה מתוכנן: <span class="rangeval" id="s_retP_v">65</span></label><input id="s_retP" type="range" min="55" max="75" value="65"></div>
+      <div class="field"><label>מעמד תעסוקתי (לתקרת השתלמות)</label><div class="inp"><select id="s_statusP"><option value="שכיר">שכיר</option><option value="עצמאי">עצמאי</option><option value="שכיר+עצמאי">שכיר וגם עצמאי</option></select></div></div>
+      <div class="note" style="margin:0;font-size:12px">בישראל גיל הפרישה לנשים נמוך מגברים (כ-62–65 לפי שנת לידה). קופות משותפות מחושבות לפי הגדרות עמית.</div>
+    </div>
+
+    <div class="field"><label>שנים עד משיכה (טווח כללי למחשבון): <span class="rangeval" id="s_hz_v">20</span></label><input id="s_hz" type="range" min="0" max="45" value="20"></div>
     <div class="field"><label>🔗 קוד סנכרון (הזן את אותו הקוד בכל מכשיר)</label><div class="inp"><input id="s_sync" placeholder="קוד סודי לחיבור המכשירים"><span class="u" id="s_syncgen" style="cursor:pointer;color:var(--brand2)">צור קוד</span></div></div>
     <div class="note" style="margin:0 0 10px;font-size:12.5px">סטטוס סנכרון: <b id="syncStatus">—</b></div>
     <button class="btn sec sm" id="s_pull" style="width:100%;margin:0 0 12px">משוך נתונים מהענן עכשיו</button>
@@ -754,7 +771,7 @@ const LS='shukhon_v1';
 const DEF={
   funds:[], holdings:[],
   watch:[{sym:'SPY',name:'S&P 500 (ETF)'},{sym:'QQQ',name:'נאסד״ק 100 (ETF)'},{sym:'URTH',name:'עולמי MSCI World'}],
-  journal:[], checks:{}, recSt:{}, snapshots:[], lastEdit:0, settings:{key:'',syncCode:'',age:35,hz:20,retire:67,status:'שכיר',marg:31,nameMe:'עמית',nameP:'סיון',incomeGoal:15000}, theme:'light'
+  journal:[], checks:{}, recSt:{}, snapshots:[], lastEdit:0, settings:{key:'',syncCode:'',age:35,hz:20,retire:67,status:'שכיר',ageP:35,retireP:65,statusP:'שכיר',marg:31,nameMe:'עמית',nameP:'סיון',incomeGoal:15000}, theme:'light'
 };
 let S=load();
 function load(){try{const r=JSON.parse(localStorage.getItem(LS));return r?Object.assign(JSON.parse(JSON.stringify(DEF)),r):JSON.parse(JSON.stringify(DEF));}catch(e){return JSON.parse(JSON.stringify(DEF));}}
@@ -982,6 +999,10 @@ const ownerName=o=>o==='p'?(S.settings.nameP||'סיון'):o==='j'?'משותף':(
 const fundsOf=o=>S.funds.filter(f=>ownerOf(f)===o);
 const fundsOfAny=(...os)=>S.funds.filter(f=>os.includes(ownerOf(f)));
 const hasPartner=()=>S.funds.some(f=>ownerOf(f)!=='me');
+/* הגדרות פר-אדם: לכל בעלים גיל, גיל פרישה ומעמד משלו. קופה משותפת → לפי עמית. */
+function pAge(o){    return o==='p'?(+S.settings.ageP||+S.settings.age||35):(+S.settings.age||35); }
+function pRetire(o){ return o==='p'?(+S.settings.retireP||65):(+S.settings.retire||67); }
+function pStatus(o){ return o==='p'?(S.settings.statusP||S.settings.status||'שכיר'):(S.settings.status||'שכיר'); }
 /* תגית בעלים — מוצגת רק כשבאמת יש שני אנשים, אחרת רעש מיותר */
 const ownTag=o=>hasPartner()?` <span class="pill n" style="font-size:10.5px;padding:2px 8px">${ownerName(o)}</span>`:'';
 
@@ -1022,7 +1043,7 @@ function fundIndices(){
    לכל קופה מועד משיכה אחר. ברירת המחדל נגזרת מסוג הקופה, וניתנת לדריסה ידנית. */
 function fundYears(f){
   if(f.yrs>0) return f.yrs;                                   /* דריסה ידנית */
-  const age=S.settings.age||35, ret=S.settings.retire||67;
+  const o=ownerOf(f), age=pAge(o), ret=pRetire(o);
   if(f.type==='קרן פנסיה')     return Math.max(1,ret-age);     /* עד גיל פרישה */
   if(f.type==='גמל להשקעה')    return Math.max(1,60-age);      /* עד 60 — משיכה כקצבה פטורה ממס */
   if(f.type==='קרן השתלמות'){                                  /* עד הבשלה (6 שנים) */
@@ -1034,7 +1055,7 @@ function fundYears(f){
 }
 function yearsSource(f){
   if(f.yrs>0) return 'הוגדר ידנית';
-  if(f.type==='קרן פנסיה')  return `עד גיל פרישה ${S.settings.retire||67}`;
+  if(f.type==='קרן פנסיה')  return `עד גיל פרישה ${pRetire(ownerOf(f))}`;
   if(f.type==='גמל להשקעה') return 'עד גיל 60 — משיכה כקצבה פטורה';
   if(f.type==='קרן השתלמות')return monthsSince(f.opened)===null?'הערכה — חסר תאריך פתיחה':'עד הבשלת 6 השנים';
   return 'לפי הטווח הכללי בהגדרות';
@@ -1052,7 +1073,7 @@ function groupProjection(g){
   const val=compound(bal0,depNet,years,gross-wfee).final;
   const tAcc=bal0?g.rows.reduce((a,r)=>{const b=BENCH[r.f.type]||{acc:0.5};return a+(r.f.bal||0)*Math.min(r.f.fee||0,b.acc);},0)/bal0:0;
   const eqNow=bal0?g.rows.reduce((a,r)=>a+(r.f.bal||0)*fundEq(r.f),0)/bal0:0;
-  const eqBoost=Math.max(0,(recEquity(S.settings.age,years)-eqNow)/100*3);
+  const eqBoost=Math.max(0,(recEquity(pAge(g.own||'me'),years)-eqNow)/100*3);
   const better=compound(bal0,depNet,years,gross-tAcc+eqBoost).final;
   return {name:(g.name||'ללא שם'),tag:ownTag(g.own||'me'),type:g.type,own:g.own||'me',years,bal0,dep0,val,better,src:yearsSource(f0)};
 }
@@ -1073,7 +1094,7 @@ function projectSeries(rateAdj,useTarget){
       if(useTarget){
         fee=b0?g.rows.reduce((a,r)=>{const bm=BENCH[r.f.type]||{acc:0.5};return a+(r.f.bal||0)*Math.min(r.f.fee||0,bm.acc);},0)/b0:0;
         const eqNow=b0?g.rows.reduce((a,r)=>a+(r.f.bal||0)*fundEq(r.f),0)/b0:0;
-        boost=Math.max(0,(recEquity(S.settings.age,fundYears(f0))-eqNow)/100*3);
+        boost=Math.max(0,(recEquity(pAge(f0.own||o),fundYears(f0))-eqNow)/100*3);
       }
       const depNet=d0*(1-((f0.feeDep||0)/100));
       v+=compound(b0,depNet,yr,(net+wf)-fee+boost+rateAdj).final;
@@ -1111,8 +1132,8 @@ const CAPS2026={
   hishtSelfDeduct:13203,      /* ניכוי מרבי לעצמאי — 4.5% מ-293,397 ₪         */
   gemelInvest:83641           /* תקרה שנתית לגמל להשקעה, לכל הקופות יחד       */
 };
-function hishtCeiling(){
-  const st=S.settings.status||'שכיר';
+function hishtCeiling(o){
+  const st=pStatus(o||'me');
   const salaried=CAPS2026.hishtSalaryCeil*CAPS2026.hishtRateTotal/100*12;   /* 18,854 ₪ */
   if(st==='עצמאי') return {cap:CAPS2026.hishtSelfExempt,label:'תקרה מוטבת לעצמאי'};
   if(st==='שכיר+עצמאי') return {cap:CAPS2026.hishtSelfExempt,label:'תקרה מוטבת (שכיר+עצמאי)'};
@@ -1569,7 +1590,7 @@ function recommendations(){
     const f0=g.rows[0].f, yrs=fundYears(f0);
     const gb=g.rows.reduce((a,r)=>a+(r.f.bal||0),0); if(!gb)return;
     const eq=g.rows.reduce((a,r)=>a+(r.f.bal||0)*fundEq(r.f),0)/gb;
-    const rec=recEquity(S.settings.age,yrs);
+    const rec=recEquity(pAge(g.own),yrs);
     const gap=rec-eq;
     if(gap>=15&&yrs>=8){
       const boost=gap/100*3;                        /* פער תשואה מוערך */
@@ -2070,7 +2091,7 @@ function dataQuality(){
   add(S.funds.some(f=>(f.dep||0)>0),'הפקדה חודשית');
   add(!hi.length||hi.every(f=>f.opened),'תאריך פתיחה להשתלמות');
   add(!S.funds.some(f=>f.track==='אחר'),'מסלול מדויק (יש "אחר")');
-  add(!!S.settings.retire,'גיל פרישה בהגדרות');
+  add(!!S.settings.retire && (!hasPartner()||!!S.settings.retireP),'גיל פרישה לכל בעלים');
   return {pct:Math.round(ok/checks*100),miss};
 }
 function renderQuality(){
@@ -2153,7 +2174,7 @@ function renderLiquidity(bal){
     if(l.k==='now'){yrs=0; tone='now'; txt='זמין עכשיו';}
     else if(l.k==='soon'){yrs=+(l.left/12).toFixed(1); tone='soon'; txt=`בעוד ${yrs} שנה`;}
     else if(l.k==='unknown'){yrs=6; tone='miss'; txt='חסר תאריך פתיחה';}
-    else {yrs=Math.max(0,(S.settings.retire||67)-(S.settings.age||35)); tone='lock'; txt=`בגיל ${S.settings.retire||67}`;}
+    else {const ow=g.own||'me'; yrs=Math.max(0,pRetire(ow)-pAge(ow)); tone='lock'; txt=`בגיל ${pRetire(ow)}`;}
     return {name:(g.name||'ללא שם'),tag:ownTag(g.own),type:g.type,bal:b,yrs,tone,txt};
   }).filter(r=>r.bal>0).sort((a,b)=>a.yrs-b.yrs);
   if(!rows.length){el.innerHTML='';return;}
@@ -2401,7 +2422,7 @@ function renderProjection(bal){
   el.innerHTML=`
     <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px">
       ${block('הקופות הנזילות',liq,liq.length?`נמשכות עד ${Math.max(...liq.map(g=>g.years))} שנה`:'')}
-      ${block('פנסיה',pen,`נעולה עד גיל ${S.settings.retire||67}`)}
+      ${block('פנסיה',pen,'נעולה עד הפרישה')}
       <div style="flex:1;min-width:210px;background:var(--ink);color:var(--paper);border-radius:var(--r-md);padding:16px 18px">
         <div style="font-size:12.5px;font-weight:800;opacity:.72;letter-spacing:.02em">סך הכל במועדי המשיכה</div>
         <div style="font-size:26px;font-weight:900;letter-spacing:-1px;margin:7px 0 3px">${fmt(totVal)}</div>
@@ -2410,7 +2431,7 @@ function renderProjection(bal){
     </div>
     ${coneChart()}
     ${rows}
-    <div class="note" style="margin-top:14px"><b>לכל קופה אופק משלה</b> — ולכן גם תחזית משלה. ברירות המחדל: <b>פנסיה</b> עד גיל הפרישה שהגדרת (${S.settings.retire||67}), <b>השתלמות</b> עד הבשלת 6 השנים, <b>גמל להשקעה</b> עד גיל 60 שבו משיכה כקצבה פטורה ממס.
+    <div class="note" style="margin-top:14px"><b>לכל קופה אופק משלה</b> — ולכן גם תחזית משלה. ברירות המחדל: <b>פנסיה</b> עד גיל הפרישה של כל בעלים, <b>השתלמות</b> עד הבשלת 6 השנים, <b>גמל להשקעה</b> עד גיל 60 שבו משיכה כקצבה פטורה ממס.
     <br>אם אתה מתכוון למשוך במועד אחר — או להשאיר קופה שהבשילה ולתת לה להמשיך לצמוח — עדכן את העמודה <b>"שנים עד משיכה"</b> בכותרת הקופה בלשונית "הקרנות שלי", והתחזית תתעדכן בהתאם.
     <br>ההנחה: תשואה קבועה של ${net.toFixed(1)}% בשנה והמשך ההפקדה הנוכחית. המציאות לא קווית — זה כלי להשוואת תרחישים, לא הבטחה.</div>`;
   if(window.__coneWire) requestAnimationFrame(window.__coneWire);
@@ -2419,15 +2440,21 @@ function renderProjection(bal){
 /* ---- 📊 חשיפה מנייתית ---- */
 
 /* ============ SETTINGS ============ */
-$('#settingsBtn').onclick=()=>{$('#s_key').value=S.settings.key||'';$('#s_status').value=S.settings.status||'שכיר';$('#s_nameMe').value=S.settings.nameMe||'';$('#s_nameP').value=S.settings.nameP||'';$('#s_ret').value=S.settings.retire||67;$('#s_ret_v').textContent=S.settings.retire||67;$('#s_sync').value=S.settings.syncCode||'';$('#s_age').value=S.settings.age;$('#s_age_v').textContent=S.settings.age;$('#s_hz').value=S.settings.hz;$('#s_hz_v').textContent=S.settings.hz;$('#settingsModal').classList.add('open');};
+$('#settingsBtn').onclick=()=>{$('#s_key').value=S.settings.key||'';$('#s_status').value=S.settings.status||'שכיר';$('#s_nameMe').value=S.settings.nameMe||'';$('#s_nameP').value=S.settings.nameP||'';$('#s_ret').value=S.settings.retire||67;$('#s_ret_v').textContent=S.settings.retire||67;
+  $('#s_ageP').value=S.settings.ageP||35;$('#s_ageP_v').textContent=S.settings.ageP||35;
+  $('#s_retP').value=S.settings.retireP||65;$('#s_retP_v').textContent=S.settings.retireP||65;
+  $('#s_statusP').value=S.settings.statusP||'שכיר';
+  $('#setLblMe').textContent=S.settings.nameMe||'עמית';$('#setLblP').textContent=S.settings.nameP||'סיון';$('#s_sync').value=S.settings.syncCode||'';$('#s_age').value=S.settings.age;$('#s_age_v').textContent=S.settings.age;$('#s_hz').value=S.settings.hz;$('#s_hz_v').textContent=S.settings.hz;$('#settingsModal').classList.add('open');};
 $('#s_syncgen').onclick=()=>{$('#s_sync').value=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).slice(0,24);};
 $('#closeSettings').onclick=()=>$('#settingsModal').classList.remove('open');
 $('#settingsModal').onclick=e=>{if(e.target.id==='settingsModal')$('#settingsModal').classList.remove('open');};
 $('#s_age').oninput=e=>$('#s_age_v').textContent=e.target.value;
 $('#s_hz').oninput=e=>$('#s_hz_v').textContent=e.target.value;
 $('#s_ret').oninput=e=>$('#s_ret_v').textContent=e.target.value;
+$('#s_ageP').oninput=e=>$('#s_ageP_v').textContent=e.target.value;
+$('#s_retP').oninput=e=>$('#s_retP_v').textContent=e.target.value;
 const _sp=$('#s_pull'); if(_sp)_sp.onclick=()=>{ if(window.__cloudPull){toast('מושך מהענן…','clock');window.__cloudPull();} else {toast('הסנכרון לא מוכן עדיין','clock');} };
-$('#saveSettings').onclick=()=>{S.settings.key=$('#s_key').value.trim();S.settings.status=$('#s_status').value;S.settings.nameMe=$('#s_nameMe').value.trim()||'עמית';S.settings.nameP=$('#s_nameP').value.trim()||'סיון';S.settings.retire=+$('#s_ret').value;S.settings.syncCode=$('#s_sync').value.trim();S.settings.age=+$('#s_age').value;S.settings.hz=+$('#s_hz').value;save();$('#settingsModal').classList.remove('open');applyOwnerNames();applyTabLabels();moveTabInd($('.tab.active'));renderAll();if(window.__cloudReconnect)window.__cloudReconnect();};
+$('#saveSettings').onclick=()=>{S.settings.key=$('#s_key').value.trim();S.settings.status=$('#s_status').value;S.settings.nameMe=$('#s_nameMe').value.trim()||'עמית';S.settings.nameP=$('#s_nameP').value.trim()||'סיון';S.settings.retire=+$('#s_ret').value;S.settings.ageP=+$('#s_ageP').value;S.settings.retireP=+$('#s_retP').value;S.settings.statusP=$('#s_statusP').value;S.settings.syncCode=$('#s_sync').value.trim();S.settings.age=+$('#s_age').value;S.settings.hz=+$('#s_hz').value;save();$('#settingsModal').classList.remove('open');applyOwnerNames();applyTabLabels();moveTabInd($('.tab.active'));renderAll();if(window.__cloudReconnect)window.__cloudReconnect();};
 $('#exportData').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='shuk-hahon-backup.json';a.click();};
 $('#importBtn').onclick=()=>$('#importFile').click();
 $('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=Object.assign(JSON.parse(JSON.stringify(DEF)),JSON.parse(r.result));save();applyTheme();renderAll();toast('הנתונים יובאו בהצלחה');$('#settingsModal').classList.remove('open');}catch(err){toast('קובץ לא תקין','clock');}};r.readAsText(f);};
