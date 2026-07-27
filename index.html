@@ -291,14 +291,14 @@ tr.grouphead td{padding:0!important; border-left:0!important; background:var(--c
   #v-funds, #v-funds2, #v-report{width:min(1320px, calc(100vw - 48px)); margin-left:calc(560px - min(660px, (100vw - 48px)/2)); margin-right:calc(560px - min(660px, (100vw - 48px)/2))}
 }
 @media(min-width:641px){
-  .fundsTableWrap{max-height:74vh; overflow:auto}
-  .fundsTableWrap thead th{position:sticky; top:0; z-index:4;
-    background:var(--card3); color:var(--ink2); font-size:12px; box-shadow:0 2px 0 var(--rule2)}
+  .fundsTableWrap thead{display:none}                 /* אין כותרת גלובלית — כל קופה נושאת כותרת משלה */
   .fundsTableWrap th, .fundsTableWrap td{border-left:1px solid var(--rule)}   /* פסי-עמודות אנכיים */
-  .fundsTableWrap th:last-child, .fundsTableWrap td:last-child{border-left:0}
-  .fundsTableWrap tbody tr:not(.grouphead):nth-child(even) td{background:color-mix(in srgb,var(--card2) 45%, transparent)}
-  .fundsTableWrap tbody tr:not(.grouphead) td:hover{background:var(--accent-soft)}
+  .fundsTableWrap td:last-child{border-left:0}
+  .fundsTableWrap tr.colhead td{background:var(--card3); color:var(--ink2); font-size:11px; font-weight:800;
+    letter-spacing:.03em; text-transform:uppercase; padding:8px 14px; white-space:nowrap; border-bottom:1px solid var(--rule2)}
+  .fundsTableWrap tr.colhead td:last-child{border-left:0}
 }
+tr.colhead td{background:var(--card3); color:var(--ink2); font-size:11px; font-weight:800; padding:8px 14px; white-space:nowrap; border-bottom:1px solid var(--rule2)}
 
 .fundsTableWrap select{min-width:158px}
 .fundsTableWrap td[data-label="% מניות"]{min-width:74px}
@@ -1179,6 +1179,10 @@ function renderFunds(owner){
       </div>
     </div></td>`;
     b.appendChild(head);
+    /* שורת כותרות משלה לכל קופה — מעל נתוני המסלולים */
+    const ch=document.createElement('tr'); ch.className='colhead';
+    ch.innerHTML='<td>מסלול</td><td>% מניות</td><td>% מהקופה</td><td>יתרה ₪</td><td>הפקדה חודשית ₪</td><td>ד״נ מהפקדה %</td><td>ד״נ מצבירה %</td><td>תשואה %</td><td>עלות שנתית ₪</td><td>סימונים</td><td></td>';
+    b.appendChild(ch);
     grp.rows.forEach(({f,i})=>{
       const cAcc=(f.bal||0)*(f.fee||0)/100, cDep=(f.dep||0)*12*(f.feeDep||0)/100;
       const cost=cAcc+cDep;
