@@ -161,6 +161,12 @@ h4{margin:0 0 4px; font-size:17px; font-weight:800; letter-spacing:-.3px}
 .hero .hsplit i:hover,.split-bar i:hover{filter:brightness(1.15)}
 .hero .hleg,.split-leg{display:flex; gap:22px; flex-wrap:wrap; margin-top:14px}
 .hero .hleg span,.legit{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink2)}
+/* רצועת פילוח — עובדת גם מחוץ ל-.hero (כרטיסי אנשים + סיכום משפחתי) */
+.hleg{display:flex; gap:20px 22px; flex-wrap:wrap}
+.hleg span{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--ink2); white-space:nowrap}
+.hleg em{width:9px; height:9px; border-radius:3px; font-style:normal; flex:0 0 auto}
+.hsplit{display:flex; gap:3px; height:12px; border-radius:99px; overflow:hidden}
+.hsplit i{display:block; border-radius:99px}
 .hero .hleg em,.legit em{width:9px; height:9px; border-radius:3px; font-style:normal; flex:0 0 auto}
 .hero .hs{margin-top:12px; color:var(--ink2); font-size:14.5px; line-height:1.7}
 .hero .hs b{color:var(--ink)}
@@ -1017,7 +1023,7 @@ function monthsSince(ym){
 function liquidity(f){
   if(f.type==='קרן פנסיה') return {k:'locked'};
   if(f.type==='גמל להשקעה'||f.type==='תיק פרטי') return {k:'now'};
-  const ms=monthsSince(f.opened);                 /* קרן השתלמות — 6 שנים */
+  const ms=monthsSince(fundOpened(f));             /* קרן השתלמות — ברמת הקופה */
   if(ms===null) return {k:'unknown'};
   if(ms>=72) return {k:'now'};
   return {k:'soon',left:72-ms};
@@ -1041,13 +1047,20 @@ function fundIndices(){
 
 /* ====== אופק לכל קופה בנפרד ======
    לכל קופה מועד משיכה אחר. ברירת המחדל נגזרת מסוג הקופה, וניתנת לדריסה ידנית. */
+/* תאריך פתיחה ברמת הקופה — אם למסלול אין, לוקחים מאחד ה"אחים" באותה קופה */
+function fundOpened(f){
+  if(f.opened) return f.opened;
+  const o=ownerOf(f), nm=(f.name||'').trim();
+  const sib=S.funds.find(x=>ownerOf(x)===o && (x.name||'').trim()===nm && x.opened);
+  return sib?sib.opened:'';
+}
 function fundYears(f){
   if(f.yrs>0) return f.yrs;                                   /* דריסה ידנית */
   const o=ownerOf(f), age=pAge(o), ret=pRetire(o);
   if(f.type==='קרן פנסיה')     return Math.max(1,ret-age);     /* עד גיל פרישה */
   if(f.type==='גמל להשקעה')    return Math.max(1,60-age);      /* עד 60 — משיכה כקצבה פטורה ממס */
   if(f.type==='קרן השתלמות'){                                  /* עד הבשלה (6 שנים) */
-    const ms=monthsSince(f.opened);
+    const ms=monthsSince(fundOpened(f));
     if(ms===null) return 6;
     return Math.max(0,Math.round((72-ms)/12*10)/10);
   }
@@ -1057,7 +1070,7 @@ function yearsSource(f){
   if(f.yrs>0) return 'הוגדר ידנית';
   if(f.type==='קרן פנסיה')  return `עד גיל פרישה ${pRetire(ownerOf(f))}`;
   if(f.type==='גמל להשקעה') return 'עד גיל 60 — משיכה כקצבה פטורה';
-  if(f.type==='קרן השתלמות')return monthsSince(f.opened)===null?'הערכה — חסר תאריך פתיחה':'עד הבשלת 6 השנים';
+  if(f.type==='קרן השתלמות')return monthsSince(fundOpened(f))===null?'הערכה — חסר תאריך פתיחה':'עד הבשלת 6 השנים';
   return 'לפי הטווח הכללי בהגדרות';
 }
 
@@ -1807,7 +1820,7 @@ function renderDash(){
         ${segs.map(k=>`<span><em style="background:var(${LBL[k][1]})"></em>${LBL[k][0]} <b style="color:var(--ink);font-weight:700">${fmt(st.L[k])}</b></span>`).join('')}
         ${st.pen?`<span><em style="background:var(--c-lock)"></em>פנסיה <b style="color:var(--ink);font-weight:700">${fmt(st.pen)}</b></span>`:''}
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(94px,1fr));gap:10px;margin-top:${big?18:15}px;padding-top:${big?16:13}px;border-top:1px solid var(--rule)">
+      <div style="display:grid;grid-template-columns:${big?'repeat(auto-fit,minmax(94px,1fr))':'repeat(3,1fr)'};gap:10px 14px;margin-top:${big?18:15}px;padding-top:${big?16:13}px;border-top:1px solid var(--rule)">
         ${cells.map(c=>`<div><div style="font-size:11px;color:var(--ink3);font-weight:700">${c[0]}</div>
           <div style="font-weight:800;font-size:${big?15.5:14}px;letter-spacing:-.3px">${c[1]}</div></div>`).join('')}
       </div>`;
@@ -1817,8 +1830,9 @@ function renderDash(){
       <div style="margin-top:14px;color:var(--paper);border-radius:var(--r-md);padding:15px 17px;position:relative;overflow:hidden;background:radial-gradient(150px 150px at top left, color-mix(in srgb,var(${tone}) 55%,transparent), transparent 70%), var(--ink)">
         <div style="position:relative">
           <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;opacity:.72">על השולחן</div>
-          <div style="font-size:26px;font-weight:900;letter-spacing:-1px;margin:5px 0 2px">${fmt(st.recW)}</div>
-          <div style="font-size:12.5px;opacity:.8">${st.recN} פעולות פתוחות</div>
+          ${st.recW>=1000
+            ? `<div style="font-size:26px;font-weight:900;letter-spacing:-1px;margin:5px 0 2px">${fmt(st.recW)}</div><div style="font-size:12.5px;opacity:.8">${st.recN} פעולות פתוחות</div>`
+            : `<div style="font-size:24px;font-weight:900;letter-spacing:-1px;margin:5px 0 2px">${st.recN} פעולות</div><div style="font-size:12.5px;opacity:.8">לבדיקה — ראה לשונית "החלטות"</div>`}
         </div>
       </div>`:`
       <div style="margin-top:14px;background:var(--good-bg);border:1px solid color-mix(in srgb,var(--good) 26%,transparent);border-radius:var(--r-md);padding:15px 17px">
