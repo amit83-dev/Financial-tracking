@@ -273,6 +273,22 @@ details.sadv[open] summary::before{transform:rotate(90deg)}
 /* ═══════════════════ FUND CARDS ═══════════════════ */
 [id^="fundCards-"],.fundCardBtns{display:none}
 .fundsTableWrap table{min-width:1240px}
+/* ===== טבלת קרנות: כותרות מוצמדות + פסי-עמודות (דסקטופ בלבד) ===== */
+@media(min-width:900px){
+  /* לשוניות הקרנות/דוח רחבות יותר בדסקטופ */
+  #v-funds, #v-funds2, #v-report{width:min(1320px, calc(100vw - 48px)); margin-left:calc(560px - min(660px, (100vw - 48px)/2)); margin-right:calc(560px - min(660px, (100vw - 48px)/2))}
+}
+@media(min-width:641px){
+  .fundsTableWrap{max-height:74vh; overflow:auto}
+  .fundsTableWrap thead th{position:sticky; top:0; z-index:4;
+    background:var(--card3); color:var(--ink2); font-size:12px; box-shadow:0 2px 0 var(--rule2)}
+  .fundsTableWrap tr.grouphead td{position:sticky; top:38px; z-index:3}   /* כותרת הקופה נדבקת מתחת לכותרות */
+  .fundsTableWrap th, .fundsTableWrap td{border-left:1px solid var(--rule)}   /* פסי-עמודות אנכיים */
+  .fundsTableWrap th:last-child, .fundsTableWrap td:last-child{border-left:0}
+  .fundsTableWrap tbody tr:not(.grouphead):nth-child(even) td{background:color-mix(in srgb,var(--card2) 45%, transparent)}
+  .fundsTableWrap tbody tr:not(.grouphead) td:hover{background:var(--accent-soft)}
+}
+
 .fundsTableWrap select{min-width:158px}
 .fundsTableWrap td[data-label="% מניות"]{min-width:74px}
 .fundsTableWrap td[data-label="% מניות"] input{width:62px}
