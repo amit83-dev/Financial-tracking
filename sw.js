@@ -1,7 +1,8 @@
 /* Service worker אופציונלי ל"הכלי שלי לשוק ההון".
    מעלים אותו פעם אחת לצד index.html כדי לקבל עבודה לא מקוונת.
    האפליקציה עובדת מצוין גם בלעדיו — הוא רק מוסיף קאשינג. */
-const CACHE = 'shukhon-v1';
+/* גרסת הקאש — כל שינוי כאן מוחק את הקאש הישן בהפעלה ומבטיח מעבר נקי. */
+const CACHE = 'shukhon-v2';
 const CORE  = ['./', './index.html'];
 
 self.addEventListener('install', e => {
