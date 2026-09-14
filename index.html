@@ -9,6 +9,15 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="הפנסיה שלי">
 <title>הפנסיה שלי — ניתוח, דירוג ותחזית</title>
+<!-- אייקון מסך הבית — חייב להיות קבצים אמיתיים.
+     iOS מתעלם מ-apple-touch-icon שהוא data: URL, ושם במקומו תמונה ממוזערת
+     של הדף. רק PNG בכתובת אמיתית מגיע למסך הבית, ורק
+     apple-mobile-web-app-title קובע את הכיתוב שמתחתיו.
+     הנתיבים יחסיים בכוונה — האתר יושב תחת /Financial-tracking/ ולא בשורש,
+     ונתיב מוחלט כמו /icon-192.png היה מחזיר 404. -->
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -3307,29 +3316,10 @@ if(!MKT&&S.funds.length)setTimeout(()=>{
   fetchMarket().then(()=>{renderAll();toast('נתוני השוק נטענו');}).catch(()=>{});
 },1200);
 
-/* PWA — אייקון ומניפסט מיוצרים בקוד, בלי קבצים נפרדים */
+/* PWA — האייקונים והמניפסט הם קבצים אמיתיים בתיקייה, ולא נוצרים בקוד.
+   data: URL לא מתקבל כ-apple-touch-icon ב-iOS, ולכן שמירה למסך הבית
+   נתנה תמונה ממוזערת של הדף במקום אייקון. ראה את תגיות ה-link ב-head. */
 (function(){
-  function icon(size){
-    const c=document.createElement('canvas'); c.width=c.height=size;
-    const x=c.getContext('2d'),r=size*0.22;
-    x.fillStyle='#823cec';
-    x.beginPath(); x.moveTo(r,0); x.arcTo(size,0,size,size,r); x.arcTo(size,size,0,size,r);
-    x.arcTo(0,size,0,0,r); x.arcTo(0,0,size,0,r); x.closePath(); x.fill();
-    x.strokeStyle='#fff'; x.lineWidth=size*0.075; x.lineJoin='round'; x.lineCap='round';
-    x.beginPath(); [[.20,.66],[.42,.44],[.56,.56],[.80,.28]].forEach((p,i)=>x[i?'lineTo':'moveTo'](p[0]*size,p[1]*size)); x.stroke();
-    x.beginPath(); x.arc(.80*size,.28*size,size*0.055,0,7); x.fillStyle='#fff'; x.fill();
-    return c.toDataURL('image/png');
-  }
-  try{
-    const i180=icon(180),i512=icon(512);
-    const set=(rel,href)=>{let l=document.querySelector(`link[rel="${rel}"]`);
-      if(!l){l=document.createElement('link');l.rel=rel;document.head.appendChild(l);} l.href=href;};
-    set('icon',icon(64)); set('apple-touch-icon',i180);
-    const mf={name:'הפנסיה שלי',short_name:'הפנסיה שלי',start_url:'.',scope:'.',display:'standalone',
-      orientation:'portrait',background_color:'#ffffff',theme_color:'#823cec',dir:'rtl',lang:'he',
-      icons:[{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'},{src:i180,sizes:'180x180',type:'image/png'}]};
-    set('manifest',URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/manifest+json'})));
-  }catch(e){}
   if('serviceWorker' in navigator&&location.protocol.startsWith('http'))
     navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();
