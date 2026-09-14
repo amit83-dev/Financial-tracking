@@ -558,6 +558,24 @@ details.adv[open] summary::before{transform:rotate(90deg)}
    מטמון נתוני השוק נשמר במפתח נפרד — הוא גדול, ואסור שייכנס לסנכרון הענן. */
 const LS='shukhon_v1';
 const LS_MKT='shukhon_mkt_v1';
+/* "חותם" — עדות לכך שהיו כאן נתונים ובאיזה היקף, במפתח נפרד בכוונה.
+   אם המפתח הראשי נמחק, החותם עשוי לשרוד ומאפשר לזהות מחיקה במקום להציג
+   מסך "הכלי עוד ריק" עליז. הוא מחזיק גם את קוד הסנכרון, כי הקוד עצמו
+   נשמר בתוך המפתח הראשי — ולכן איבוד הנתונים מחק עד היום גם את דרך השחזור. */
+const LS_SEEN='shukhon_seen_v1';
+function markSeen(){
+  try{
+    const n=S.funds.length; if(!n)return;
+    localStorage.setItem(LS_SEEN,JSON.stringify({
+      ever:true, funds:n,
+      total:Math.round(S.funds.reduce((a,f)=>a+(f.bal||0),0)),
+      code:(S.settings&&S.settings.syncCode)||'', at:Date.now()
+    }));
+  }catch(e){}
+}
+function seenMark(){
+  try{return JSON.parse(localStorage.getItem(LS_SEEN)||'null');}catch(e){return null;}
+}
 const DEF={
   funds:[], holdings:[],
   watch:[{sym:'SPY',name:'S&P 500 (ETF)'},{sym:'QQQ',name:'נאסד״ק 100 (ETF)'},{sym:'URTH',name:'עולמי MSCI World'}],
@@ -582,6 +600,7 @@ function save(){
   const sig=fundsSig();
   if(sig!==S._fsig){S.lastEdit=Date.now(); S._fsig=sig;}
   try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
+  markSeen();
   if(!applyingRemote&&window.__cloudPush)window.__cloudPush();
 }
 
@@ -1776,12 +1795,32 @@ RENDER.home=function(){
   const el=$('#v-home');
   const fam=famStat(['me','p','j']);
   if(!S.funds.length){
-    el.innerHTML=`<div class="lav"><div class="center">${AISTAR}
-      <h1 class="page-h" style="color:var(--brand);margin-top:0">בוא נתחיל — הכלי עוד ריק</h1>
+    /* ריק זה לא תמיד "חדש". אם החותם מעיד שהיו כאן נתונים — זו מחיקה,
+       ומסך פתיחה עליז במצב כזה שולח את המשתמש להקליד הכל מחדש בטעות. */
+    const mk=seenMark();
+    const lost=!!(mk&&mk.ever&&mk.funds>0);
+    el.innerHTML=(lost?`<div class="card" style="background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 34%,transparent)">
+      <div style="font-size:20px;font-weight:800;color:var(--bad)">הנתונים לא נמצאים במכשיר הזה</div>
+      <p style="margin:8px 0 0;color:var(--ink-2);line-height:1.7">בפעם האחרונה שנשמרו כאן נתונים היו <b>${mk.funds} מסלולים</b> בסך <b>${fmt(mk.total)}</b>${mk.at?` · ${esc(agoText(mk.at)||'')}`:''}. האחסון של הדפדפן במכשיר הזה התרוקן — זה קורה כשמוחקים קיצור ממסך הבית ב-iOS, כשמנקים נתוני אתרים, או אחרי תקופה ארוכה בלי כניסה.</p>
+      <div class="note" style="background:var(--surface);margin-top:14px;line-height:1.9">
+        <b>אל תזין נתונים מחדש לפני שבדקת את ארבעת אלה:</b><br>
+        1. פתח את הכתובת ב<b>ספארי עצמו</b>, לא מקיצור מסך הבית — ל-iOS יש אחסון נפרד לכל אחד.<br>
+        2. בדוק ב<b>מחשב או במכשיר אחר</b> — האחסון הוא פר-מכשיר, ושם הנתונים כנראה שלמים.<br>
+        3. יש לך <b>קוד סנכרון</b>? הזן אותו בהגדרות והנתונים יימשכו מהענן.<br>
+        4. חפש <b>pension-backup-*.json</b> בהורדות וייבא אותו.
+      </div>
+      ${mk.code?`<div class="note brand" style="margin-top:10px">קוד הסנכרון שנרשם כאן לאחרונה: <b style="font-family:ui-monospace,Consolas,monospace;font-size:14px">${esc(mk.code)}</b><br>הזן אותו בהגדרות כדי למשוך את העותק מהענן.</div>`:'<div class="note warn" style="margin-top:10px">לא נרשם כאן קוד סנכרון, ולכן אין משיכה אוטומטית מהענן.</div>'}
+      <div class="btnrow">
+        <button class="btn" onclick="openSettings()">הגדרות · קוד סנכרון</button>
+        <button class="btn ghost" data-go2="more">ייבוא קובץ גיבוי</button>
+      </div>
+    </div>`:'')
+    +`<div class="lav"><div class="center">${AISTAR}
+      <h1 class="page-h" style="color:var(--brand);margin-top:0">${lost?'או להתחיל מחדש':'בוא נתחיל — הכלי עוד ריק'}</h1>
       <p class="page-s">זה מעקב אישי. אתה מזין את נתוני הקופות שלך — יתרה, דמי ניהול ומסלול — והכלי מנתח אותם, משווה אותם לכל השוק ומראה לך מה שווה לעשות.</p>
       <div class="btnrow" style="justify-content:center">
-        <button class="btn" data-go2="funds">הוסף את הקופה הראשונה</button>
-        <button class="btn ghost" id="homeSeed">מלא דוגמה לניסיון</button>
+        <button class="btn${lost?' ghost':''}" data-go2="funds">הוסף את הקופה הראשונה</button>
+        ${lost?'':'<button class="btn ghost" id="homeSeed">מלא דוגמה לניסיון</button>'}
       </div></div></div>
       <div class="grid3">
         ${[['bank','כל הקופות במקום אחד','השתלמות, פנסיה, גמל וגמל להשקעה — של שניכם, בתמונה אחת.'],
@@ -3217,13 +3256,23 @@ function openSettings(){
       <input id="stKey" placeholder="הדבק כאן את ה-API Key" value="${esc(S1.key||'')}"></div>
     <div class="field"><label>קוד סנכרון <span class="sub">(אותו קוד בכל מכשיר)</span></label>
       <div style="display:flex;gap:8px;align-items:center"><input id="stSync" placeholder="קוד סודי לחיבור המכשירים" value="${esc(S1.syncCode||'')}">
-        <button class="btn ghost sm" id="stGen" style="white-space:nowrap">צור קוד</button></div></div>
+        <button class="btn ghost sm" id="stCopy" style="white-space:nowrap">העתק</button>
+        <button class="btn ghost sm" id="stGen" style="white-space:nowrap">צור קוד</button></div>
+      <div class="note warn" style="margin-top:8px">הקוד הזה הוא <b>דרך השחזור היחידה</b> אם האחסון במכשיר יתרוקן — והוא עצמו נשמר בתוך אותו אחסון. שמור אותו <b>מחוץ לדפדפן</b>: בפתק, במנהל סיסמאות או בהודעה לעצמך.</div></div>
     <div class="note" style="margin-top:0">סטטוס סנכרון: <b id="syncStatus">—</b></div>
     <button class="btn ghost block" style="margin-top:10px" id="stPull">משוך נתונים מהענן עכשיו</button>
     <div class="btnrow"><button class="btn block" id="stSave">שמור</button></div>
     <button class="btn ghost block" style="margin-top:8px" onclick="closeModal()">סגור</button>`);
   ['stAge','stRet','stAgeP','stRetP','stHz'].forEach(id=>{
     const e=$('#'+id); if(e)e.oninput=ev=>{$('#'+id+'_v').textContent=ev.target.value;};});
+  $('#stCopy').onclick=()=>{
+    const v=$('#stSync').value.trim();
+    if(!v){toast('אין עדיין קוד — לחץ "צור קוד"','clock');return;}
+    const manual=()=>{try{$('#stSync').select();}catch(e){} toast('סמן והעתק ידנית','clock');};
+    if(navigator.clipboard&&navigator.clipboard.writeText)
+      navigator.clipboard.writeText(v).then(()=>toast('הקוד הועתק — שמור אותו מחוץ לדפדפן')).catch(manual);
+    else manual();
+  };
   $('#stGen').onclick=()=>{$('#stSync').value=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).slice(0,24);};
   $('#stPull').onclick=()=>{if(window.__cloudPull){toast('מושך מהענן…','clock');window.__cloudPull();}else toast('הסנכרון לא מוכן עדיין','clock');};
   $('#stSave').onclick=()=>{
@@ -3371,7 +3420,10 @@ async function connect(){
         let local={}; try{local=JSON.parse(localStorage.getItem(LS)||'{}');}catch(e){}
         const localHas=hasData(local);
         const newer=d&&typeof d.ts==='number'&&d.ts>lastTs;
-        if(newer&&((local._ts||0)<d.ts||(cloudHasData&&!localHas))){
+        /* ענן ריק לעולם לא ידרוס מכשיר שיש בו נתונים. בלי התנאי הזה, מכשיר
+           אחד שדחף בטעות מצב ריק עם חותמת זמן חדשה היה מוחק את כל השאר. */
+        const safe=cloudHasData||!localHas;
+        if(newer&&safe&&((local._ts||0)<d.ts||(cloudHasData&&!localHas))){
           lastTs=d.ts;
           if(window.__applyCloud)window.__applyCloud(d.data);
           st('התקבל עדכון מהענן ✓','#16a245');
